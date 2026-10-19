@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第四部分 · 痛苦的恳求</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "SimSun", "Songti SC", "Times New Roman", "Georgia", serif;
+            font-size: 16px; background-color: #faf8f5; color: #2a241e;
+            padding-top: 56px; padding-bottom: 40px; overflow-x: hidden;
+        }
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; height: 56px;
+            background-color: #ffffff; border-bottom: 1px solid #e6e0d8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 12px; z-index: 1000;
+        }
+        .back-btn, .font-btn {
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; border-radius: 50%;
+            transition: background-color 0.2s; color: #4a3729;
+            font-family: inherit; flex-shrink: 0;
+        }
+        .back-btn { font-size: 1rem; }
+        .font-btn { font-size: 1.15rem; font-weight: 700; font-family: Georgia, serif; }
+        .back-btn:hover, .font-btn:hover { background-color: #f5efe8; }
+        .back-btn:active, .font-btn:active { background-color: #e6ddd2; }
+        .top-title {
+            flex: 1; text-align: center; font-size: 1.05rem; font-weight: 600;
+            color: #2c241b; letter-spacing: 2px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            padding: 0 8px;
+        }
+        .page-wrapper { display: flex; justify-content: center; padding: 36px 28px 0; }
+        .container {
+            background-color: #ffffff; padding: 42px 48px;
+            border-radius: 6px; box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+            border: 1px solid #e8e0d6; max-width: 920px; width: 100%;
+            transform-origin: top center;
+        }
+        h1 {
+            font-size: 26px; font-weight: 700; text-align: center;
+            margin-bottom: 8px; letter-spacing: 3px; color: #3b2f24;
+        }
+        h2 {
+            font-size: 1.4rem; font-weight: 700; margin: 38px 0 18px;
+            color: #3b2f24; border-left: 5px solid #b7a48b; padding-left: 12px;
+        }
+        h3 {
+            font-size: 1.15rem; font-weight: 700; margin: 28px 0 12px;
+            color: #a52a2a; border-bottom: 1px dashed #d9cfc2; padding-bottom: 8px;
+        }
+        p { margin: 10px 0; text-indent: 2em; text-align: justify; }
+        .noindent { text-indent: 0 !important; }
+        mark {
+            background-color: #fff6b0; padding: 0.15rem 0.35rem;
+            border-radius: 3px; color: #1e1e1e; font-weight: 600;
+        }
+        .mystery-title {
+            font-size: 1.2rem; font-weight: 700; color: #a52a2a;
+            margin: 30px 0 14px; border-bottom: 2px solid #e6ddd2;
+            padding-bottom: 8px; text-indent: 0;
+        }
+        .prayer-block {
+            background-color: #fdfcfb; padding: 16px 22px;
+            border-radius: 8px; border: 1px solid #efe9e1; margin: 16px 0;
+        }
+        .prayer-block p { margin: 6px 0; text-indent: 0; }
+        .scripture {
+            background-color: #f9f6f2; padding: 14px 20px;
+            border-radius: 8px; border-left: 4px solid #b7a48b;
+            margin: 14px 0; color: #3b332b;
+        }
+        .scripture p { text-indent: 0; margin: 6px 0; }
+        .petition {
+            background-color: #f5efe8; padding: 12px 20px;
+            border-radius: 8px; border-left: 5px solid #b7a48b;
+            margin: 14px 0; font-weight: 600; color: #4a3729; text-indent: 0;
+        }
+        .offering-block {
+            background-color: #f9f6f2; padding: 16px 22px;
+            border-radius: 8px; border: 1px solid #e6ddd2; margin: 16px 0;
+        }
+        .offering-block p { text-indent: 0; margin: 8px 0; }
+        .long-prayer {
+            background-color: #fdfcfb; padding: 18px 24px;
+            border-radius: 8px; border-left: 5px solid #b7a48b; margin: 18px 0;
+        }
+        .long-prayer p { text-indent: 2em; margin: 8px 0; }
+        .conclusion {
+            margin-top: 40px; padding: 24px 28px;
+            background-color: #f5efe8; border-radius: 8px;
+            border-left: 6px solid #b7a48b;
+        }
+        .conclusion p { text-indent: 2em; color: #2f2a24; line-height: 1.9; }
+        .sign-of-cross {
+            text-align: center; font-size: 1.15rem; font-weight: 600;
+            color: #4b3e30; margin-top: 28px; padding: 14px;
+            background-color: #f5efe8; border-radius: 8px;
+            border-left: 6px solid #b7a48b; text-indent: 0;
+        }
+        .font-panel-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.35);
+            z-index: 1998; opacity: 0; visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .font-panel-overlay.show { opacity: 1; visibility: visible; }
+        .font-panel {
+            position: fixed; left: 0; right: 0; bottom: 0;
+            background-color: #ffffff; border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+            z-index: 1999; padding: 8px 24px 32px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+            max-width: 920px; margin: 0 auto;
+        }
+        .font-panel.show { transform: translateY(0); }
+        .drag-handle {
+            width: 40px; height: 4px; background-color: #d9cfc2;
+            border-radius: 2px; margin: 0 auto 18px;
+            cursor: grab; touch-action: none;
+        }
+        .drag-handle:active { cursor: grabbing; }
+        .panel-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .panel-title { font-size: 1rem; font-weight: 600; color: #2c241b; letter-spacing: 1px; }
+        .panel-reset {
+            background: none; border: 1px solid #d9cfc2; color: #4a3729;
+            font-size: 0.85rem; padding: 5px 14px; border-radius: 20px;
+            cursor: pointer; font-family: inherit; transition: background-color 0.2s;
+        }
+        .panel-reset:hover { background-color: #f5efe8; }
+        .slider-row { display: flex; align-items: center; gap: 14px; }
+        .slider-label-small {
+            font-size: 0.85rem; color: #8a7a68; font-weight: 600;
+            flex-shrink: 0; width: 20px; text-align: center;
+        }
+        .slider-label-large {
+            font-size: 1.35rem; color: #8a7a68; font-weight: 700;
+            flex-shrink: 0; width: 24px; text-align: center;
+            font-family: Georgia, serif;
+        }
+        .font-slider {
+            -webkit-appearance: none; appearance: none; flex: 1; height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px; outline: none; cursor: pointer;
+        }
+        .font-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: border-color 0.2s, transform 0.1s;
+        }
+        .font-slider::-webkit-slider-thumb:hover { border-color: #a52a2a; }
+        .font-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+        .font-slider::-moz-range-thumb {
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .font-slider::-moz-range-track {
+            height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px;
+        }
+        .font-value {
+            text-align: center; margin-top: 14px;
+            font-size: 0.85rem; color: #8a7a68; letter-spacing: 1px;
+        }
+        @media (max-width: 700px) {
+            .page-wrapper { padding: 24px 14px 0; }
+            .container { padding: 24px 18px; }
+            h1 { font-size: 22px; letter-spacing: 2px; }
+            h2 { font-size: 1.2rem; }
+            h3 { font-size: 1.05rem; }
+            .prayer-block, .offering-block, .long-prayer { padding: 12px 14px; }
+            .scripture { padding: 12px 14px; }
+            .top-title { font-size: 0.98rem; letter-spacing: 1px; }
+        }
+        @media print {
+            body { padding-top: 0; }
+            .top-bar, .font-panel-overlay, .font-panel { display: none !important; }
+            .page-wrapper { padding: 0; }
+            .container { box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <button class="back-btn" onclick="goBack()" title="返回">返回</button>
+        <div class="top-title">第四部分 · 痛苦的恳求</div>
+        <button class="font-btn" onclick="openFontPanel()" title="调整字号">Aa</button>
+    </div>
+
+    <div class="page-wrapper">
+        <div class="container" id="pageContent">
+            <h1>第四部分</h1>
+            <p class="noindent" style="text-align:center; font-weight:600; color:#4a3729;">痛苦的恳求</p>
+            <p class="noindent" style="text-align:center; color:#8a7a68;">向饱受痛苦的耶稣基督献上的补赎祈祷</p>
+
+            <div class="long-prayer">
+                <p>献给我们主耶稣基督至圣宝血的祈祷词</p>
+                <p>主耶稣基督，纵观历史，祢一直在带领我们回到全能天父那里，我们非常感激，我们感激祢的慈爱，我们怀着由衷的悲伤，看到了我们自己的软弱和罪恶，以及祢在这项崇高的使命中所受的一切苦痛，我们能减少祢的痛苦吗？我们祈求祢，帮助我们从日常生活开始行道，从今以后，只要是祢的旨意，我们就照着去遵行。求祢赐给我们更多的爱，去遵行祢的旨意，我们的主耶稣基督与圣神合一，与圣父一同作王，直到永永远远。我们奉主耶稣基督的名祈求，阿们！</p>
+                <p>永生之父，我把祢的爱子耶稣基督所受的一切鞭伤，祂的圣心所受的一切疼痛和剧痛，以及从祂所有的伤口流出的至圣宝血，献给祢，以赔补我的罪过和全人类的罪过，阿们（3遍）</p>
+            </div>
+
+            <div class="prayer-block">
+                <p class="noindent"><mark>[信经]</mark>：………（沉默片时）</p>
+            </div>
+
+            <!-- 第一个痛苦的恳求 -->
+            <div class="mystery-title"><mark>第一个痛苦的恳求</mark></div>
+            <div class="scripture">
+                <p><strong>我的孩子，你在哪里？你的主人在寻找你！请到我这里来，靠近我，倾听我痛苦的恳求！</strong></p>
+                <p><strong>我的孩子，从前有一个人，他有许多羊。他悉心照顾他们，用心看护他们。什么时候渴了，什么时候就领他们到活水泉源那里，饮水解渴。他从不让他们挨饿，总是把他们带到美丽的青草地。他们吃得又肥又壮。那个人还加固了草场，不让狼群进来伤害羊群。</strong></p>
+                <p><strong>有一天，羊群策划了一场叛乱，强行逃出了羊圈，进入了野兽横生的森林。他们在那里被野兽捕获，如同奴隶失去了盼望。他们的身体和鲜血被当作节日和动物祭祀的贡品献给了他们的神。然而那个人并没有忘记他的羊群。他打发所有的仆人去救羊群，结果他们都被杀了。最后，他差他的儿子去。他儿子最终赢得了这场争战。</strong></p>
+                <p><strong>那位人子在旷野里，昼夜看护牧养着羊群。他们在出离荒野的道路上，遇到了许多无法承受的艰难困苦，于是，他们向人子抱怨，并用各种名样恶毒的话语攻击他，最后竟把他杀了。孩子，那位人子的父亲听见儿子的死讯后，你觉得他会怎样行呢？（沉默）</strong></p>
+                <p><strong>我的孩子，你和那些子民就是那群羊。我父就是羊群的主人，祂派了许多先知，去看望那些住在可怕旷野里的子民。我就是你们所逼迫，所杀害的儿子，我到底做了什么对不起你们的事？尽管你们犯下了各种罪行，我父仍然在呼唤你们回到祂身边，可你们对祂的呼唤不理不睬。回来吧，我的以色列子民！你们要去赔补（或作补赎）你们自己和全人类所犯的罪，因你们得罪了我父，干犯了我的宝血。我是饱受痛苦的耶稣基督。（沉默）</strong></p>
+            </div>
+
+            <div class="long-prayer">
+                <p>主啊，我的救主，我愿全心坚定地相信你，我愿全心真诚地依靠你，我的盼望在乎你，我愿单单尊崇你，直到永远，我愿带着一颗真诚悔改的爱心，俯伏在你脚前，恳求你宽恕那些不信你和不愿意相信你的人，那些不尊崇你和不愿意尊崇你的人，那些曾经把你钉在十字架上以及每天都在把你钉在十字架的人，亲爱的耶稣，我愿一生安慰你，阿门。</p>
+                <p>啊，我的主，祢如此良善。我愿为我的罪过，伤心痛悔。靠着祢恩宠的辅助，我必不再犯罪。阿们！</p>
+            </div>
+
+            <div class="prayer-block">
+                <p class="noindent"><mark>[天主经……圣母经……圣三光荣颂……（各3遍）]</mark></p>
+            </div>
+
+            <h3>圣歌：</h3>
+            <div class="long-prayer">
+                <p>我们的主，饱受痛苦的耶稣基督，祢为我们的生命受苦，付上了代价，愿祢的旨意成就在地上。主啊，愿这一切能平息祢的怒气，我们痛悔，因我们都得罪了祢，我们不再犯罪。住在圣体里的耶稣，那时祢呼叫我们，我们一无所知，主啊，求祢饶恕我们。</p>
+                <p>啊，至圣的天主圣三，我把道成肉身的耶稣基督献给祢，把祂伤痕累累。血迹斑斑的身体献给我，把祂所受的剧痛，所受的鞭伤，头上所戴的荆棘冠冕献给你，把祂被拒绝、被定罪，被钉在十字架上，受死以及祢的圣洁教会所遭受的一切痛苦，和殉道者们所流的献血都给祢，以赔补我的罪过和全人类的罪过。阿们！</p>
+                <p>饱受痛苦的耶稣，我愿献上我的心，与祢饱受痛苦的圣心同心、同工承担祢的痛苦。耶稣，我愿与祢一同受苦，以加速祢和平荣耀的统治。阿们！</p>
+            </div>
+
+            <!-- 第二个痛苦的恳求 -->
+            <div class="mystery-title"><mark>第二个痛苦的恳求</mark></div>
+            <div class="scripture">
+                <p><strong>我的孩子，请靠近我，倾听我痛苦的恳求。为了爱你们，我把身体当作活祭献上，成为全人类生命的粮。我的宝血是天使珍贵的饮料，因着爱，我把祂赐给了人类。</strong></p>
+                <p><strong>我的孩子，为了你们，我进入爱的圣体里，在圣殿里耐心等着你们；为了你们，我把自己囚在那里。但你们很少过来亲近我，因为你们忘记了为你们囚在那里的我。我的孩子，当我看到你们带着冷漠、心不在焉、轻忽的心态亲近唯一的真神。进入充满祂同在的圣殿时，我痛苦万分。我在这里，我的孩子，我丰丰满满地充满在这里，所以你们要敬畏你们的天主，用崇敬和仰慕的心去敬拜。</strong></p>
+                <p><strong>我的孩子，每当我借着领圣体进入你们心灵的圣殿时，我所受的苦，你们知道吗？你们的罪捆住了我，而且无情地鞭打着我。在你们心里，没有人来安慰我。你们无情地鞭笞我之后，把我拖走，然后因着罪又关上了自己的心门。这就是你们充满罪恶的生活对我的伤害。凡在圣洁里接受我的人，我就成为他们生命的粮。我来赐给你们的，是生命，不是死亡。所以，你们要除掉你们心中的罪孽，为我打开你们的心门。愿你们的心灵成为安慰我的帐幕。</strong></p>
+                <p><strong>我的孩子，我巴不得借着一次又一次的领圣体住在你们的圣殿里。你们要欢迎我，欢迎我住进去，我的孩子，凡接待我的，就是接待我父和住在我里面的圣神；凡拒绝我的，就是拒绝三位一体的天主，孩子，即使别人拒绝我，惟愿你的心成为安慰我的帐幕。我是饱受痛苦的耶稣基督，我在呼唤你们回转。（沉默）</strong></p>
+            </div>
+
+            <div class="long-prayer">
+                <p>我的主，我的主，我愿全心坚定地相信祢，我愿全心真诚地依靠祢，我的盼望在乎祢，我愿单单尊崇祢，直到永远，我愿带着一颗真诚悔改的爱心，俯伏在祢脚前，恳求祢宽恕那些不信的和不愿意相信的人，那些不尊崇祢也不愿意尊崇祢的人，那些曾经把祢钉在十字架上以及每天都在把祢钉十字架上人。亲爱的耶稣，我愿一生安慰祢。阿们！</p>
+                <p>啊，我的主，你如此良善。我愿为我的罪过，伤心痛悔，靠着祢恩宠的辅助，我必不再犯罪。阿们！</p>
+            </div>
+
+            <div class="prayer-block">
+                <p class="noindent"><mark>[天主经……圣母经……圣三光荣颂……（各3遍）]</mark></p>
+            </div>
+
+            <h3>圣歌：</h3>
+            <div class="long-prayer">
+                <p>惟愿我们对基督受难的认识，能帮助人心转向天主，除了祂的恩宠，一切都会失去，愿我们单单属于祢。</p>
+                <p>想到世人的罪过，祢现在的感觉如何？愿我们知道，我们违背祢的旨意，所带给祢的痛苦。</p>
+                <p>主啊，愿我们像祢那样去感受！主啊，愿我们像祢那样去祈祷，主啊，愿我们像祢那样去感受，我们愿意为祢而活。</p>
+                <p>啊，至圣的天主圣三，我把道成肉身的耶稣基督献给祢，把祂伤痕累累，血迹斑斑的身体献给祢；把祂所受的剧痛、所受的鞭伤、头上所戴的荆棘冠冕献给祢；把祂被拒绝、被定罪、被钉在十字架上、受死以及祢的圣洁教会所遭受的一切痛苦，和殉道者们所流的鲜血都献给祢，以赔补我的罪过和全人类的罪过，阿们！</p>
+                <p>饱受痛苦的耶稣，我愿献上我的心，与祢饱受痛苦的圣心同心、同工承担祢的痛苦。耶稣，我愿与祢一同受苦，以加速祢和平荣耀的统治。阿们！</p>
+            </div>
+
+            <!-- 第三个痛苦的恳求 -->
+            <div class="mystery-title"><mark>第三个痛苦的恳求</mark></div>
+            <div class="scripture">
+                <p><strong>我的孩子，我就住在你心里，那是一个孤独寂寞的哥责马尼山园，我密切观望，竟没有一个人过来与我一起警醒守望，哪怕一个小时，你们宁愿冒着死亡的危险去追逐这个尘世，而让我独自受苦，仇敌在速速地逼近，牠们已占领了阵地，好在你们睡着的时候掳掠许多的灵魂。孩子，难道你就不能起来与我一起警醒片时吗？我就在你灵魂的圣殿——孤独寂寞的哥责马尼山园，等着你过来。许许多多的灵魂因为肉体的罪恶正走向地狱。孩子，你看到了你们是如何通过时尚让许多灵魂走向灭亡的，我就是那位在你们面前被迫赤身露体的人子。</strong></p>
+                <p><strong>孩子，请安慰我；孩子，请怜恤我！男人永远都不要去模仿女人！女人永远都不要去模仿男人！你要成为我造你的样式，孩子，你要成为我造你的样式！我要告诉你，务要远离这种世俗的时尚。这是仇敌毁坏你们的身体——圣神居所的计划。你们要过简朴的生活！</strong></p>
+                <p><strong>我亲爱的孩子，因为我爱你，所以我希望你向我表达你的爱情，我恳求你向我献上你的全人。请为我守住你的全人，要单单为我守住它。愿你的全人永远荣耀我，愿你的全人永远安慰我。我没有向世人，而向你发出了这个恳求，因为你是我所爱的。请把你的全人献给我，为了救恩的缘故献给我。我是饱受痛苦的耶稣，我在呼召你归回。（沉默）</strong></p>
+            </div>
+
+            <div class="long-prayer">
+                <p>我的主，我的主，我愿全心坚定地相信祢，我愿全心真诚地依靠祢；我的盼望在乎祢，我愿单单尊崇祢，直到永远。我愿带着一颗真诚悔改的爱心，俯伏在祢脚前，恳求祢宽恕那些不信的和不愿意相信的人，那些不尊崇祢和不愿意尊崇祢的人，那些曾经把你钉在十字架上以及每天都在把祢钉十字架的人。亲爱的耶稣，我愿一生安慰祢。阿们！</p>
+                <p>啊，我的主，祢如此良善。我愿为我的罪过，伤心痛悔。靠着祢恩宠的辅助，我必不再犯罪。阿们！</p>
+            </div>
+
+            <div class="prayer-block">
+                <p class="noindent"><mark>[天主经……圣母颂……圣三光荣颂……（各3遍）]</mark></p>
+            </div>
+
+            <h3>圣歌：</h3>
+            <div class="long-prayer">
+                <p>看见世人所犯的众罪，我请求祢施怜悯宽恕我们。想到我自己的罪和世人的罪孽，我祈求祢神圣的怜悯。</p>
+                <p><mark>[（看到世人所犯的众罪。我请求祢施怜悯。念2遍）]</mark></p>
+                <p>基督被钉在十字架上，好使我们脱离罪恶。你付出了多少努力去感恩呢？</p>
+                <p>祂登上加略山就是为了送我们上天堂，何等慈爱的天父！</p>
+                <p><mark>[（祂登上加略山就是为了送我们上天堂，何等慈爱的天父！念2遍）]</mark></p>
+                <p><mark>[主啊，只要是祢量给我的十字架我都愿意全心接受。]</mark></p>
+                <p><mark>[愿祢的宝血赐给我力量和恩宠，在所有的试炼中得胜。]</mark></p>
+                <p><mark>[愿祢的宝血赐给我力量和恩宠，在所有的试练中得胜。念2遍）]</mark></p>
+                <p>啊，至圣的天主圣三，我把道成肉身的耶稣基督献给祢，把祂伤痕累累，血迹斑斑的身体献给祢，把祂所受的剧痛，所受的鞭伤，头上所戴的荆棘冠冕献给祢，把祂被拒绝，被定罪，被钉十字架、受死以及祢的圣洁教会所遭受的一切痛苦，和殉道们所流的鲜血献给祢，以赔补我的罪过和全人类的罪过，阿们！</p>
+                <p>饱受痛苦的耶稣，我愿献上我的心，与祢饱受痛苦的圣心同心、同工承担祢的痛苦。耶稣，我愿与祢一同受苦，以加速祢和平荣耀的统治，阿们！</p>
+            </div>
+
+            <!-- 第四个痛苦的恳求 -->
+            <div class="mystery-title"><mark>第四个痛苦的恳求</mark></div>
+            <div class="scripture">
+                <p><strong>我的孩子，你们为什么为了世上的钱财，如此背叛你们的主人和救主呢？显然金钱在永世就会消失，你们却选择背叛你们的主人，把我交给残忍的人，让他们把我钉在了十字架上。孩子，你们让自己成了末世的犹达斯。那些出卖天主的儿子，把祂交给罪人，把祂钉在十字架上的人，他们的结局将是何等的可怕！看到他们永远沉沦，永远受苦，将是何等的遗憾！在我心所爱的司祭当中，就有许多的犹达斯。他们宁可选择世上的钱财，来出卖他们饱受痛苦的主人。</strong></p>
+                <p><strong>我的孩子，这事叫我非常痛苦。因为他们把我父的家当作买卖的场所。我父非常恼怒。看看你们是如何把我从我自己的圣殿赶出去的。孩子，你们想要天主的同在吗？那就把你们的生命献给我！我就是你们因为这地上的事所背叛的人子。我的孩子，你们为之劳碌的这一切，必被焚烧毁灭。既然如此，你们为什么还要徒然劳碌呢？我的孩子，你们要转向我！你们要怜惜那位降世救赎你们的耶稣！惟愿我的司祭转向我。我是疼爱你们的，饱受痛苦的耶稣基督。我在恳求你们转回。（沉默）</strong></p>
+            </div>
+
+            <div class="long-prayer">
+                <p>主啊，我的救主，我愿全心坚定地相信你，我愿全心真诚地依靠你，我的盼望在乎你，我愿单单尊崇你，直到永远，我愿带着一颗真诚悔改的爱心，俯伏在你脚前，恳求你宽恕那些不信你和不愿意相信你的人，那些不尊崇你和不愿意尊崇你的人，那些曾经把你钉在十字架上以及每天都在把你钉在十字架的人，亲爱的耶稣，我愿一生安慰你，阿门。</p>
+                <p>啊，我的主，祢如此良善。我愿为我的罪过，伤心痛悔。靠着祢恩宠的辅助，我必不再犯罪。阿们！</p>
+            </div>
+
+            <div class="prayer-block">
+                <p class="noindent"><mark>[天主经……圣母经……圣三光荣颂……（各3遍）]</mark></p>
+            </div>
+
+            <h3>圣歌：</h3>
+            <div class="long-prayer">
+                <p>我得罪了我的主，我的主！我痛悔，我祈求宽恕！</p>
+                <p>主啊，我祈求祢的饶恕！</p>
+                <p>主啊，求祢怜恤我，愿我以同样的慈悲对待祢，效法祢在地上的榜样。</p>
+                <p>主啊，炼净我们，收纳我们的灵魂，为了拯救人类，祢流了很多的宝血，惟愿所有的灵魂回转归向祢！</p>
+                <p>啊，至圣的天主圣三，我把道成肉身的耶稣基督献给祢，把祂伤痕累累，血迹斑斑的身体献给祢；把祂在园子里所受的剧痛、所受的鞭伤、头上所戴的荆棘冠冕献给祢；把祂被拒绝、被定罪、被钉在十字架上、受死以及祢的圣洁教会所遭受的一切痛苦，和殉道者们所流的鲜血都献给祢，以赔补我的罪过和全人类的罪过。阿们！</p>
+                <p>饱受痛苦的耶稣，我愿献上我的心，与祢饱受痛苦的圣心同心、同工承担祢的痛苦。耶稣，我愿与祢一同受苦，以加速祢和平荣耀的统治。阿们！</p>
+            </div>
+
+            <!-- 第五个痛苦的恳求 -->
+            <div class="mystery-title"><mark>第五个痛苦的恳求</mark></div>
+            <div class="scripture">
+                <p><strong>我的孩子，你们的罪和世人的罪让我所遭受的鞭伤和刑罚，要到几时才结束呢？你们为什么一边用鞭子抽打我，一边又给我戴荆棘冠冕呢？你们竟如此说："我犯罪没事儿！犯了以后，我可以去告解。"我是饱受痛苦的耶稣，因为你们一直在刑罚我。孩子，我赐给你们告解圣事的目的，难道就是为了让你们继续多多地犯罪吗？这是充满慈爱的圣事。它打开了神圣慈悲的海洋。涌流出来的宝血和水是为了拯救你们，洁净你们的罪，使你们不再继续犯罪。</strong></p>
+                <p><strong>孩子，你们要摘下荆棘冠冕，你们要怜悯我，不要再用鞭子抽打我。你们要爱你们的造物主，不可敬拜别神，要单单敬畏和敬拜你们的神，不要妄称你们主的名！孩子，切记要遵守圣日。你们要在这个充斥着贿赂和腐败的世界，为我的名作见证。你们如此行，就可以减轻我遭受的痛苦。你们要把所有的失望、试炼、逼迫献上为祭，以赔补你们和普天下世人的罪。我是饱受痛苦的耶稣基督，我在恳求你们转回。（沉默）</strong></p>
+            </div>
+
+            <div class="long-prayer">
+                <p>主啊，我的救主，我愿全心坚定地相信祢，我愿全心真诚地依靠祢；我的盼望在乎祢，我愿单单尊崇祢，直到永远。我愿带着一颗真诚悔改的爱心，俯伏在祢脚前，恳求祢宽恕那些不信的和不愿意相信的人，那些不尊崇祢和不愿意尊崇祢的人，那些曾经把祢钉在十字架上以及每天都在把祢钉十字架的人。亲爱的耶稣，我愿一生安慰祢。阿们！</p>
+                <p>啊，我的耶稣，你如此良善。我愿为我的罪过，伤心痛悔。靠着祢恩典的辅助，我必不再犯罪。阿们！</p>
+            </div>
+
+            <div class="prayer-block">
+                <p class="noindent"><mark>[天主经……圣母经……圣三光荣颂……（3遍）]</mark></p>
+            </div>
+
+            <h3>圣歌：</h3>
+            <div class="long-prayer">
+                <p>主啊，求祢指教我遵守祢的律例。</p>
+                <p>我愿全心遵守祢的典章。你的律法显明了祢的旨意，我愿意遵行祢的旨意，我们在圣体中领受了祢，愿我们也把自己全然献给你。祢把自己献上，成为我们的生命，愿我们心存感激。作为基督徒我们要归正自己的生活，查验我们和主同行的道路。要寻求他，因为他永远爱我们。他希望拯救我们全人类。</p>
+                <p>啊，至圣圣三——圣父、圣子、圣神，我把道成肉身的耶稣基督献给祢，把他伤痕累累，血迹斑斑的身体献给祢；把他在园子里所受的剧痛、所受的鞭伤、头上所戴的荆棘冠冕献给祢；把他被拒绝、被定罪、被钉在十字架上、受死以及祢的圣洁教会所遭受的一切痛苦，和殉道者们所流的鲜血都献给祢，以赔补我的罪过和全人类的罪过。阿们</p>
+                <p>饱受痛苦的耶稣，我愿献上我的心，与祢饱受痛苦的圣心同心、同工承担祢的痛苦。耶稣，我愿与祢一同受苦，以加速祢和平荣耀的统治。阿们！</p>
+            </div>
+
+            <!-- 第六个痛苦的恳求 -->
+            <div class="mystery-title"><mark>第六个痛苦的恳求</mark></div>
+            <div class="scripture">
+                <p><strong>我的孩子，你要多来亲近我，倾听我痛苦的恳求。我每天都在寻找能安慰我的人，却找不到一人。你们看看我饱受痛苦的面庞，这个末时的物落尼加在哪里？她是在擦拭我脸庞的血迹，安慰我呢，还是在与众人喊着说："把他钉十字架！把他钉十字架"？他们忘记了我是他们的救世主。我曾带领他们出离埃及，我曾用天上的玛纳牧养他们，在干旱炎热的旷野我曾使他们藏在我的翅膀下。但他们都弃绝了我，没有人来帮助我。</strong></p>
+                <p><strong>孩子，你们就这样撇下了你们的十字架，离开了加尔瓦略山的道路，留下我独自受苦。我实实在在地告诉你们，我的孩子，除了走圣洁十字架的道路，其它的道路都无法通向应许之地。你们要背起你们的十字架，一生一世跟随我。请帮我背起这些被人撇弃的十字架，就是我的子民撇给我背的十字架。孩子，你们要过一个舍己奉献的生活，要背起你们的十字架，跟随我。我是饱受痛苦的耶稣基督，我在召唤你们转回。（沉默）</strong></p>
+            </div>
+
+            <div class="long-prayer">
+                <p>主啊，我得救主，我愿全心坚定地相信祢，我愿全心真诚地依靠祢：我的盼望在乎祢，我愿单单尊崇祢，直到永远。我愿带着一颗真诚悔改的爱心，伏在祢脚前，恳求祢宽恕那些不信的和不愿意相信的人，那些不尊崇祢和不愿意尊崇你的人，那些曾经把祢钉在十字架上以及每天都在把你钉十字架的人，亲爱的耶稣，我愿一生安慰你。阿们！</p>
+                <p>啊，我的耶稣，祢如此良善。我愿为我的罪过，伤心痛悔。靠着祢恩典的辅助，我必不再犯罪。阿们！</p>
+            </div>
+
+            <div class="prayer-block">
+                <p class="noindent"><mark>[天主经……圣母经……圣三光荣颂……（3遍）]</mark></p>
+            </div>
+
+            <h3>圣歌：</h3>
+            <div class="long-prayer">
+                <p>默想基督为了我们的罪死在十字架上</p>
+                <p>我们心里充满了对罪的忧伤。我们祈祷，祈求祢宽恕那些干犯你的子民。我们忧伤痛悔，我们再也不犯罪了。</p>
+                <p><mark>[我们祈祷，祈求祢宽恕那些干犯祢的子民，我们忧伤痛悔，我们再也不犯罪了。（重复两次）]</mark></p>
+                <p>主啊，你呼出的气息使我们能够活在世上。祢呼出的最后一口气息救我们脱离了死亡。</p>
+                <p>你圣洁的气息绝不会徒劳无功的！主啊，我们祈祷，祈求祢拯救我们脱离永远的灭亡。</p>
+                <p><mark>[主啊，祢呼出的气息使我们能够活在世上。你圣洁的气息绝不会徒劳无功的！（重复两次）]</mark></p>
+                <p>饱受痛苦的耶稣，祢为我们的灵魂付上了代价，我们感谢祢和祢的恒久忍耐。我们对祢的恩典永远感激不尽。愿你永远做王掌权！</p>
+                <p><mark>[我们对祢的恩典永远感激不尽，愿祢永远做王掌权！（重复两遍）]</mark></p>
+                <p>啊，至圣圣三——圣父、圣子、圣神，我把道成肉身的耶稣基督献给祢，把他伤痕累累，血迹斑斑的身体献给祢；把他在园子里所受的剧痛、所受的鞭伤、头上所戴的荆棘冠冕献给你；把他被拒绝、被定罪、被钉在十字架上、受死以及祢的圣洁教会所遭受的一切痛苦，和殉道者们所流的鲜血都献给你，以赔补我的罪过和全人类的罪过。阿们！</p>
+                <p>饱受痛苦的耶稣，我愿献上我的心，与祢饱受痛苦的圣心同心、同工承担祢的痛苦。耶稣，我愿与祢一同受苦，以加速祢和平荣耀的统治。阿们！</p>
+            </div>
+
+            <!-- 第七个痛苦的恳求 -->
+            <div class="mystery-title"><mark>第七个痛苦的恳求</mark></div>
+            <div class="scripture">
+                <p><strong>我的孩子，抬头看看是你们的罪把我挂在了十字架上。为了爱你们，我在流血；为了爱你们，我在流汗。我渴望得到世人的爱，但没有人愿意来安慰我。相反，我渴了，你们给我醋喝。你们都远远地站着，嘲笑我、批评我。我的孩子，看看你们是如何诽谤邻舍的。你们不是为我圣洁的教会祈祷，而是站出来批评他们。我就是你们所批评的，饱受痛苦的耶稣基督。教会就是我的身体，你们正把他钉在十字架上。</strong></p>
+                <p><strong>我的孩子，惟愿你们与我的母亲一起站在神圣十字架的脚下，把全人类献给我。我必接过来，把他们献给我父。他们必成为天父的儿女，遵从他的诚命。这样，永生之父的愤怒必得到平息，我的圣伤必得到医治，我的国度必降临在地上。孩子，为了我，你们要把自己钉死，要与我一起被钉在救恩的神圣十字架上。这是我最需要你们去做的事，好以此来补赎你们自己和普世之人的罪过。我的孩子，我没有向世人，而向你们提出这些要求。因为我爱你们，所以我希望你们向我献上你们的爱。</strong></p>
+                <p><strong>我应许我必借着你们、使用你们，把所有人都吸引到我身边。我所爱的孩子，愿你们接受我这个痛苦的恳求，这必蒙主的悦纳！我必献上你们所有的祭物，以补赎你们和普世之人的罪过。这样全人类必住在我里面，与我同活，为我而活。我神圣的肋旁必向所有人敞开，作他们的避难所。他们必从我神圣的肋旁涌出的生命之泉畅饮活水。惟愿我的旨意成就在你们身上！你们要为我受苦，与我一同受苦！你们要为我而死，住在我里面！我是饱受痛苦的耶稣基督。我爱你们，我祝福你们所有人！（沉默）</strong></p>
+            </div>
+
+            <div class="long-prayer">
+                <p>主啊，我的救主，我愿全心坚定地相信祢，我愿全心真诚地依靠祢；我的盼望在乎祢，我愿单单尊崇祢，直到永远。我愿带着一颗真诚悔改的爱心，俯伏在祢脚前，恳求祢宽恕那些不信的和不愿意相信的人，那些不尊崇祢和不愿意尊崇祢的人，那些曾经把祢钉在十字架上以及每天都在把祢钉十字架的人。亲爱的耶稣，我愿一生安慰祢。阿们！</p>
+                <p>啊，我的耶稣，祢如此良善。我愿为我的罪过，伤心痛悔。靠着祢恩典的辅助，我必不再犯罪。阿们！</p>
+            </div>
+
+            <div class="prayer-block">
+                <p class="noindent"><mark>[天主经……圣母经……圣三光荣颂……（3遍）]</mark></p>
+            </div>
+
+            <h3>圣歌：</h3>
+            <div class="long-prayer">
+                <p>主啊，要是我们不让祢遭受那么多的罪，我们会比现在更开心！</p>
+                <p>每当我们想起祢为我们受的苦，我们想说，对不起，请赦免我们！</p>
+                <p><mark>[每当我们想起祢为我们受的苦，我们想说，对不起，请赦免我们。（重复两次）]</mark></p>
+                <p>主耶稣，愿祢痛苦之心肠涌流出来的恩典成为我们追求真爱和纯洁之心的原动力，主啊，我们的所是，我们的所有都是从祢而来，都是祢赐给我们的礼物</p>
+                <p><mark>[主耶稣，愿祢痛苦之心肠涌流出来的恩典成为我们追求真爱和纯洁之心的原动力。（重复两次）]</mark></p>
+                <p>主啊，但愿我们的安慰永远不会成为祢的不适。当我们寻求安慰时，请祢先来安慰我们。是你的诫命成为我们脚前的光。</p>
+                <p><mark>[主啊，但愿我们的安慰永远不会成为祢的不适。当我们寻求安慰时，请祢先来安慰我们。（重复两次）]</mark></p>
+                <p>啊，至圣圣三——圣父、圣子、圣神，我把道成肉身的耶稣基督献给你，把他伤痕累累，血迹斑斑的身体献给你；把他在园子里所受的剧痛、所受的鞭伤、头上所戴的荆棘冠冕献给你；把他被拒绝、被定罪、被钉在十字架上、受死以及祢的圣洁教会所遭受的一切痛苦，和殉道者们所流的鲜血都献给你，以赔补我的罪过和全人类的罪过。阿们</p>
+                <p>饱受痛苦的耶稣，我愿献上我的心，与祢饱受痛苦的圣心同心、同工承担你的痛苦，耶稣，我愿与你一同受苦，以加速你和平荣耀的统治。阿门。</p>
+            </div>
+
+            <div class="petition" style="text-align:center;">【低头】</div>
+
+            <div class="prayer-block" style="text-align:center;">
+                <p class="noindent"><mark>[圣三光荣颂（七遍）]</mark></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="font-panel-overlay" id="fontOverlay" onclick="closeFontPanel()"></div>
+    <div class="font-panel" id="fontPanel">
+        <div class="drag-handle" id="dragHandle"></div>
+        <div class="panel-header">
+            <span class="panel-title">调整文字大小</span>
+            <button class="panel-reset" onclick="resetFontSize()">恢复默认</button>
+        </div>
+        <div class="slider-row">
+            <span class="slider-label-small">A</span>
+            <input type="range" class="font-slider" id="fontSlider" min="12" max="28" step="1" value="16" oninput="onSliderChange(this.value)">
+            <span class="slider-label-large">A</span>
+        </div>
+        <div class="font-value" id="fontValue">当前字号：16px</div>
+    </div>
+
+    <script>
+        function goBack() {
+            if (window.history.length > 1) { window.history.back(); }
+            else { window.location.href = 'index.html'; }
+        }
+        const MIN_FONT = 12, MAX_FONT = 28, DEFAULT_FONT = 16;
+        const STORAGE_KEY = 'prayerFontSize';
+        const fontPanel = document.getElementById('fontPanel');
+        const fontOverlay = document.getElementById('fontOverlay');
+        const fontSlider = document.getElementById('fontSlider');
+        const fontValue = document.getElementById('fontValue');
+        const pageContent = document.getElementById('pageContent');
+        function openFontPanel() { fontPanel.classList.add('show'); fontOverlay.classList.add('show'); }
+        function closeFontPanel() { fontPanel.classList.remove('show'); fontOverlay.classList.remove('show'); }
+        function applyFontSize(size) { pageContent.style.zoom = size / DEFAULT_FONT; }
+        function onSliderChange(value) {
+            const size = parseInt(value, 10);
+            applyFontSize(size);
+            fontValue.textContent = '当前字号：' + size + 'px';
+            try { localStorage.setItem(STORAGE_KEY, size); } catch (e) {}
+        }
+        function resetFontSize() { fontSlider.value = DEFAULT_FONT; onSliderChange(DEFAULT_FONT); }
+        (function init() {
+            let saved = DEFAULT_FONT;
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const num = parseInt(stored, 10);
+                    if (!isNaN(num) && num >= MIN_FONT && num <= MAX_FONT) saved = num;
+                }
+            } catch (e) {}
+            fontSlider.value = saved; applyFontSize(saved);
+            fontValue.textContent = '当前字号：' + saved + 'px';
+        })();
+        (function setupDragClose() {
+            const handle = document.getElementById('dragHandle');
+            let startY = 0, currentY = 0, isDragging = false;
+            function onStart(e) {
+                isDragging = true;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                currentY = startY; fontPanel.style.transition = 'none';
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', onEnd);
+            }
+            function onMove(e) {
+                if (!isDragging) return;
+                currentY = e.touches ? e.touches[0].clientY : e.clientY;
+                const delta = currentY - startY;
+                if (delta > 0) fontPanel.style.transform = 'translateY(' + delta + 'px)';
+                if (e.cancelable) e.preventDefault();
+            }
+            function onEnd() {
+                if (!isDragging) return;
+                isDragging = false; fontPanel.style.transition = '';
+                const delta = currentY - startY;
+                if (delta > 80) closeFontPanel();
+                fontPanel.style.transform = '';
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('touchend', onEnd);
+            }
+            handle.addEventListener('mousedown', onStart);
+            handle.addEventListener('touchstart', onStart, { passive: false });
+        })();
+    </script>
+	<script>
+	document.addEventListener('plusready', function() {
+	    // 监听系统返回键
+	    plus.key.addEventListener('backbutton', function() {
+	        // 直接跳回首页
+	        window.location.href = '../index.html'; 
+	        // 注意：如果经文在子文件夹里，要改成 '../index.html'
+	    }, false);
+	});
+	</script>
+</body>
+</html>

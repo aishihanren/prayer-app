@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>荣福奥迹玫瑰经祈祷（周日）</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "SimSun", "Songti SC", "Times New Roman", "Georgia", serif;
+            font-size: 16px; background-color: #faf8f5; color: #2a241e;
+            padding-top: 56px; padding-bottom: 40px; overflow-x: hidden;
+        }
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; height: 56px;
+            background-color: #ffffff; border-bottom: 1px solid #e6e0d8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 12px; z-index: 1000;
+        }
+        .back-btn, .font-btn {
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; border-radius: 50%;
+            transition: background-color 0.2s; color: #4a3729;
+            font-family: inherit; flex-shrink: 0;
+        }
+        .back-btn { font-size: 1rem; }
+        .font-btn { font-size: 1.15rem; font-weight: 700; font-family: Georgia, serif; }
+        .back-btn:hover, .font-btn:hover { background-color: #f5efe8; }
+        .back-btn:active, .font-btn:active { background-color: #e6ddd2; }
+        .top-title {
+            flex: 1; text-align: center; font-size: 1.05rem; font-weight: 600;
+            color: #2c241b; letter-spacing: 2px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            padding: 0 8px;
+        }
+        .page-wrapper { display: flex; justify-content: center; padding: 36px 28px 0; }
+        .container {
+            background-color: #ffffff; padding: 42px 48px;
+            border-radius: 6px; box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+            border: 1px solid #e8e0d6; max-width: 920px; width: 100%;
+            transform-origin: top center;
+        }
+        h1 {
+            font-size: 26px; font-weight: 700; text-align: center;
+            margin-bottom: 8px; letter-spacing: 3px; color: #3b2f24;
+        }
+        h2 {
+            font-size: 1.4rem; font-weight: 700; margin: 38px 0 18px;
+            color: #3b2f24; border-left: 5px solid #b7a48b; padding-left: 12px;
+        }
+        h3 {
+            font-size: 1.15rem; font-weight: 700; margin: 28px 0 12px;
+            color: #a52a2a; border-bottom: 1px dashed #d9cfc2; padding-bottom: 8px;
+        }
+        p { margin: 10px 0; text-indent: 2em; text-align: justify; }
+        .noindent { text-indent: 0 !important; }
+        mark {
+            background-color: #fff6b0; padding: 0.15rem 0.35rem;
+            border-radius: 3px; color: #1e1e1e; font-weight: 600;
+        }
+        .mystery-title {
+            font-size: 1.2rem; font-weight: 700; color: #a52a2a;
+            margin: 30px 0 14px; border-bottom: 2px solid #e6ddd2;
+            padding-bottom: 8px; text-indent: 0;
+        }
+        .prayer-block {
+            background-color: #fdfcfb; padding: 16px 22px;
+            border-radius: 8px; border: 1px solid #efe9e1; margin: 16px 0;
+        }
+        .prayer-block p { margin: 6px 0; text-indent: 0; }
+        .scripture {
+            background-color: #f9f6f2; padding: 14px 20px;
+            border-radius: 8px; border-left: 4px solid #b7a48b;
+            margin: 14px 0; font-style: normal; color: #3b332b;
+        }
+        .scripture p { text-indent: 0; margin: 6px 0; }
+        .scripture .ref { color: #8a7a68; font-size: 0.9rem; }
+        .petition {
+            background-color: #f5efe8; padding: 12px 20px;
+            border-radius: 8px; border-left: 5px solid #b7a48b;
+            margin: 14px 0; font-weight: 600; color: #4a3729; text-indent: 0;
+        }
+        .offering-block {
+            background-color: #f9f6f2; padding: 16px 22px;
+            border-radius: 8px; border: 1px solid #e6ddd2; margin: 16px 0;
+        }
+        .offering-block p { text-indent: 0; margin: 8px 0; }
+        .long-prayer {
+            background-color: #fdfcfb; padding: 18px 24px;
+            border-radius: 8px; border-left: 5px solid #b7a48b; margin: 18px 0;
+        }
+        .long-prayer p { text-indent: 2em; margin: 8px 0; }
+        .conclusion {
+            margin-top: 40px; padding: 24px 28px;
+            background-color: #f5efe8; border-radius: 8px;
+            border-left: 6px solid #b7a48b;
+        }
+        .conclusion p { text-indent: 2em; color: #2f2a24; line-height: 1.9; }
+        .sign-of-cross {
+            text-align: center; font-size: 1.15rem; font-weight: 600;
+            color: #4b3e30; margin-top: 28px; padding: 14px;
+            background-color: #f5efe8; border-radius: 8px;
+            border-left: 6px solid #b7a48b; text-indent: 0;
+        }
+        .font-panel-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.35);
+            z-index: 1998; opacity: 0; visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .font-panel-overlay.show { opacity: 1; visibility: visible; }
+        .font-panel {
+            position: fixed; left: 0; right: 0; bottom: 0;
+            background-color: #ffffff; border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+            z-index: 1999; padding: 8px 24px 32px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+            max-width: 920px; margin: 0 auto;
+        }
+        .font-panel.show { transform: translateY(0); }
+        .drag-handle {
+            width: 40px; height: 4px; background-color: #d9cfc2;
+            border-radius: 2px; margin: 0 auto 18px;
+            cursor: grab; touch-action: none;
+        }
+        .drag-handle:active { cursor: grabbing; }
+        .panel-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .panel-title { font-size: 1rem; font-weight: 600; color: #2c241b; letter-spacing: 1px; }
+        .panel-reset {
+            background: none; border: 1px solid #d9cfc2; color: #4a3729;
+            font-size: 0.85rem; padding: 5px 14px; border-radius: 20px;
+            cursor: pointer; font-family: inherit; transition: background-color 0.2s;
+        }
+        .panel-reset:hover { background-color: #f5efe8; }
+        .slider-row { display: flex; align-items: center; gap: 14px; }
+        .slider-label-small {
+            font-size: 0.85rem; color: #8a7a68; font-weight: 600;
+            flex-shrink: 0; width: 20px; text-align: center;
+        }
+        .slider-label-large {
+            font-size: 1.35rem; color: #8a7a68; font-weight: 700;
+            flex-shrink: 0; width: 24px; text-align: center;
+            font-family: Georgia, serif;
+        }
+        .font-slider {
+            -webkit-appearance: none; appearance: none; flex: 1; height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px; outline: none; cursor: pointer;
+        }
+        .font-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: border-color 0.2s, transform 0.1s;
+        }
+        .font-slider::-webkit-slider-thumb:hover { border-color: #a52a2a; }
+        .font-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+        .font-slider::-moz-range-thumb {
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .font-slider::-moz-range-track {
+            height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px;
+        }
+        .font-value {
+            text-align: center; margin-top: 14px;
+            font-size: 0.85rem; color: #8a7a68; letter-spacing: 1px;
+        }
+        @media (max-width: 700px) {
+            .page-wrapper { padding: 24px 14px 0; }
+            .container { padding: 24px 18px; }
+            h1 { font-size: 22px; letter-spacing: 2px; }
+            h2 { font-size: 1.2rem; }
+            h3 { font-size: 1.05rem; }
+            .prayer-block, .offering-block, .long-prayer { padding: 12px 14px; }
+            .scripture { padding: 12px 14px; }
+            .top-title { font-size: 0.98rem; letter-spacing: 1px; }
+        }
+        @media print {
+            body { padding-top: 0; }
+            .top-bar, .font-panel-overlay, .font-panel { display: none !important; }
+            .page-wrapper { padding: 0; }
+            .container { box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <button class="back-btn" onclick="goBack()" title="返回">返回</button>
+        <div class="top-title">荣福奥迹玫瑰经（周日）</div>
+        <button class="font-btn" onclick="openFontPanel()" title="调整字号">Aa</button>
+    </div>
+
+    <div class="page-wrapper">
+        <div class="container" id="pageContent">
+            <h1>耶稣接待的心　【玫瑰经】</h1>
+
+            <div class="prayer-block" style="text-align: center; font-weight: 600; color: #4a3729;">
+                <p class="noindent">让我们一起　借着耶稣接待的心　向我们全能的天主父　和　童贞玛利亚祈祷</p>
+            </div>
+
+            <h2>耶稣接待的心【玫瑰经】</h2>
+
+            <div class="offering-block">
+                <p>下面的文字是记叙一位住在<strong>加拿大魁北克</strong>（<strong>Quebec</strong>）的家庭主妇<strong>米琪莲．波丝维脱</strong>（<strong>Micheline Boisvert</strong>）看见<strong>耶稣接待的心</strong>神视</p>
+            </div>
+
+            <div class="long-prayer">
+                <p>一天，米琪莲在回家途中，给天主的爱情和光明占据了达五个小时。同时也跟童贞玛利亚的大能光明联合一起，她们一起为炼狱里的灵魂祈祷。接着，圣母教导米琪莲怎样把玫瑰经和她的圣子耶稣基督接待的心结合一起来祈祷。</p>
+                <p>圣母永远与耶稣接待的心结合在一起，她向……米琪莲示范，当每一端玫瑰经奥迹和耶稣接待的心结合一起时，就会成为一面保卫、光明和平安的护盾，包围着我们的灵魂、我们的世界，并锁牢那邪恶的势力。她也教导米琪莲，借着每一端玫瑰经奥迹，我们会获得自由、释放、净化和成圣，并能治愈，一切是来自天主。圣母也启导米琪莲，借着玫瑰经的大能恩宠，能释放我们所有坏习惯和罪恶的捆绑，并使灵魂得到解脱救赎。</p>
+                <p>在这遍神魂超拔和神视中，米琪莲看见地球好像悬在天空。她看见一个代表玫瑰经念珠的圆圈环绕着它，每一篇天主经、圣母经和圣三光荣颂，都涌出一股光线，射向地球。诵念完耶稣接待的心玫瑰经时，米琪莲看见圣母张开她的一双手臂，要把想到世上来，谋杀她的孩子的无数恶魔赶走。可以这样说，圣母是向米琪莲指出，若我们联合在她爱子耶稣基督接待的心内诵念玫瑰经，玫瑰经奥迹就会产生极大的德能。</p>
+            </div>
+
+            <div class="prayer-block" style="text-align: center; font-style: italic; background-color: #f9f6f2;">
+                <p class="noindent">我们的天主圣父、圣子及圣神和圣母无玷圣心，与我们联合于耶稣接待的心内，因祂的无限光明，钦崇、赞美及颂扬您。亚孟。</p>
+            </div>
+
+            <h3><mark>[荣福奥迹玫瑰经祈祷（周日）]</mark></h3>
+
+            <h2>开端经文</h2>
+
+            <div class="prayer-block">
+                <p class="noindent"><strong>圣号经（一遍）</strong></p>
+                <p><strong>永生之父，我把您至爱之子接待的心、圣体、圣血、灵魂及天主性全奉献给您，为了我们及普世的罪过。</strong></p>
+                <p><strong>信经（一遍）　天主经（一遍）　主耶稣，请来，带同您接待的心，从我内承受一切 ＋ 圣母经 ＋ 将你无玷圣心的爱火奇能救恩普施人灵，阿门！（结合在一起　共三遍）　圣三光荣颂（一遍）</strong></p>
+                <p><strong>至圣天主，至圣全能者，我们的主天父，请垂怜我们及普世。</strong></p>
+            </div>
+
+            <!-- 荣福奥迹一端 -->
+            <div class="mystery-title"><mark>[荣福奥迹一端　耶稣复活]</mark></div>
+            <div class="scripture">
+                <p>耶稣对多默说：「把你的指头伸到这里来，看看我的手罢！并伸过你的手来，探入我的肋旁，不要作无信的人，但要作个有信德的人。」多默回答说：「我主！我天主！」耶稣对他说：「因为你看见了我，才相信吗？那些没有看见而相信的，才是有福的！」</p>
+                <p class="ref"><strong>（若20:27-29）</strong></p>
+            </div>
+            <div class="petition">祈求天主赐下圣宠，使我们因耶稣的复活大能改过自新。</div>
+
+            <div class="offering-block">
+                <p><strong>天父，借着您至爱之子耶稣接待的心，让【耶稣复活】这大能奥迹所带来的恩宠，成为保卫、光明和平安的护盾，包围着我们的灵魂、我们的世界，并锁牢那邪恶的势力。</strong></p>
+                <p><strong>借着这大能的恩宠，请来释放我们，解救我们，洁净我们和圣化我们，并医治所有在我们内不属于您的事物。</strong></p>
+                <p><strong>借着这大能的恩宠，请来解开所有捆绑着我们的坏习惯和罪恶，并解救炼狱里的灵魂。</strong></p>
+            </div>
+
+            <div class="prayer-block">
+                <p><strong>永生之父，我把您至爱之子耶稣接待的心、圣体、圣血、灵魂及天主性全奉献给您，为了我们及普世的罪过。</strong></p>
+                <p><strong>天主经（一遍）　天父，因您至爱之子耶稣接待的心，请遣临人间您伟大全能的光驱所有的黑暗 ＋ 圣母经 ＋ 将你无玷圣心的爱火奇能救恩普施人灵，阿门！（结合在一起共十遍）</strong></p>
+                <p><strong>圣三光荣颂（一遍）</strong></p>
+                <p><strong>至圣天主，至圣全能者，我们的主天父，请垂怜我们及普世。</strong></p>
+            </div>
+
+            <div class="long-prayer">
+                <p>吁，我主耶稣，请宽恕我们的罪过，救我们于地狱永火之中。求您把众人的灵魂，特别是那些需要您慈悲怜悯的灵魂；那些被恶龙打伤、恶龙附体的灵魂；那些对抗真神的灵魂，领到天国里去。</p>
+                <p>天主圣神，求您降临，大大降临因您至爱的净配，圣母玛利亚，无玷圣心有力的转祷，求您降临！</p>
+            </div>
+
+            <div class="long-prayer">
+                <p>万福母后，中华之母皇、全地之母皇、天地之母皇，求您降临。今将中国人民、全地人民、所有遗民、没有落下一个灵魂，全然地奉献给您的圣子耶稣仁爱圣心和您的无玷圣心，请常以慈眼怜视我们，并请您向天主救主转求，以您圣洁、美妙、无玷的方式，医治我们、治愈我们，更新复兴我们，重生再造我们，使我们有新生命、过新生活、走在新道路上。免除我们的灾害，以您圣洁美妙的爱，充满我们的心！哈利路亚，赞美主！感谢耶稣！阿们！</p>
+            </div>
+
+            <!-- 荣福奥迹二端 -->
+            <div class="mystery-title"><mark>[荣福奥迹二端　耶稣升天]</mark></div>
+            <div class="scripture">
+                <p>耶稣说：「我升到我的父和你们的父那里去，升到我的天主和你们的天主那里去。」</p>
+                <p class="ref"><strong>（若20:17）</strong></p>
+                <p>……主耶稣给他们说了这些话以后，就被接升天，坐在天主的右边。</p>
+                <p class="ref"><strong>（谷16:19）</strong></p>
+            </div>
+            <div class="petition">祈求天主赐下圣宠，使我们仰慕天堂。</div>
+
+            <div class="offering-block">
+                <p><strong>天父，借着您至爱之子耶稣接待的心，让【耶稣升天】这大能奥迹所带来的恩宠，成为保卫、光明和平安的护盾，包围着我们的灵魂、我们的世界，并锁牢那邪恶的势力。</strong></p>
+                <p><strong>借着这大能的恩宠，请来释放我们，解救我们，洁净我们和圣化我们，并医治所有在我们内不属于您的事物。</strong></p>
+                <p><strong>借着这大能的恩宠，请来解开所有捆绑着我们的坏习惯和罪恶，并解救炼狱里的灵魂。</strong></p>
+            </div>
+
+            <div class="prayer-block">
+                <p><strong>永生之父，我把您至爱之子耶稣接待的心、圣体、圣血、灵魂及天主性全奉献给您，为了我们及普世的罪过。</strong></p>
+                <p><strong>天主经（一遍）　天父，因您至爱之子耶稣接待的心，请遣临人间您伟大全能的释放 ＋ 圣母经 ＋ 将你无玷圣心的爱火奇能救恩普施人灵，阿门！（结合在一起共十遍）</strong></p>
+                <p><strong>圣三光荣颂（一遍）</strong></p>
+                <p><strong>至圣天主，至圣全能者，我们的主天父，请垂怜我们及普世。</strong></p>
+            </div>
+
+            <div class="long-prayer">
+                <p>吁，我主耶稣，请宽恕我们的罪过，救我们于地狱永火之中。求您把众人的灵魂，特别是那些需要您慈悲怜悯的灵魂；那些被恶龙打伤、恶龙附体的灵魂；那些对抗真神的灵魂，领到天国里去。</p>
+                <p>天主圣神，求您降临，大大降临因您至爱的净配，圣母玛利亚，无玷圣心有力的转祷，求您降临！</p>
+            </div>
+
+            <div class="long-prayer">
+                <p>万福母后，中华之母皇、全地之母皇、天地之母皇，求您降临。今将中国人民、全地人民、所有遗民、没有落下一个灵魂，全然地奉献给您的圣子耶稣仁爱圣心和您的无玷圣心，请常以慈眼怜视我们，并请您向天主救主转求，以您圣洁、美妙、无玷的方式，医治我们、治愈我们，更新复兴我们，重生再造我们，使我们有新生命、过新生活、走在新道路上。免除我们的灾害，以您圣洁美妙的爱，充满我们的心！哈利路亚，赞美主！感谢耶稣！阿们！</p>
+            </div>
+
+            <!-- 荣福奥迹三端 -->
+            <div class="mystery-title"><mark>[荣福奥迹三端　圣神降临]</mark></div>
+            <div class="scripture">
+                <p>五旬节日一到，众人都聚集一处。忽然，从天上来了一阵响声，好像暴风刮来，充满了他们所在的全座房屋。有些散开好像火的舌头，停留在他们每人头上，众人都充满了圣神。</p>
+                <p class="ref"><strong>（宗2:1-4）</strong></p>
+            </div>
+            <div class="petition">祈求天主赐下圣宠，让圣神的德能，使新天新地早日临现人间。</div>
+
+            <div class="offering-block">
+                <p><strong>天父，借着您至爱之子耶稣接待的心，让【圣神降临】这大能奥迹所带来的恩宠，成为保卫、光明和平安的护盾，包围着我们的灵魂、我们的世界，并锁牢那邪恶的势力。</strong></p>
+                <p><strong>借着这大能的恩宠，请来释放我们，解救我们，洁净我们和圣化我们，并医治所有在我们内不属于您的事物。</strong></p>
+                <p><strong>借着这大能的恩宠，请来解开所有捆绑着我们的坏习惯和罪恶，并解救炼狱里的灵魂。</strong></p>
+            </div>
+
+            <div class="prayer-block">
+                <p><strong>永生之父，我把您至爱之子耶稣接待的心、圣体、圣血、灵魂及天主性全奉献给您，为了我们及普世的罪过。</strong></p>
+                <p><strong>天主经（一遍）　天父，因您至爱之子　耶稣接待的心，请遣临人间您伟大全能的拯救 ＋ 圣母经 ＋ 将你无玷圣心的爱火奇能救恩普施人灵，阿门！（结合在一起共十遍）</strong></p>
+                <p><strong>圣三光荣颂（一遍）</strong></p>
+                <p><strong>至圣天主，至圣全能者，我们的主天父，请垂怜我们及普世。</strong></p>
+            </div>
+
+            <div class="long-prayer">
+                <p>吁，我主耶稣，请宽恕我们的罪过，救我们于地狱永火之中。求您把众人的灵魂，特别是那些需要您慈悲怜悯的灵魂；那些被恶龙打伤、恶龙附体的灵魂；那些对抗真神的灵魂，领到天国里去。</p>
+                <p>天主圣神，求您降临，大大降临，因您至爱的净配，圣母玛利亚，无玷圣心有力的转祷，求您降临！</p>
+            </div>
+
+            <div class="long-prayer">
+                <p>万福母后，中华之母皇、全地之母皇、天地之母皇，求您降临。今将中国人民、全地人民、所有遗民、没有落下一个灵魂，全然地奉献给您的圣子耶稣仁爱圣心和您的无玷圣心，请常以慈眼怜视我们，并请您向天主救主转求，以您圣洁、美妙、无玷的方式，医治我们、治愈我们，更新复兴我们，重生再造我们，使我们有新生命、过新生活、走在新道路上。免除我们的灾害，以您圣洁美妙的爱，充满我们的心！哈利路亚，赞美主！感谢耶稣！阿们！</p>
+            </div>
+
+            <!-- 荣福奥迹四端 -->
+            <div class="mystery-title"><mark>[荣福奥迹四端　圣母蒙召升天]</mark></div>
+            <div class="scripture">
+                <p>从旷野里上来，那偎倚着自己的爱人的，是谁？</p>
+                <p class="ref"><strong>（歌8:5）</strong></p>
+                <p>那上升如晨曦，美丽似月亮，光耀若太阳，庄严如齐整军旅的，是谁？</p>
+                <p class="ref"><strong>（歌6:10）</strong></p>
+            </div>
+            <div class="petition">祈求天主赐下圣宠，使我们孝爱圣母。</div>
+
+            <div class="offering-block">
+                <p><strong>天父，借着您至爱之子耶稣接待的心，让【圣母升天】这大能奥迹所带来的恩宠，成为保卫、光明和平安的护盾，包围着我们的灵魂、我们的世界，并锁牢那邪恶的势力。</strong></p>
+                <p><strong>借着这大能的恩宠，请来释放我们，解救我们，洁净我们和圣化我们，并医治所有在我们内不属于您的事物。</strong></p>
+                <p><strong>借着这大能的恩宠，请来解开所有捆绑着我们的坏习惯和罪恶，并解救炼狱里的灵魂。</strong></p>
+            </div>
+
+            <div class="prayer-block">
+                <p><strong>永生之父，我把您至爱之子耶稣接待的心、圣体、圣血、灵魂及天主性全奉献给您，为了我们及普世的罪过。</strong></p>
+                <p><strong>天主经（一遍）　天父，因您至爱之子耶稣接待的心，请遣临人间您伟大全能的圣神 ＋ 圣母经 ＋ 将你无玷圣心的爱火奇能救恩普施人灵，阿门！（结合在一起共十遍）</strong></p>
+                <p><strong>圣三光荣颂（一遍）</strong></p>
+                <p><strong>至圣天主，至圣全能者，我们的主天父，请垂怜我们及普世。</strong></p>
+            </div>
+
+            <div class="long-prayer">
+                <p>吁，我主耶稣，请宽恕我们的罪过，救我们于地狱永火之中。求您把众人的灵魂，特别是那些需要您慈悲怜悯的灵魂；那些被恶龙打伤、恶龙附体的灵魂；那些对抗真神的灵魂，领到天国里去。</p>
+                <p>天主圣神，求您降临，大大降临因您至爱的净配，圣母玛利亚，无玷圣心有力的转祷，求您降临！</p>
+            </div>
+
+            <div class="long-prayer">
+                <p>万福母后，中华之母皇、全地之母皇、天地之母皇，求您降临。今将中国人民、全地人民、所有遗民、没有落下一个灵魂，全然地奉献给您的圣子耶稣仁爱圣心和您的无玷圣心，请常以慈眼怜视我们，并请您向天主救主转求，以您圣洁、美妙、无玷的方式，医治我们、治愈我们，更新复兴我们，重生再造我们，使我们有新生命、过新生活、走在新道路上。免除我们的灾害，以您圣洁美妙的爱，充满我们的心！哈利路亚，赞美主！感谢耶稣！阿们！</p>
+            </div>
+
+            <!-- 荣福奥迹五端 -->
+            <div class="mystery-title"><mark>[荣福奥迹五端　天主光荣圣母]</mark></div>
+            <div class="scripture">
+                <p>我的爱卿，你是全美的，你毫无瑕疵</p>
+                <p class="ref"><strong>（歌4:6）</strong></p>
+                <p>我的鸽子，我的完人，只有一个；她是她母亲的独生女，她是生养她者的爱女；少女见了她，都称她有福；皇后与嫔妃也都赞扬她。</p>
+                <p class="ref"><strong>（歌6:9）</strong></p>
+                <p>那时，天上出现了一个大异兆：有一个女人，身披太阳，脚踏月亮，头戴十二颗星的荣冠。</p>
+                <p class="ref"><strong>（默12:1）</strong></p>
+            </div>
+            <div class="petition">祈求天主赐下圣宠，使我们向圣母作出完全的奉献。</div>
+
+            <div class="offering-block">
+                <p><strong>天父，借着您至爱之子耶稣接待的心，让【天主光荣圣母】这大能奥迹所带来的恩宠，成为保卫、光明和平安的护盾，包围着我们的灵魂、我们的世界，并锁牢那邪恶的势力。</strong></p>
+                <p><strong>借着这大能的恩宠，请来释放我们，解救我们，洁净我们和圣化我们，并医治所有在我们内不属于您的事物。</strong></p>
+                <p><strong>借着这大能的恩宠，请来解开所有捆绑着我们的坏习惯和罪恶，并解救炼狱里的灵魂。</strong></p>
+            </div>
+
+            <div class="prayer-block">
+                <p><strong>永生之父，我把您至爱之子接待的心、圣体、圣血、灵魂及天主性全奉献给您，为了我们及普世的罪过。</strong></p>
+                <p><strong>天主经（一遍）　天父，因您至爱之子耶稣接待的心，请遣临人间您伟大全能的治愈和奇迹 ＋ 圣母经 ＋ 将你无玷圣心的爱火奇能救恩普施人灵，阿门！（结合在一起　共十遍）</strong></p>
+                <p><strong>圣三光荣颂（一遍）</strong></p>
+                <p><strong>至圣天主，至圣全能者，我们的主天父，请垂怜我们及普世。</strong></p>
+            </div>
+
+            <div class="long-prayer">
+                <p>吁，我主耶稣，请宽恕我们的罪过，救我们于地狱永火之中。求您把众人的灵魂，特别是那些需要您慈悲怜悯的灵魂；那些被恶龙打伤、恶龙附体的灵魂；那些对抗真神的灵魂，领到天国里去。</p>
+                <p>天主圣神，求您降临，大大降临，因您至爱的净配，圣母玛利亚，无玷圣心有力的转祷，求您降临！</p>
+            </div>
+
+            <div class="long-prayer">
+                <p>万福母后，中华之母皇、全地之母皇、天地之母皇，求您降临。今将中国人民、全地人民、所有遗民、没有落下一个灵魂，全然地奉献给您的圣子耶稣仁爱圣心和您的无玷圣心，请常以慈眼怜视我们，并请您向天主救主转求，以您圣洁、美妙、无玷的方式，医治我们、治愈我们，更新复兴我们，重生再造我们，使我们有新生命、过新生活、走在新道路上。免除我们的灾害，以您圣洁美妙的爱，充满我们的心！哈利路亚，赞美主！感谢耶稣！阿们！</p>
+            </div>
+
+            <div class="prayer-block" style="background-color: #f5efe8; border-left: 5px solid #b7a48b;">
+                <p>天主，因您唯一圣子的降生、死亡、复活和再来，为我们赢得了永生的赏报，我们恳求您，使我们默想圣母玫瑰经的奥迹，并能领受其中的含义，获得其中的许诺，因我们的主基督。阿们。</p>
+            </div>
+
+            <div class="long-prayer">
+                <p>母后万福，仁慈的母亲，我们的生命，我们的甘饴，我们的希望；厄娃子孙在此尘世向您哀呼；在这泣涕之谷向您叹息哭求；我们的主保，求您回顾怜视我们，一旦流亡期满，使我们得见您的圣子——万民称颂的耶稣。童贞玛利亚，您是宽仁的，慈悲的，甘饴的，天主圣母，请为我们祈求，使我们堪当承受基督的恩许。阿们！</p>
+                <p>吁，玛利亚，您是圣洁无玷的，请助佑我们成为您圣子耶稣接待的心的生活见证。阿们！</p>
+            </div>
+
+            <div class="conclusion">
+                <p>耶稣圣心，圣母圣心，做我家主，理我诸务；耶稣圣心，圣母圣心，做我家主，理我诸务；耶稣圣心，圣母圣心，永远做我家主，理我诸务。</p>
+                <p>凡诸信者灵魂；诸主怜悯者灵魂；我们祖先、亲友、恩人的灵魂；主托给我们的众亡灵，赖天主仁慈，息止安所而恒光照之。将来复活后，在主面前，永远恒歌称颂主。哈利路亚！赞美主！感谢耶稣！阿们！</p>
+                <p>凡活着的灵魂，此时此刻就赐给他们心灵深层次的平安与得着，并给他们敞开信德之门，使他们走在这条圣洁永光之途，永不复返。哈利路亚，赞美主，感谢耶稣！阿们！阿们！阿们！以上所求是奉救主耶稣基督圣母玛利亚得胜的名。阿们！</p>
+            </div>
+
+            <div class="sign-of-cross">因父、及子、及圣神之名！阿们！</div>
+        </div>
+    </div>
+
+    <div class="font-panel-overlay" id="fontOverlay" onclick="closeFontPanel()"></div>
+    <div class="font-panel" id="fontPanel">
+        <div class="drag-handle" id="dragHandle"></div>
+        <div class="panel-header">
+            <span class="panel-title">调整文字大小</span>
+            <button class="panel-reset" onclick="resetFontSize()">恢复默认</button>
+        </div>
+        <div class="slider-row">
+            <span class="slider-label-small">A</span>
+            <input type="range" class="font-slider" id="fontSlider" min="12" max="28" step="1" value="16" oninput="onSliderChange(this.value)">
+            <span class="slider-label-large">A</span>
+        </div>
+        <div class="font-value" id="fontValue">当前字号：16px</div>
+    </div>
+
+    <script>
+        function goBack() {
+            if (window.history.length > 1) { window.history.back(); }
+            else { window.location.href = 'index.html'; }
+        }
+        const MIN_FONT = 12, MAX_FONT = 28, DEFAULT_FONT = 16;
+        const STORAGE_KEY = 'prayerFontSize';
+        const fontPanel = document.getElementById('fontPanel');
+        const fontOverlay = document.getElementById('fontOverlay');
+        const fontSlider = document.getElementById('fontSlider');
+        const fontValue = document.getElementById('fontValue');
+        const pageContent = document.getElementById('pageContent');
+        function openFontPanel() { fontPanel.classList.add('show'); fontOverlay.classList.add('show'); }
+        function closeFontPanel() { fontPanel.classList.remove('show'); fontOverlay.classList.remove('show'); }
+        function applyFontSize(size) { pageContent.style.zoom = size / DEFAULT_FONT; }
+        function onSliderChange(value) {
+            const size = parseInt(value, 10);
+            applyFontSize(size);
+            fontValue.textContent = '当前字号：' + size + 'px';
+            try { localStorage.setItem(STORAGE_KEY, size); } catch (e) {}
+        }
+        function resetFontSize() { fontSlider.value = DEFAULT_FONT; onSliderChange(DEFAULT_FONT); }
+        (function init() {
+            let saved = DEFAULT_FONT;
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const num = parseInt(stored, 10);
+                    if (!isNaN(num) && num >= MIN_FONT && num <= MAX_FONT) saved = num;
+                }
+            } catch (e) {}
+            fontSlider.value = saved; applyFontSize(saved);
+            fontValue.textContent = '当前字号：' + saved + 'px';
+        })();
+        (function setupDragClose() {
+            const handle = document.getElementById('dragHandle');
+            let startY = 0, currentY = 0, isDragging = false;
+            function onStart(e) {
+                isDragging = true;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                currentY = startY; fontPanel.style.transition = 'none';
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', onEnd);
+            }
+            function onMove(e) {
+                if (!isDragging) return;
+                currentY = e.touches ? e.touches[0].clientY : e.clientY;
+                const delta = currentY - startY;
+                if (delta > 0) fontPanel.style.transform = 'translateY(' + delta + 'px)';
+                if (e.cancelable) e.preventDefault();
+            }
+            function onEnd() {
+                if (!isDragging) return;
+                isDragging = false; fontPanel.style.transition = '';
+                const delta = currentY - startY;
+                if (delta > 80) closeFontPanel();
+                fontPanel.style.transform = '';
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('touchend', onEnd);
+            }
+            handle.addEventListener('mousedown', onStart);
+            handle.addEventListener('touchstart', onStart, { passive: false });
+        })();
+    </script>
+	<script>
+	document.addEventListener('plusready', function() {
+	    // 监听系统返回键
+	    plus.key.addEventListener('backbutton', function() {
+	        // 直接跳回首页
+	        window.location.href = '../index.html'; 
+	        // 注意：如果经文在子文件夹里，要改成 '../index.html'
+	    }, false);
+	});
+	</script>
+</body>
+</html>

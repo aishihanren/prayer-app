@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第五部分 · 我们主耶稣基督神奇的祈祷</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "SimSun", "Songti SC", "Times New Roman", "Georgia", serif;
+            font-size: 16px; background-color: #faf8f5; color: #2a241e;
+            padding-top: 56px; padding-bottom: 40px; overflow-x: hidden;
+        }
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; height: 56px;
+            background-color: #ffffff; border-bottom: 1px solid #e6e0d8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 12px; z-index: 1000;
+        }
+        .back-btn, .font-btn {
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; border-radius: 50%;
+            transition: background-color 0.2s; color: #4a3729;
+            font-family: inherit; flex-shrink: 0;
+        }
+        .back-btn { font-size: 1rem; }
+        .font-btn { font-size: 1.15rem; font-weight: 700; font-family: Georgia, serif; }
+        .back-btn:hover, .font-btn:hover { background-color: #f5efe8; }
+        .back-btn:active, .font-btn:active { background-color: #e6ddd2; }
+        .top-title {
+            flex: 1; text-align: center; font-size: 1.05rem; font-weight: 600;
+            color: #2c241b; letter-spacing: 2px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            padding: 0 8px;
+        }
+        .page-wrapper { display: flex; justify-content: center; padding: 36px 28px 0; }
+        .container {
+            background-color: #ffffff; padding: 42px 48px;
+            border-radius: 6px; box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+            border: 1px solid #e8e0d6; max-width: 920px; width: 100%;
+            transform-origin: top center;
+        }
+        h1 {
+            font-size: 26px; font-weight: 700; text-align: center;
+            margin-bottom: 8px; letter-spacing: 3px; color: #3b2f24;
+        }
+        h2 {
+            font-size: 1.4rem; font-weight: 700; margin: 38px 0 18px;
+            color: #3b2f24; border-left: 5px solid #b7a48b; padding-left: 12px;
+        }
+        h3 {
+            font-size: 1.15rem; font-weight: 700; margin: 28px 0 12px;
+            color: #a52a2a; border-bottom: 1px dashed #d9cfc2; padding-bottom: 8px;
+        }
+        p { margin: 10px 0; text-indent: 2em; text-align: justify; }
+        .noindent { text-indent: 0 !important; }
+        mark {
+            background-color: #fff6b0; padding: 0.15rem 0.35rem;
+            border-radius: 3px; color: #1e1e1e; font-weight: 600;
+        }
+        .mystery-title {
+            font-size: 1.2rem; font-weight: 700; color: #a52a2a;
+            margin: 30px 0 14px; border-bottom: 2px solid #e6ddd2;
+            padding-bottom: 8px; text-indent: 0;
+        }
+        .prayer-block {
+            background-color: #fdfcfb; padding: 16px 22px;
+            border-radius: 8px; border: 1px solid #efe9e1; margin: 16px 0;
+        }
+        .prayer-block p { margin: 6px 0; text-indent: 0; }
+        .scripture {
+            background-color: #f9f6f2; padding: 14px 20px;
+            border-radius: 8px; border-left: 4px solid #b7a48b;
+            margin: 14px 0; color: #3b332b;
+        }
+        .scripture p { text-indent: 0; margin: 6px 0; }
+        .petition {
+            background-color: #f5efe8; padding: 12px 20px;
+            border-radius: 8px; border-left: 5px solid #b7a48b;
+            margin: 14px 0; font-weight: 600; color: #4a3729; text-indent: 0;
+        }
+        .offering-block {
+            background-color: #f9f6f2; padding: 16px 22px;
+            border-radius: 8px; border: 1px solid #e6ddd2; margin: 16px 0;
+        }
+        .offering-block p { text-indent: 0; margin: 8px 0; }
+        .long-prayer {
+            background-color: #fdfcfb; padding: 18px 24px;
+            border-radius: 8px; border-left: 5px solid #b7a48b; margin: 18px 0;
+        }
+        .long-prayer p { text-indent: 2em; margin: 8px 0; }
+        .conclusion {
+            margin-top: 40px; padding: 24px 28px;
+            background-color: #f5efe8; border-radius: 8px;
+            border-left: 6px solid #b7a48b;
+        }
+        .conclusion p { text-indent: 2em; color: #2f2a24; line-height: 1.9; }
+        .sign-of-cross {
+            text-align: center; font-size: 1.15rem; font-weight: 600;
+            color: #4b3e30; margin-top: 28px; padding: 14px;
+            background-color: #f5efe8; border-radius: 8px;
+            border-left: 6px solid #b7a48b; text-indent: 0;
+        }
+        .font-panel-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.35);
+            z-index: 1998; opacity: 0; visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .font-panel-overlay.show { opacity: 1; visibility: visible; }
+        .font-panel {
+            position: fixed; left: 0; right: 0; bottom: 0;
+            background-color: #ffffff; border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+            z-index: 1999; padding: 8px 24px 32px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+            max-width: 920px; margin: 0 auto;
+        }
+        .font-panel.show { transform: translateY(0); }
+        .drag-handle {
+            width: 40px; height: 4px; background-color: #d9cfc2;
+            border-radius: 2px; margin: 0 auto 18px;
+            cursor: grab; touch-action: none;
+        }
+        .drag-handle:active { cursor: grabbing; }
+        .panel-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .panel-title { font-size: 1rem; font-weight: 600; color: #2c241b; letter-spacing: 1px; }
+        .panel-reset {
+            background: none; border: 1px solid #d9cfc2; color: #4a3729;
+            font-size: 0.85rem; padding: 5px 14px; border-radius: 20px;
+            cursor: pointer; font-family: inherit; transition: background-color 0.2s;
+        }
+        .panel-reset:hover { background-color: #f5efe8; }
+        .slider-row { display: flex; align-items: center; gap: 14px; }
+        .slider-label-small {
+            font-size: 0.85rem; color: #8a7a68; font-weight: 600;
+            flex-shrink: 0; width: 20px; text-align: center;
+        }
+        .slider-label-large {
+            font-size: 1.35rem; color: #8a7a68; font-weight: 700;
+            flex-shrink: 0; width: 24px; text-align: center;
+            font-family: Georgia, serif;
+        }
+        .font-slider {
+            -webkit-appearance: none; appearance: none; flex: 1; height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px; outline: none; cursor: pointer;
+        }
+        .font-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: border-color 0.2s, transform 0.1s;
+        }
+        .font-slider::-webkit-slider-thumb:hover { border-color: #a52a2a; }
+        .font-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+        .font-slider::-moz-range-thumb {
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .font-slider::-moz-range-track {
+            height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px;
+        }
+        .font-value {
+            text-align: center; margin-top: 14px;
+            font-size: 0.85rem; color: #8a7a68; letter-spacing: 1px;
+        }
+        @media (max-width: 700px) {
+            .page-wrapper { padding: 24px 14px 0; }
+            .container { padding: 24px 18px; }
+            h1 { font-size: 22px; letter-spacing: 2px; }
+            h2 { font-size: 1.2rem; }
+            h3 { font-size: 1.05rem; }
+            .prayer-block, .offering-block, .long-prayer { padding: 12px 14px; }
+            .scripture { padding: 12px 14px; }
+            .top-title { font-size: 0.98rem; letter-spacing: 1px; }
+        }
+        @media print {
+            body { padding-top: 0; }
+            .top-bar, .font-panel-overlay, .font-panel { display: none !important; }
+            .page-wrapper { padding: 0; }
+            .container { box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <button class="back-btn" onclick="goBack()" title="返回">返回</button>
+        <div class="top-title">第五部分 · 神奇的祈祷</div>
+        <button class="font-btn" onclick="openFontPanel()" title="调整字号">Aa</button>
+    </div>
+
+    <div class="page-wrapper">
+        <div class="container" id="pageContent">
+            <h1>第五部分</h1>
+            <p class="noindent" style="text-align:center; font-weight:600; color:#4a3729;">我们主耶稣基督神奇的祈祷</p>
+
+            <div class="mystery-title"><mark>🔥 击败撒旦及其随从的祈祷</mark></div>
+            <div class="scripture">
+                <p>我的孩子们，我喝这杯是为了你们的缘故……当欢喜快乐，因你们蒙召是为了发出这个伟大的祈祷，你们无需惧怕众多的仇敌大军，孩子们，你们只需宣告我左手所受的伤痛和流出的宝血，你们就必看见仇敌如灰尘灭没，……我向你们保证。仇敌的国度必在瞬间消失。故此你们要如此祈祷，并教导众人如此祈祷，我的宝血必施行拯救！</p>
+            </div>
+            <div class="long-prayer">
+                <p>你们所有的仇敌大军，就是让我们圣洁的主耶稣基督死在加略山十字架上的仇敌，以及黑暗罪恶的魔君和一切说谎之父，我靠着我们救主耶稣基督的受死，把祂左手所受的伤痛和流出的宝血献给天父，我宣告你们的溃败、灭亡和刑罚。愿我主基督的宝血在我里面做王掌权，在众人的生命里做王掌权！阿们！</p>
+            </div>
+
+            <div class="mystery-title"><mark>🔥 为保护羊群，为羊群合一的祈祷</mark></div>
+            <div class="scripture">
+                <p>"为了教会的合一（我是指凡呼求我名的人），我因着爱，献上了我的圣脚流出的宝血……。铁钉如何使我的双脚聚拢在一起，它也如何使我所有的百姓合为一体。我父必借着这个祈祷，让我的国度速速地降临。我的孩子们，每当你们如此祈祷时，你们就在加速我国度降临的时刻：第二次五旬节降临的时刻必来到，我为众百姓合为一体的祈祷必定成就。当我的国度降临时，那些如此祈祷的子民必欢喜快乐，我必时时保护他们。"</p>
+            </div>
+            <div class="long-prayer">
+                <p>🙏🏻 永生之父，为了所有流离失散在可怕的树林里，没有牧人看顾的羊群，我向祢献上祢儿子——我们救主的圣脚所受的伤痛和所流的宝血。求祢保护他们，抵挡野外食肉动物的袭击，赐给他们平安，让他们合一，成为一体，正如铁钉把我们救主耶稣基督的双脚并在一起那样。阿们！愿耶稣基督的宝血——永远做王掌权！阿们！</p>
+            </div>
+
+            <div class="mystery-title"><mark>🔥 愿耶稣基督神圣的肋旁成为避难所的祈祷</mark></div>
+            <div class="scripture">
+                <p>"孩子们，这个时代是一个黑暗的时代。黑暗之王正在统治全地，所有的光之子必将受到仇敌的猛烈攻击……现今的时刻正是我当年被钉死在十字架上那一时刻的真实写照，……孩子们，这些邪恶的日子里吞吃很多的灵魂。这就是我把这个神奇的祈祷传授给你们的原因，我希望你们都能得救，我神圣的肋旁向所有人敞开。你们要如此祈祷，并教导众人如此祈祷。凡教导别人如此祈祷的人必得蒙保守。我爱你们所有人，并保全你们的性命！"</p>
+            </div>
+            <div class="long-prayer">
+                <p>🙏🏻 慈爱的天父，亚巴郎、以撒格、雅各伯的神，祢在古时又寒冷又炎热的旷野，曾用祢圣洁的翅膀保护过以色列人。我恳求祢顾念我的主和救主——耶稣基督遭受的神圣之死，求祢保护那些分散在世界各地的子民。愿血与水洗净我们，坚固我们，拯救我们，洁净我们！愿祢儿子为众人敞开的神圣之肋旁成为我们的避难所。阿们！愿耶稣基督神圣的肋旁——成为我们的安稳之家！阿们！</p>
+            </div>
+
+            <div class="mystery-title"><mark>🔥 脱离历代祖先咒诅的祈祷</mark></div>
+            <div class="scripture">
+                <p>"凡是在咒诅之下的人，若是常常这样的祈祷，就必脱离他们的咒诅。任何一个因祖先犯罪，一直活在罪的咒诅之下的家庭，若是在144天内（即16个Novena）坚持这样祈祷，就必得自由。凡因背约而致死的人，若常常这样祈祷和悔改，就必得救，也必脱离咒诅。我的孩子们，落在神的愤怒之下是何等的可怕！你们当转离罪恶而存活。我爱你们所有人，愿你们得医治！"</p>
+            </div>
+            <div class="long-prayer">
+                <p>🙏🏻 永生之父，祢是唯一一位不能朽坏的救主，祢就是爱，祢是有怜悯，有恩慈的天主。求祢因着祢的独生子——耶稣基督，怜恤我们。求祢顾念祂被绑在柱子上所受的鞭伤，所经历的疼痛和伤痛，以及所流的宝血！求祢怜恤祢的百姓。他们因先祖犯罪、悖逆，离弃了与祢所立的约，一直活在咒诅的重压之下。求因祢的儿子所受的鞭伤释放我们，因祂所受的痛苦医治我们，因祂所流的宝血拯救我们。阿们！</p>
+                <p>愿耶稣基督的宝血——释放我们脱离咒诅，愿耶稣基督所受的圣伤——医治我们的创伤。愿祢所受的鞭伤成为保护我的印记！阿们！</p>
+            </div>
+
+            <div class="mystery-title"><mark>🔥 为持守信心的祈祷</mark></div>
+            <div class="scripture">
+                <p>"很多人会背叛我，我是说，那些同我在一个盘子里吃饭，与我用一个杯子喝水的人，会把我交给那些要把我钉十字架的人，我的孩子们，你们要用心听，好好默想这些话。那些否认我的人，何等可怕，虽然我爱他们……</p>
+                <p>当年我即将离开地上的百姓时，一想到他们的背叛，我极其痛苦，我也知道将来的时代令人可怕，令人生畏。很多人会像犹达斯一样背叛我，还有些人会否认他们认识我……孩子们，在危险可怕的世代铺天盖地临到之前，你们要不住地为信心如此祈祷，同时也要让全世界的人都知道这个祈祷。你们的信心若像一粒芥菜种那么大，你们必能度过这个时期。这个神奇的祈祷，力量非常强大，所以要教导全世界的人如此祈祷，我爱你们所有人。"</p>
+            </div>
+            <div class="long-prayer">
+                <p>🙏🏻 无所不能、无所不知的天主，以利亚和众先知的神，因着祢独生爱子神圣的头部，求祢怜悯我们！求祢起来拯救祢的百姓！为了生活在这个危险时代的所有孩子们，我把祢儿子的头部所受的羞辱、痛苦、鞭伤以及祢儿子神圣之头部流出的宝血献给祢。愿祢儿子耶稣基督受到的嘲笑坚固我们的信心，愿祂神圣之头部流出的宝血拯救我们！愿我们因着祢儿子耶稣基督所受的苦难，学会靠着祢去受苦，靠着祢向己死，阿们！愿耶稣基督所受的残酷之刑罚——加增我们的信心！阿们！</p>
+            </div>
+
+            <div class="mystery-title"><mark>🔥 为实现神的旨意的祈祷</mark></div>
+            <div class="scripture">
+                <p>"孩子们，你们和仇敌的争战现在已经进入了高潮。牠们孤注一掷，蒙蔽了我的一大批孩子……我进了哥责马尼山园以后，越来越痛苦。我看见了我的子民，我看见他们在沉睡，但他们的仇敌正在速速地逼近并占领了阵地……我的心痛苦不堪，脱口而出：……你们为什么沉睡呢？难道就不能与我警醒片时吗？你们要祈祷，免得入了试探。"当我再次跪下祈祷时，死亡的重担压在我身上。在这一瞬间，我说："父啊，求祢将这杯撤去，但不要成就我的意思，只要成就祢的意思。"那个时刻正是我受到最大试探的时候。这个试探有可能阻止我实现我父的旨意。最后，我抬起头向我父如此祈祷……为了让我父做王掌权，请教导普世之人如此祈祷……我想说，这就是我那些神奇的祈祷，其力量非常强大。"</p>
+            </div>
+            <div class="long-prayer">
+                <p>🙏🏻 永在的父，祢是生命的创造者和塑造者。祢爱惜祢创造的世人，这就是祢差遣祢的独生子降世救赎的原因。这样祢的国才会降临。愿祢因祢的儿子，从祢的宝座上兴起，愿举起祢的右手，拯救祢的子民。为了祢在地上的得胜和掌权，我把祢的独生爱子所受的折磨、痛苦和死亡献给祢。愿祢因着祢儿子的宝血立下的新约，让祢的众子都回到祢圣洁的旨意中，阿们！愿耶稣基督的宝血——永远作王掌权。饱受痛苦的耶稣基督——愿祢的国降临！阿们！</p>
+            </div>
+
+            <div class="mystery-title"><mark>🔥 为将来的苦难祈求忍耐的祈祷</mark></div>
+            <div class="scripture">
+                <p>"我的孩子们，你们要祈祷，减少你们现在所生活的这段时日。也要祈祷，叫你们不至于失了信心。你们要警醒！你们要时时谨守警醒……许多人会在一切即将临到的最后一刻放弃信仰……这段时日会突然临到很多人，因为他们没有预备好自己……你们有多少人愿意争战，击退我的仇敌，战胜牠们，掳掠他们呢？我的孩子们，你们要学会这个祈祷，并且常常如此祈祷，尤其是在受试炼的时候。……当我的百姓弃绝我，定我的罪，说："把他钉十字架，把他钉十字架！"时，我抬头望天，向父祈祷说……"</p>
+            </div>
+            <div class="long-prayer">
+                <p>🙏🏻 怜悯、慈爱的天父，祢希望所有的人都能得救。因着祢的儿子被弃绝、被定罪，因着祂受尽了许多折磨和痛苦，因着祂为了祢百姓的罪孽，还要蒙受许多的折磨和痛苦，因着罪让祢的独生子所遭受的一切，为了生活在这个邪恶、不敬虔时代的子民，我把祢的儿子耶稣基督所受的一切折磨、痛苦、弃绝和羞辱，都献给祢。求祢让他们的信心经得起考验，让他们有耐力经得起长时间的折磨和痛苦。愿他们因着祢的独生子所受的痛苦，争战到底。阿们！愿我们主所受的折磨和痛苦增加我们的信心！愿耶稣基督的宝血——拯救我们！阿们！</p>
+            </div>
+
+            <div class="mystery-title"><mark>🔥 为跌倒的小羊和摇摆之信心的祈祷</mark></div>
+            <div class="scripture">
+                <p>"我看到了我的子民不时地放弃信仰，不断地弃绝天主，每天把我钉在十字架上的情景。看到他们很难归回时，我痛苦万分，很多人会在半途停滞不前，因为他们认为这条路又艰难又漫长……有很多我的子民会失去盼望并跌倒……我小子们哪，我吩咐你们要起来，要站稳。我跌倒的时候，就想到了所有这些情景。于是我通过这样的祈祷，把所有这些人都交给我父……我父必借着这个祈祷，把所需要的全部恩典都倾倒在你们身上，使你们能忍耐到底。凡诚心如此祈祷的子民，必完全被圣神充满，并学会顺服和谦卑的功课。"</p>
+            </div>
+            <div class="long-prayer">
+                <p>🙏🏻 永恒慈爱的天父，因着祢的独生子，因着祢的独生子背负的沉重十字架，求祢体恤、怜悯的子民！为了所有那些已经放弃信仰和面对世界的高山深谷即将放弃信仰的子民，我把祢的儿子耶稣基督所受的痛苦，所受的刑罚以及所流的宝血，都献给祢。甚愿他们，因着祢儿子在十字架重压下的跌倒，能够有力量重新站起来，并坚定持守真正的信仰。求祢因着耶稣基督在十字架的重压下洒在耶路撒冷街道上的无数宝血，坚固所有渴望遵行祢旨意的子民。阿们！愿耶稣基督的宝血——坚固我们软弱的灵魂！阿们！</p>
+            </div>
+
+            <div class="mystery-title"><mark>🔥 为地上荣耀之统治的祈祷</mark></div>
+            <div class="scripture">
+                <p>"孩子们，你们现在就要过一个舍己奉献的生活。你们必从我这里学到很多功课……在即将临到的时刻，你们必安全无恙。……你们必知道什么时候去做，谁去做以及做什么……我在地上事奉期间，特别是我在十字架上咽下最后一口气的时候，大红龙和敌基督在现今末时的显现，深深地刺透了我的心。我被挂在十字架上时，看到了那个骄傲的龙，牠吹嘘自己将永远统治地球……然而，我默默地向天父献上祈祷，祈求灭掉十字架的仇敌……我的孩子们，这个祈祷必减少敌基督、红龙以及随从牠们在地上的短暂统治。你们越这么祈祷，牠们在地上统治的时间就越短。</p>
+            </div>
+            <div class="long-prayer">
+                <p>🙏🏻 慈爱仁慈的天父，祢是无所不知、无所不能的上帝：祢是阿拉法，祢是俄梅戛：是万物的创造者，祢是永在的主！父啊，祢为什么离弃了我？祢的独生子耶稣基督，为了拯救祢的子民，把祢的国度带到地上，道成了肉身。我把祢的独生子耶稣基督所受的一切痛苦、折磨和刑罚以及所流的宝血都献给祢，以打败神圣救恩十字架的所有仇敌：即现在和末世正在和将要抵挡真理的敌基督和红龙，愿我们救主的宝血以及祂在地上最后的那口气息，使仇敌如同阳光下的泡沫一样瞬间消失，并让祢的国度速速地降临在地上。阿们！愿耶稣基督的宝血——使祢的国降临！阿们！</p>
+            </div>
+
+            <div class="mystery-title"><mark>🔥 抵挡情欲之罪的祈祷</mark></div>
+            <div class="scripture">
+                <p>"你们要多为年轻人祈祷……许多人会因（这）罪而迷失……我当时在众目睽睽之下赤身露体，就是为叫你们治死肉体中引诱你们犯淫乱和奸淫之罪的私欲。孩子们，我的仇敌想利用这个罪把众人都引向死亡。……任何一个罪人，若常常做这个祈祷，就必真心悔改。你们祈祷的次数越多，回转归向我，离弃淫乱和奸淫罪的灵魂就越多。许多人将因情欲的罪而迷失。你们要殷勤祈祷，以拯救灵魂……"</p>
+            </div>
+            <div class="long-prayer">
+                <p>🙏🏻 圣洁、慈悲的天父，祢的独生子在众目睽睽之下赤身露体，就是为了让祢的百姓知道并敬畏祢神圣的律法。为了所有活在罪中以及所有行淫乱和奸淫的百姓，请祢接受我谦卑的祈求。因着祢的独生子所受的各种耻辱和羞辱，愿祢触摸他们的生命，让他们悔改，得蒙救赎。愿他们因祢儿子耶稣基督的宝血，悔改而得赎。我恳求耶稣的宝血洒在他们的心上。阿们！</p>
+            </div>
+
+            <div class="mystery-title"><mark>🔥 为堕胎婴儿接受洗礼的祈祷</mark></div>
+            <div class="scripture">
+                <p>"今天，无辜孩童的鲜血已充满天堂，他们的数目之多、之大……以至于永生之父的愤怒即将临到人类……他们的鲜血不仅搅动了我那痛苦不堪的心肠，也加增了我的痛苦……通过这个祈祷，大量未出生的无辜婴儿将被拯救，你们要每天如此祈祷，要让世人知道这个祈祷，凡教导这个祈祷的必不至迷失。天上无辜的灵魂必不会让他们迷失。我必用我的慈爱和怜悯保护他们免犯致死的罪。"</p>
+            </div>
+            <div class="long-prayer">
+                <p>🙏🏻 天父，祢的慈爱是永恒的。因着祢无限的慈爱，祢让祢的独生子——耶稣基督拯救了世人。看啊，祢的独生子，为了爱祂的子民，至今仍在十字架上流血。恳求祢饶恕世人！恳求祢用祢儿子耶稣基督肋旁流出的宝贵之血和水洗净堕胎的孩子并以此为他们施洗。因耶稣基督为救赎他们死在了十字架上。我奉圣父、圣子、圣神的名宣告，愿他们因着耶稣基督的圣死，获得永生！愿他们因祂所受的鞭伤得医治！愿他们因祂的宝血得释放！愿他们在那里与天上的众圣徒一同欢喜快乐！阿们！</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="font-panel-overlay" id="fontOverlay" onclick="closeFontPanel()"></div>
+    <div class="font-panel" id="fontPanel">
+        <div class="drag-handle" id="dragHandle"></div>
+        <div class="panel-header">
+            <span class="panel-title">调整文字大小</span>
+            <button class="panel-reset" onclick="resetFontSize()">恢复默认</button>
+        </div>
+        <div class="slider-row">
+            <span class="slider-label-small">A</span>
+            <input type="range" class="font-slider" id="fontSlider" min="12" max="28" step="1" value="16" oninput="onSliderChange(this.value)">
+            <span class="slider-label-large">A</span>
+        </div>
+        <div class="font-value" id="fontValue">当前字号：16px</div>
+    </div>
+
+    <script>
+        function goBack() {
+            if (window.history.length > 1) { window.history.back(); }
+            else { window.location.href = 'index.html'; }
+        }
+        const MIN_FONT = 12, MAX_FONT = 28, DEFAULT_FONT = 16;
+        const STORAGE_KEY = 'prayerFontSize';
+        const fontPanel = document.getElementById('fontPanel');
+        const fontOverlay = document.getElementById('fontOverlay');
+        const fontSlider = document.getElementById('fontSlider');
+        const fontValue = document.getElementById('fontValue');
+        const pageContent = document.getElementById('pageContent');
+        function openFontPanel() { fontPanel.classList.add('show'); fontOverlay.classList.add('show'); }
+        function closeFontPanel() { fontPanel.classList.remove('show'); fontOverlay.classList.remove('show'); }
+        function applyFontSize(size) { pageContent.style.zoom = size / DEFAULT_FONT; }
+        function onSliderChange(value) {
+            const size = parseInt(value, 10);
+            applyFontSize(size);
+            fontValue.textContent = '当前字号：' + size + 'px';
+            try { localStorage.setItem(STORAGE_KEY, size); } catch (e) {}
+        }
+        function resetFontSize() { fontSlider.value = DEFAULT_FONT; onSliderChange(DEFAULT_FONT); }
+        (function init() {
+            let saved = DEFAULT_FONT;
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const num = parseInt(stored, 10);
+                    if (!isNaN(num) && num >= MIN_FONT && num <= MAX_FONT) saved = num;
+                }
+            } catch (e) {}
+            fontSlider.value = saved; applyFontSize(saved);
+            fontValue.textContent = '当前字号：' + saved + 'px';
+        })();
+        (function setupDragClose() {
+            const handle = document.getElementById('dragHandle');
+            let startY = 0, currentY = 0, isDragging = false;
+            function onStart(e) {
+                isDragging = true;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                currentY = startY; fontPanel.style.transition = 'none';
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', onEnd);
+            }
+            function onMove(e) {
+                if (!isDragging) return;
+                currentY = e.touches ? e.touches[0].clientY : e.clientY;
+                const delta = currentY - startY;
+                if (delta > 0) fontPanel.style.transform = 'translateY(' + delta + 'px)';
+                if (e.cancelable) e.preventDefault();
+            }
+            function onEnd() {
+                if (!isDragging) return;
+                isDragging = false; fontPanel.style.transition = '';
+                const delta = currentY - startY;
+                if (delta > 80) closeFontPanel();
+                fontPanel.style.transform = '';
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('touchend', onEnd);
+            }
+            handle.addEventListener('mousedown', onStart);
+            handle.addEventListener('touchstart', onStart, { passive: false });
+        })();
+    </script>
+	<script>
+	document.addEventListener('plusready', function() {
+	    // 监听系统返回键
+	    plus.key.addEventListener('backbutton', function() {
+	        // 直接跳回首页
+	        window.location.href = '../index.html'; 
+	        // 注意：如果经文在子文件夹里，要改成 '../index.html'
+	    }, false);
+	});
+	</script>
+</body>
+</html>

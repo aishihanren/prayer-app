@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24Hour Prayer Schedule</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "SimSun", "Songti SC", "Times New Roman", "Georgia", serif;
+            font-size: 16px;
+            background-color: #faf8f5;
+            color: #2a241e;
+            padding-top: 56px;
+            padding-bottom: 40px;
+            overflow-x: hidden;
+        }
+
+        /* ===== 顶部固定栏 ===== */
+        .top-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 56px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e6e0d8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            z-index: 1000;
+        }
+        .back-btn, .font-btn {
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; border-radius: 50%;
+            transition: background-color 0.2s; color: #4a3729;
+            font-family: inherit; flex-shrink: 0;
+        }
+        .back-btn { font-size: 1rem; }
+        .font-btn { font-size: 1.15rem; font-weight: 700; font-family: Georgia, serif; }
+        .back-btn:hover, .font-btn:hover { background-color: #f5efe8; }
+        .back-btn:active, .font-btn:active { background-color: #e6ddd2; }
+        .top-title {
+            flex: 1; text-align: center; font-size: 1.05rem; font-weight: 600;
+            color: #2c241b; letter-spacing: 2px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            padding: 0 8px;
+        }
+
+        /* ===== 页面主体 ===== */
+        .page-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 36px 28px 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 42px 48px;
+            border-radius: 6px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+            border: 1px solid #e8e0d6;
+            max-width: 860px;
+            width: 100%;
+            transform-origin: top center;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 28px;
+            letter-spacing: 3px;
+            color: #3b2f24;
+            border-bottom: 2px solid #d9cfc2;
+            padding-bottom: 16px;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0 30px;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .schedule-table thead {
+            background-color: #f2ede7;
+            color: #3b2f24;
+        }
+
+        .schedule-table th {
+            padding: 14px 18px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #d9cfc2;
+        }
+
+        .schedule-table td {
+            padding: 12px 18px;
+            border-bottom: 1px solid #efe9e1;
+            vertical-align: top;
+            color: #2f2a24;
+        }
+
+        .schedule-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .schedule-table tbody tr:hover {
+            background-color: #fdfcfb;
+        }
+
+        .time-col {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #4a3729;
+            white-space: nowrap;
+            width: 190px;
+        }
+
+        .prayer-col {
+            font-weight: 500;
+            color: #2a241e;
+        }
+
+        .overnight {
+            background-color: #f9f6f2;
+        }
+        .overnight .time-col {
+            color: #8a6d4b;
+        }
+
+        .note {
+            margin-top: 28px;
+            padding: 16px 22px;
+            background-color: #fdfcfb;
+            border-left: 4px solid #b7a48b;
+            border-radius: 0 6px 6px 0;
+            color: #4a3729;
+            font-size: 1rem;
+        }
+        .note strong {
+            color: #a52a2a;
+        }
+
+        /* ===== 字号面板 ===== */
+        .font-panel-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.35);
+            z-index: 1998; opacity: 0; visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .font-panel-overlay.show { opacity: 1; visibility: visible; }
+        .font-panel {
+            position: fixed; left: 0; right: 0; bottom: 0;
+            background-color: #ffffff;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+            z-index: 1999; padding: 8px 24px 32px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+            max-width: 860px; margin: 0 auto;
+        }
+        .font-panel.show { transform: translateY(0); }
+        .drag-handle {
+            width: 40px; height: 4px; background-color: #d9cfc2;
+            border-radius: 2px; margin: 0 auto 18px;
+            cursor: grab; touch-action: none;
+        }
+        .drag-handle:active { cursor: grabbing; }
+        .panel-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .panel-title { font-size: 1rem; font-weight: 600; color: #2c241b; letter-spacing: 1px; }
+        .panel-reset {
+            background: none; border: 1px solid #d9cfc2; color: #4a3729;
+            font-size: 0.85rem; padding: 5px 14px; border-radius: 20px;
+            cursor: pointer; font-family: inherit; transition: background-color 0.2s;
+        }
+        .panel-reset:hover { background-color: #f5efe8; }
+        .slider-row { display: flex; align-items: center; gap: 14px; }
+        .slider-label-small {
+            font-size: 0.85rem; color: #8a7a68; font-weight: 600;
+            flex-shrink: 0; width: 20px; text-align: center;
+        }
+        .slider-label-large {
+            font-size: 1.35rem; color: #8a7a68; font-weight: 700;
+            flex-shrink: 0; width: 24px; text-align: center;
+            font-family: Georgia, serif;
+        }
+        .font-slider {
+            -webkit-appearance: none; appearance: none; flex: 1; height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px; outline: none; cursor: pointer;
+        }
+        .font-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: border-color 0.2s, transform 0.1s;
+        }
+        .font-slider::-webkit-slider-thumb:hover { border-color: #a52a2a; }
+        .font-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+        .font-slider::-moz-range-thumb {
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .font-slider::-moz-range-track {
+            height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px;
+        }
+        .font-value {
+            text-align: center; margin-top: 14px;
+            font-size: 0.85rem; color: #8a7a68; letter-spacing: 1px;
+        }
+
+        @media (max-width: 700px) {
+            .page-wrapper { padding: 24px 14px 0; }
+            .container { padding: 24px 18px; }
+            h1 { font-size: 22px; letter-spacing: 2px; }
+            .schedule-table th,
+            .schedule-table td { padding: 10px 12px; font-size: 0.95rem; }
+            .time-col { width: 140px; font-size: 0.9rem; }
+            .top-title { font-size: 0.98rem; letter-spacing: 1px; }
+        }
+
+        @media (max-width: 480px) {
+            .schedule-table { font-size: 0.9rem; }
+            .schedule-table th,
+            .schedule-table td { padding: 8px 8px; }
+            .time-col { width: 120px; font-size: 0.85rem; }
+        }
+
+        @media print {
+            body { padding-top: 0; }
+            .top-bar, .font-panel-overlay, .font-panel { display: none !important; }
+            .page-wrapper { padding: 0; }
+            .container { box-shadow: none; border: none; }
+            .schedule-table tbody tr:hover { background-color: transparent; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <button class="back-btn" onclick="goBack()" title="返回">返回</button>
+        <div class="top-title">24小时昼夜祈祷流程</div>
+        <button class="font-btn" onclick="openFontPanel()" title="调整字号">Aa</button>
+    </div>
+
+    <div class="page-wrapper">
+        <div class="container" id="pageContent">
+            <h1>24小时昼夜祈祷流程</h1>
+
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>时间</th>
+                        <th>祈祷内容</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="time-col">04:00 – 07:00</td>
+                        <td class="prayer-col">早祷</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">07:00 – 09:00</td>
+                        <td class="prayer-col">耶稣接待的心玫瑰经</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">09:00 – 09:20</td>
+                        <td class="prayer-col">苦路玫瑰经</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">09:20 – 12:00</td>
+                        <td class="prayer-col">耶稣接待的心玫瑰经</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">12:00 – 12:10</td>
+                        <td class="prayer-col">慈悲串经</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">12:10 – 12:20</td>
+                        <td class="prayer-col">血泪玫瑰经</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">12:20 – 12:30</td>
+                        <td class="prayer-col">耶稣圣心圣母圣心经文</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">12:30 – 13:30</td>
+                        <td class="prayer-col">七苦玫瑰经</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">13:30 – 14:30</td>
+                        <td class="prayer-col">读圣经</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">14:30 – 14:40</td>
+                        <td class="prayer-col">慈悲串经</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">14:40 – 14:50</td>
+                        <td class="prayer-col">血泪玫瑰经</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">14:40 – 15:00</td>
+                        <td class="prayer-col">唱圣歌赞美</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">15:00 – 16:00</td>
+                        <td class="prayer-col">五大洲玫瑰经</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">16:00 – 16:20</td>
+                        <td class="prayer-col">耶稣至圣宝血经文</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">16:30 – 16:40</td>
+                        <td class="prayer-col">十五首</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">16:40 – 17:00</td>
+                        <td class="prayer-col">读圣经</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">17:00 – 19:00</td>
+                        <td class="prayer-col">争战玫瑰经</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">19:00 – 21:30</td>
+                        <td class="prayer-col">晚祷</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">21:30 – 22:30</td>
+                        <td class="prayer-col">朝拜耶稣圣心一小时</td>
+                    </tr>
+                    <tr class="overnight">
+                        <td class="time-col">22:30 – 次日 04:00</td>
+                        <td class="prayer-col">争战玫瑰经</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="note">
+                <strong>备注：</strong>时间不固定，可根据经文长短实际而定。
+            </div>
+        </div>
+    </div>
+
+    <!-- 字号面板 -->
+    <div class="font-panel-overlay" id="fontOverlay" onclick="closeFontPanel()"></div>
+    <div class="font-panel" id="fontPanel">
+        <div class="drag-handle" id="dragHandle"></div>
+        <div class="panel-header">
+            <span class="panel-title">调整文字大小</span>
+            <button class="panel-reset" onclick="resetFontSize()">恢复默认</button>
+        </div>
+        <div class="slider-row">
+            <span class="slider-label-small">A</span>
+            <input type="range" class="font-slider" id="fontSlider" min="12" max="28" step="1" value="16" oninput="onSliderChange(this.value)">
+            <span class="slider-label-large">A</span>
+        </div>
+        <div class="font-value" id="fontValue">当前字号：16px</div>
+    </div>
+
+    <script>
+        /* ========== 返回首页 ========== */
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        /* ========== 字号设置 ========== */
+        const MIN_FONT = 12, MAX_FONT = 28, DEFAULT_FONT = 16;
+        const STORAGE_KEY = 'prayerFontSize';
+        const fontPanel = document.getElementById('fontPanel');
+        const fontOverlay = document.getElementById('fontOverlay');
+        const fontSlider = document.getElementById('fontSlider');
+        const fontValue = document.getElementById('fontValue');
+        const pageContent = document.getElementById('pageContent');
+
+        function openFontPanel() {
+            fontPanel.classList.add('show');
+            fontOverlay.classList.add('show');
+        }
+        function closeFontPanel() {
+            fontPanel.classList.remove('show');
+            fontOverlay.classList.remove('show');
+        }
+        function applyFontSize(size) {
+            pageContent.style.zoom = size / DEFAULT_FONT;
+        }
+        function onSliderChange(value) {
+            const size = parseInt(value, 10);
+            applyFontSize(size);
+            fontValue.textContent = '当前字号：' + size + 'px';
+            try { localStorage.setItem(STORAGE_KEY, size); } catch (e) {}
+        }
+        function resetFontSize() {
+            fontSlider.value = DEFAULT_FONT;
+            onSliderChange(DEFAULT_FONT);
+        }
+
+        (function init() {
+            let saved = DEFAULT_FONT;
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const num = parseInt(stored, 10);
+                    if (!isNaN(num) && num >= MIN_FONT && num <= MAX_FONT) saved = num;
+                }
+            } catch (e) {}
+            fontSlider.value = saved;
+            applyFontSize(saved);
+            fontValue.textContent = '当前字号：' + saved + 'px';
+        })();
+
+        (function setupDragClose() {
+            const handle = document.getElementById('dragHandle');
+            let startY = 0, currentY = 0, isDragging = false;
+            function onStart(e) {
+                isDragging = true;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                currentY = startY;
+                fontPanel.style.transition = 'none';
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', onEnd);
+            }
+            function onMove(e) {
+                if (!isDragging) return;
+                currentY = e.touches ? e.touches[0].clientY : e.clientY;
+                const delta = currentY - startY;
+                if (delta > 0) fontPanel.style.transform = 'translateY(' + delta + 'px)';
+                if (e.cancelable) e.preventDefault();
+            }
+            function onEnd() {
+                if (!isDragging) return;
+                isDragging = false;
+                fontPanel.style.transition = '';
+                const delta = currentY - startY;
+                if (delta > 80) closeFontPanel();
+                fontPanel.style.transform = '';
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('touchend', onEnd);
+            }
+            handle.addEventListener('mousedown', onStart);
+            handle.addEventListener('touchstart', onStart, { passive: false });
+        })();
+    </script>
+	<script>
+	document.addEventListener('plusready', function() {
+	    // 监听系统返回键
+	    plus.key.addEventListener('backbutton', function() {
+	        // 直接跳回首页
+	        window.location.href = 'index.html'; 
+	        // 注意：如果经文在子文件夹里，要改成 '../index.html'
+	    }, false);
+	});
+	</script>
+</body>
+</html>
