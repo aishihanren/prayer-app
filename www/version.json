@@ -1,6 +1,6 @@
 {
   "version": "1.0.1",
-  "downloadUrl": "https://你的域名.pages.dev/app-release.apk",
+  "downloadUrl": "https://prayer-web.pages.dev/app-release.apk",
   "updateDesc": "1. 新增祈祷用书栏目\n2. 优化阅读体验",
   "forceUpdate": false
 }
