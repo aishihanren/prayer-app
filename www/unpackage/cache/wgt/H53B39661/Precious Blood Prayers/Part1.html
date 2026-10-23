@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第一部分 · 耶稣基督的宝血串经</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "SimSun", "Songti SC", "Times New Roman", "Georgia", serif;
+            font-size: 16px; background-color: #faf8f5; color: #2a241e;
+            padding-top: 56px; padding-bottom: 40px; overflow-x: hidden;
+        }
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; height: 56px;
+            background-color: #ffffff; border-bottom: 1px solid #e6e0d8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 12px; z-index: 1000;
+        }
+        .back-btn, .font-btn {
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; border-radius: 50%;
+            transition: background-color 0.2s; color: #4a3729;
+            font-family: inherit; flex-shrink: 0;
+        }
+        .back-btn { font-size: 1rem; }
+        .font-btn { font-size: 1.15rem; font-weight: 700; font-family: Georgia, serif; }
+        .back-btn:hover, .font-btn:hover { background-color: #f5efe8; }
+        .back-btn:active, .font-btn:active { background-color: #e6ddd2; }
+        .top-title {
+            flex: 1; text-align: center; font-size: 1.05rem; font-weight: 600;
+            color: #2c241b; letter-spacing: 2px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            padding: 0 8px;
+        }
+        .page-wrapper { display: flex; justify-content: center; padding: 36px 28px 0; }
+        .container {
+            background-color: #ffffff; padding: 42px 48px;
+            border-radius: 6px; box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+            border: 1px solid #e8e0d6; max-width: 920px; width: 100%;
+            transform-origin: top center;
+        }
+        h1 {
+            font-size: 26px; font-weight: 700; text-align: center;
+            margin-bottom: 8px; letter-spacing: 3px; color: #3b2f24;
+        }
+        h2 {
+            font-size: 1.4rem; font-weight: 700; margin: 38px 0 18px;
+            color: #3b2f24; border-left: 5px solid #b7a48b; padding-left: 12px;
+        }
+        h3 {
+            font-size: 1.15rem; font-weight: 700; margin: 28px 0 12px;
+            color: #a52a2a; border-bottom: 1px dashed #d9cfc2; padding-bottom: 8px;
+        }
+        p { margin: 10px 0; text-indent: 2em; text-align: justify; }
+        .noindent { text-indent: 0 !important; }
+        mark {
+            background-color: #fff6b0; padding: 0.15rem 0.35rem;
+            border-radius: 3px; color: #1e1e1e; font-weight: 600;
+        }
+        .mystery-title {
+            font-size: 1.2rem; font-weight: 700; color: #a52a2a;
+            margin: 30px 0 14px; border-bottom: 2px solid #e6ddd2;
+            padding-bottom: 8px; text-indent: 0;
+        }
+        .prayer-block {
+            background-color: #fdfcfb; padding: 16px 22px;
+            border-radius: 8px; border: 1px solid #efe9e1; margin: 16px 0;
+        }
+        .prayer-block p { margin: 6px 0; text-indent: 0; }
+        .scripture {
+            background-color: #f9f6f2; padding: 14px 20px;
+            border-radius: 8px; border-left: 4px solid #b7a48b;
+            margin: 14px 0; color: #3b332b;
+        }
+        .scripture p { text-indent: 0; margin: 6px 0; }
+        .petition {
+            background-color: #f5efe8; padding: 12px 20px;
+            border-radius: 8px; border-left: 5px solid #b7a48b;
+            margin: 14px 0; font-weight: 600; color: #4a3729; text-indent: 0;
+        }
+        .offering-block {
+            background-color: #f9f6f2; padding: 16px 22px;
+            border-radius: 8px; border: 1px solid #e6ddd2; margin: 16px 0;
+        }
+        .offering-block p { text-indent: 0; margin: 8px 0; }
+        .long-prayer {
+            background-color: #fdfcfb; padding: 18px 24px;
+            border-radius: 8px; border-left: 5px solid #b7a48b; margin: 18px 0;
+        }
+        .long-prayer p { text-indent: 2em; margin: 8px 0; }
+        .conclusion {
+            margin-top: 40px; padding: 24px 28px;
+            background-color: #f5efe8; border-radius: 8px;
+            border-left: 6px solid #b7a48b;
+        }
+        .conclusion p { text-indent: 2em; color: #2f2a24; line-height: 1.9; }
+        .sign-of-cross {
+            text-align: center; font-size: 1.15rem; font-weight: 600;
+            color: #4b3e30; margin-top: 28px; padding: 14px;
+            background-color: #f5efe8; border-radius: 8px;
+            border-left: 6px solid #b7a48b; text-indent: 0;
+        }
+        .font-panel-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.35);
+            z-index: 1998; opacity: 0; visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .font-panel-overlay.show { opacity: 1; visibility: visible; }
+        .font-panel {
+            position: fixed; left: 0; right: 0; bottom: 0;
+            background-color: #ffffff; border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+            z-index: 1999; padding: 8px 24px 32px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+            max-width: 920px; margin: 0 auto;
+        }
+        .font-panel.show { transform: translateY(0); }
+        .drag-handle {
+            width: 40px; height: 4px; background-color: #d9cfc2;
+            border-radius: 2px; margin: 0 auto 18px;
+            cursor: grab; touch-action: none;
+        }
+        .drag-handle:active { cursor: grabbing; }
+        .panel-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .panel-title { font-size: 1rem; font-weight: 600; color: #2c241b; letter-spacing: 1px; }
+        .panel-reset {
+            background: none; border: 1px solid #d9cfc2; color: #4a3729;
+            font-size: 0.85rem; padding: 5px 14px; border-radius: 20px;
+            cursor: pointer; font-family: inherit; transition: background-color 0.2s;
+        }
+        .panel-reset:hover { background-color: #f5efe8; }
+        .slider-row { display: flex; align-items: center; gap: 14px; }
+        .slider-label-small {
+            font-size: 0.85rem; color: #8a7a68; font-weight: 600;
+            flex-shrink: 0; width: 20px; text-align: center;
+        }
+        .slider-label-large {
+            font-size: 1.35rem; color: #8a7a68; font-weight: 700;
+            flex-shrink: 0; width: 24px; text-align: center;
+            font-family: Georgia, serif;
+        }
+        .font-slider {
+            -webkit-appearance: none; appearance: none; flex: 1; height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px; outline: none; cursor: pointer;
+        }
+        .font-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: border-color 0.2s, transform 0.1s;
+        }
+        .font-slider::-webkit-slider-thumb:hover { border-color: #a52a2a; }
+        .font-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+        .font-slider::-moz-range-thumb {
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .font-slider::-moz-range-track {
+            height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px;
+        }
+        .font-value {
+            text-align: center; margin-top: 14px;
+            font-size: 0.85rem; color: #8a7a68; letter-spacing: 1px;
+        }
+        @media (max-width: 700px) {
+            .page-wrapper { padding: 24px 14px 0; }
+            .container { padding: 24px 18px; }
+            h1 { font-size: 22px; letter-spacing: 2px; }
+            h2 { font-size: 1.2rem; }
+            h3 { font-size: 1.05rem; }
+            .prayer-block, .offering-block, .long-prayer { padding: 12px 14px; }
+            .scripture { padding: 12px 14px; }
+            .top-title { font-size: 0.98rem; letter-spacing: 1px; }
+        }
+        @media print {
+            body { padding-top: 0; }
+            .top-bar, .font-panel-overlay, .font-panel { display: none !important; }
+            .page-wrapper { padding: 0; }
+            .container { box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <button class="back-btn" onclick="goBack()" title="返回">返回</button>
+        <div class="top-title">第一部分 · 宝血串经</div>
+        <button class="font-btn" onclick="openFontPanel()" title="调整字号">Aa</button>
+    </div>
+
+    <div class="page-wrapper">
+        <div class="container" id="pageContent">
+            <h1>第一部分</h1>
+            <p class="noindent" style="text-align:center; font-weight:600; color:#4a3729;">🙏🏻 耶稣基督的宝血串经 🙏🏻 祈祷词</p>
+
+            <div class="prayer-block" style="text-align:center;">
+                <p class="noindent">耶稣基督最宝贵的圣血，</p>
+                <p class="noindent">耶稣基督最宝贵的圣血</p>
+                <p class="noindent">耶稣基督最宝贵的圣血，</p>
+                <p class="noindent">耶稣基督最宝贵的圣血</p>
+                <p class="noindent">最宝贵的圣血，拯救世人</p>
+            </div>
+
+            <h3><mark>[祈求圣神:]</mark></h3>
+            <div class="long-prayer">
+                <p>圣神啊，求祢降临，充满祢信徒的心灵，在我们心中点燃对祢的爱火！祢发出祢的神，我们便受造；祢使地面更换为新。主啊，祢曾藉着圣神之光教导信徒的心灵，求祢使我们藉着我们的主基督，靠着同一位圣神，在祂的安慰中，成为真正有智慧，有喜乐的人。阿们！</p>
+            </div>
+
+            <h3><mark>[信经:]</mark></h3>
+            <div class="long-prayer">
+                <p>我信全能的天主父，天地万物的创造者。我信父的唯一子，我们的主耶稣基督。我信他因圣神降孕，由童贞玛利亚诞生。我信他在比拉多执政时蒙难，被钉在十字架上，死而安葬。我信他下降阴府，第三日从死者中复活。我信他升了天，坐在全能天主父的右边。我信他要从天降来，审判生者死者。我信圣神，我信圣而公教会，诸圣的相通。我信罪过的赦免，我信肉身的复活，我信永恒的生命。阿们</p>
+            </div>
+
+            <div class="prayer-block">
+                <p class="noindent">（低头）</p>
+                <p class="noindent">我们主耶稣基督神圣之头部是神性智慧的圣殿，神性知识的圣幕，天地的阳光，</p>
+                <p class="noindent">愿从他的头部流出的宝血遮盖我们，从今时，直到永远！阿们！</p>
+            </div>
+
+            <div class="prayer-block">
+                <p class="noindent"><mark>[启]</mark>：愿耶稣基督最宝贵的圣血，</p>
+                <p class="noindent"><mark>[应]</mark>：医治耶稣至圣之心的伤口！</p>
+            </div>
+
+            <h3><mark>[天主经:]</mark></h3>
+            <div class="long-prayer">
+                <p>我们的天父，愿你的名受显扬，愿你的国来临，愿你的旨意奉行在人间，如同在天上。求你今天赏给我们日用的食粮，求你宽恕我们的罪过，如同我们宽恕别人一样。不要让我们陷于诱惑，但救我们免于凶恶。阿门</p>
+            </div>
+
+            <h3><mark>[圣母经:]</mark></h3>
+            <div class="long-prayer">
+                <p>（万福玛利亚，你充满圣宠，主与你同在。你在妇女中受赞颂，你的亲子耶稣同受赞颂。天主圣母玛利亚，求你现在和我们临终时，为我们罪人祈求天主，阿们！念三遍）</p>
+            </div>
+
+            <h3><mark>[圣三光荣颂:]</mark></h3>
+            <div class="long-prayer">
+                <p>愿光荣归于父，及子及圣神，起初如何，今日亦然，直到永远，阿们！</p>
+            </div>
+
+            <div class="prayer-block">
+                <p class="noindent">（低头）</p>
+                <p class="noindent">我们主耶稣基督神圣之头部是神性智慧的圣殿，神性知识的圣幕，天地的阳光，愿从祂的头部流出的宝血遮盖我们，从今时，直到永远！阿们！</p>
+            </div>
+
+            <!-- 第一个奥秘 -->
+            <div class="mystery-title"><mark>🙏🏻 第一个奥秘</mark></div>
+            <div class="petition">我们主耶稣的右手被钉（默想片时）</div>
+            <div class="long-prayer">
+                <p>（我亲爱的耶稣，我爱祢并崇敬祢神圣的伤口，因祢的功劳，我才得救赎。读五遍）</p>
+                <p>因你右手的圣伤，以及铁钉刺透祢右手的痛苦，愿从那里流出的宝血，拯救全世界的罪人，并使许多灵魂悔改，阿们！</p>
+                <p>愿耶稣基督最宝贵的圣血，医治耶稣至圣之心的伤口！</p>
+            </div>
+            <div class="prayer-block">
+                <p class="noindent"><mark>[天主经: 一遍]</mark></p>
+                <p class="noindent"><mark>[圣母经: 一遍]</mark></p>
+                <p class="noindent"><mark>[（愿耶稣基督的宝血，拯救我们和全人类。12遍）]</mark></p>
+                <p class="noindent"><mark>[圣三光荣颂: 一遍]</mark></p>
+                <p class="noindent">（低头）</p>
+                <p class="noindent">我们主耶稣基督神圣之头部是神性智慧的圣殿，神性知识的圣幕，天地的阳光，愿从祂的头部流出的宝血遮盖我们，从今时，直到永远！阿们！</p>
+            </div>
+
+            <!-- 第二个奥秘 -->
+            <div class="mystery-title"><mark>🙏🏻 第二个奥秘</mark></div>
+            <div class="petition">我们主耶稣的左手被钉（默想片时）</div>
+            <div class="long-prayer">
+                <p>（我亲爱的耶稣，我爱祢并崇敬祢神圣的伤口，因祢的功劳，我才得救赎。读五遍）</p>
+                <p>因祢左手的圣伤，以及铁钉刺透祢左手的痛苦，愿从那里流出的宝血，拯救炼狱里的灵魂，保护临终之人免受地狱邪灵的攻击。阿们！</p>
+                <p>愿耶稣基督最宝贵的圣血，医治耶稣至圣之心的伤口</p>
+            </div>
+            <div class="prayer-block">
+                <p class="noindent"><mark>[天主经：一遍]</mark></p>
+                <p class="noindent"><mark>[圣母经: 一遍]</mark></p>
+                <p class="noindent"><mark>[（愿耶稣基督的宝血，拯救我们和全人类。读12遍）]</mark></p>
+                <p class="noindent"><mark>[圣三光荣颂: 一遍]</mark></p>
+                <p class="noindent">（低头）</p>
+                <p class="noindent">我们主耶稣基督神圣之头部是神性智慧的圣殿，神性知识的圣幕，天地的阳光，愿从祂的头部流出的宝血遮盖我们，从今时，直到永远！阿们！</p>
+            </div>
+
+            <!-- 第三个奥秘 -->
+            <div class="mystery-title"><mark>🙏🏻 第三个奥秘</mark></div>
+            <div class="petition">我们主耶稣的右脚被钉（默想片时）</div>
+            <div class="long-prayer">
+                <p>（我亲爱的耶稣，我爱祢并崇敬祢神圣的伤口，因祢的功劳，我才得救赎。读五遍）</p>
+                <p>因祢右脚的圣伤，以及铁钉刺透祢右脚的痛苦，愿从那里流出的宝血，覆庇使徒教会的根基，抵挡黑暗国度和恶人的计谋，阿们！</p>
+                <p>愿耶稣基督最宝贵的圣血，医治耶稣至圣之心的伤口！</p>
+            </div>
+            <div class="prayer-block">
+                <p class="noindent"><mark>[天主经:一遍]</mark></p>
+                <p class="noindent"><mark>[圣母经: 一遍]</mark></p>
+                <p class="noindent"><mark>[（愿耶稣基督的宝血，拯救我们和全人类。12遍）]</mark></p>
+                <p class="noindent"><mark>[圣三光荣颂:一遍]</mark></p>
+                <p class="noindent">（低头）</p>
+                <p class="noindent">我们主耶稣基督神圣之头部是神性智慧的圣殿，神性知识的圣幕，天地的阳光，愿从祂的头部流出的宝血遮盖我们，从今时，直到永远！阿们！</p>
+            </div>
+
+            <!-- 第四个奥秘 -->
+            <div class="mystery-title"><mark>🙏🏻 第四个奥秘</mark></div>
+            <div class="petition">我们主耶稣的左脚被钉（默想片时）</div>
+            <div class="long-prayer">
+                <p>（我亲爱的耶稣，我爱祢并崇敬祢神圣的伤口，因祢的功劳，我才得救赎。读五遍）</p>
+                <p>因祢左脚的圣伤，以及铁钉刺透祢左脚的痛苦，愿从那里流出的宝血，在我们所行的一切事上保护我们，以抵挡邪灵及其随从的诡计和攻击。阿们！</p>
+                <p>愿耶稣基督最宝贵的圣血，医治耶稣至圣之心的伤口！</p>
+            </div>
+            <div class="prayer-block">
+                <p class="noindent"><mark>[天主经:一遍]</mark></p>
+                <p class="noindent"><mark>[圣母经: 一遍]</mark></p>
+                <p class="noindent"><mark>[（愿耶稣基督的宝血，拯救我们和全人类。12遍）]</mark></p>
+                <p class="noindent"><mark>[圣三光荣颂:一遍]</mark></p>
+                <p class="noindent">（低头）我们主耶稣基督神圣之头部是神性智慧的圣殿，神性知识的圣幕，天地的阳光，愿从祂的头部流出的宝血遮盖我们，从今时，直到永远！阿们！</p>
+            </div>
+
+            <!-- 第五个奥秘 -->
+            <div class="mystery-title"><mark>🙏🏻 第五个奥秘</mark></div>
+            <div class="petition">我们主耶稣的肋旁被刺透（默想片时）</div>
+            <div class="long-prayer">
+                <p>（我亲爱的耶稣，我爱祢并崇敬祢神圣的伤口，因祢的功劳，我才得救赎。读五遍）</p>
+                <p>因祢肋旁的圣伤，以及长矛刺透祢肋旁的痛苦，愿从那里流出的宝血和水，医治病人，使死人复活，解决我们现在的问题，教导我们走圣洁光明的道路，以获得永恒的荣耀。阿们！</p>
+            </div>
+            <div class="prayer-block">
+                <p class="noindent"><mark>[天主经:一遍]</mark></p>
+                <p class="noindent"><mark>[圣母经: 一遍]</mark></p>
+                <p class="noindent"><mark>[愿耶稣基督最宝贵的圣血，医治耶稣至圣之心的伤口！]</mark></p>
+                <p class="noindent"><mark>[（愿耶稣基督的宝血，拯救我们和全人类。12遍）]</mark></p>
+                <p class="noindent"><mark>[圣三光荣颂: 一遍]</mark></p>
+                <p class="noindent">（低头）</p>
+                <p class="noindent">我们主耶稣基督神圣之头部是神性智慧的圣殿，神性知识的圣幕，天地的阳光，愿从祂的头部流出的宝血遮盖我们，从今时，直到永远！阿们！</p>
+                <p class="noindent">（愿耶稣基督最宝贵的圣血，医治耶稣至圣之心的伤口！三遍）</p>
+            </div>
+
+            <h3><mark>❤️ 又圣母经:</mark></h3>
+            <div class="long-prayer">
+                <p>万福母后，仁慈的母亲，我们的生命，我们的甘饴，我们的希望。厄娃子孙，在此尘世向您哀呼。在这流泪之谷，向您叹息哭求。我们的主保，求您回顾，怜恤我们，一旦流亡期满，使我们得见您的圣子，万民称颂的耶稣。童贞玛利亚，您是宽仁的，慈悲的，甘饴的天主圣母，请为我们祈求。使我们承受基督的应许。阿们！</p>
+            </div>
+
+            <h3><mark>🙏🏻 让我们祈祷</mark></h3>
+            <div class="long-prayer">
+                <p>耶稣基督最宝贵的圣血，因祢立了永约，给人类带来了和平，我们尊崇祢，敬拜祢，赞美祢，</p>
+                <p>愿耶稣基督最宝贵的圣血，医治耶稣至圣之心的伤口，安慰坐在宝座上的全能父神，洗去普世之人的罪孽，愿万人都崇敬祢！</p>
+                <p>宝血啊，求祢施怜悯。阿们！</p>
+                <p><mark>[启]</mark>耶稣的至圣之心，<mark>[应]</mark>请怜恤我们！</p>
+                <p><mark>[启]</mark>圣母玛利亚的无玷之心，<mark>[应]</mark>请为我们祈祷！</p>
+                <p><mark>[启]</mark>圣若瑟——圣母的净配，<mark>[应]</mark>请为我们祈祷！</p>
+                <p><mark>[启]</mark>圣伯铎禄和圣保禄，<mark>[应]</mark>请为我们祈祷！</p>
+                <p><mark>[启]</mark>十字架脚下的圣若望，<mark>[应]</mark>请为我们祈祷！</p>
+                <p><mark>[启]</mark>圣徒马达肋纳的玛利亚，<mark>[应]</mark>请为我们祈祷！</p>
+                <p><mark>[启]</mark>天上所有的祈祷勇士和代祷者们，<mark>[应]</mark>请为我们祈祷！</p>
+                <p><mark>[启]</mark>我们主伟大的众圣徒，<mark>[应]</mark>请为我们祈祷！</p>
+                <p><mark>[启]</mark>天上的诸军，<mark>[应]</mark>请为我们祈祷！</p>
+                <p><mark>[启]</mark>圣母玛利亚的军团，<mark>[应]</mark>请为我们祈祷！</p>
+            </div>
+
+            <h3>耶稣基督的宝血连祷颂词：</h3>
+            <div class="long-prayer">
+                <p><mark>[启]</mark>主啊，求祢怜恤我们！<mark>[应]</mark>主啊，求祢怜恤我们！</p>
+                <p><mark>[启]</mark>基督，求祢怜恤我们！<mark>[应]</mark>基督，求祢怜恤我们！</p>
+                <p><mark>[启]</mark>主啊，求祢怜恤我们！<mark>[应]</mark>主啊，求祢怜恤我们！</p>
+                <p><mark>[启]</mark>基督，求祢垂听我们！<mark>[应]</mark>基督，求祢充满恩典垂听我们！</p>
+                <p><mark>[启]</mark>天主求祢怜恤我们！<mark>[应]</mark>世人的救赎主，天主的独生子，求祢怜恤我们！</p>
+                <p><mark>[启]</mark>主——圣神求祢怜恤我们！<mark>[应]</mark>三位一体的圣洁独一之主，求祢怜恤我们！</p>
+                <p><mark>[启]</mark>耶稣基督最宝贵的圣血，救恩的宝血<mark>[应]</mark>求祢遮盖我们和全世界！</p>
+                <p><mark>[启]</mark>耶稣基督无限量的宝血，<mark>[应]</mark>求祢释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，充满了圣洁和慈悲，<mark>[应]</mark>求祢释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，我们的力量和能力，<mark>[应]</mark>求祢释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，我们的力量和能力，<mark>[应]</mark>求祢释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，永恒之约，<mark>[应]</mark>求你释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，基督信仰的根基，<mark>[应]</mark>求祢释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，主的军装，<mark>[应]</mark>求祢释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，<mark>[应]</mark>求祢释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，上主的慈爱，<mark>[应]</mark>求祢释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，魔鬼的克星，<mark>[应]</mark>祢释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，被捆绑之人的帮助，<mark>[应]</mark>求祢释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，神圣之杯，<mark>[应]</mark>求祢释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，基督徒的能力，<mark>[应]</mark>求祢释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，普世教会城墙的守护者，<mark>[应]</mark>求祢释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，基督徒真实的信仰，<mark>[应]</mark>求祢释放我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，医治的宝血，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，恩膏的宝血，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，上主儿女的胆量，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，基督徒勇士的元帅，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，复活的宝血，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，天使的饮料，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，天父的安慰，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，圣神的能力，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，外邦人的割礼，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，世界的和平，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，天地的阳光，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，天堂的彩虹，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，无辜儿童的盼望，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，我们心中的上主之道，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，天上的武器，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，神性的智慧，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，世界的根基，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督的宝血，天父的怜悯，<mark>[应]</mark>求祢拯救我们！</p>
+                <p><mark>[启]</mark>耶稣基督最宝贵的圣血啊，<mark>[应]</mark>求祢洗净世人的罪孽！</p>
+                <p><mark>[启]</mark>耶稣基督最宝贵的圣血啊，<mark>[应]</mark>求祢炼净世人！</p>
+                <p><mark>[启]</mark>耶稣基督最宝贵的圣血啊，<mark>[应]</mark>求祢指教我们如何安慰耶稣！</p>
+            </div>
+
+            <h3><mark>🙏🏻 让我们祈祷:</mark></h3>
+            <div class="long-prayer">
+                <p>我们救恩的宝血，我们相信祢，仰望祢，倚靠祢。我们恳求祢释放被地狱之魔所辖制的世人。求祢保护临终之人免受邪魔的攻击，并带领他们进入祢永恒的荣耀。求祢怜悯全世界，赐给我们力量，去敬拜和安慰耶稣的圣心。啊，慈悲的宝血，我们尊崇祢！阿们！</p>
+            </div>
+            <div class="prayer-block">
+                <p class="noindent"><mark>[（愿耶稣基督最宝贵的圣血，医治耶稣至圣之心的伤口！ 3遍）]</mark></p>
+            </div>
+
+            <h3>圣歌：<mark>[（耶稣的宝血，耶稣的宝血，耶稣的宝血，遮盖我们。三遍）]</mark></h3>
+            <div class="long-prayer">
+                <p>我们尊崇耶稣的宝血</p>
+                <p>我们尊崇耶稣基督的宝血</p>
+                <p>我们尊崇祢，耶稣的宝血</p>
+                <p>我们尊崇祢，耶稣基督的宝血</p>
+                <p>我们尊崇耶稣的宝血</p>
+                <p>我们尊崇耶稣基督的宝血</p>
+            </div>
+
+            <h3><mark>🌹 专心仰望耶稣基督的宝血</mark></h3>
+            <div class="long-prayer">
+                <p>慈悲的救主，我深知自己一无是处，而祢至高无上，我俯伏在祢脚前，感谢祢。因向我这个忘恩负义的受造物显明了祢施恩的诸多凭据，祢用祢的宝血救我脱离了撒旦毁灭性的权势，我为此特别感谢祢。啊，我最亲爱的耶稣，在我挚爱的母亲玛利亚面前，我的守护天使面前，我的守护圣徒面前以及天上的众圣徒面前，我怀着一颗真诚之心，甘心乐意把自己交托于祢的宝血，祢的宝血已经从罪恶、死亡和地狱中救赎了世人，我向祢承诺，在祢恩典的扶助下，我愿意竭尽全力让别人专心仰望祢的宝血，即我们救恩的赎价，好使人人都尊崇并荣耀祢可敬可爱的宝血。我愿意以此来补偿我对祢慈爱的宝血表现的不忠，也为世人对他们救恩所付的宝贵代价表现的诸多亵渎行为做补偿。啊，至圣的宝血，甚愿我自己的罪、我的冷漠以及我过去一切不尊敬祢的行为，能被涂抹掉。我最亲爱的主耶稣，我向祢的宝血献上祢至圣的母亲、祢忠心的门徒以及众圣徒所献上的爱戴，尊崇和敬拜。我恳求祢忘记我从前的不信和冷漠，并饶恕所有得罪祢的人。啊，神圣的救主，请把祢的宝血洒在我和众人的身上！啊，十字架的大爱，让我们从现在开始，全心爱祢，按祢所配得的，敬重我们救恩的赎价。阿们！</p>
+                <p>啊，天主圣母玛利亚，我们的好妈妈，我们奔向您庇护的怀抱！因你是承载天父真福谦逊恩宠之人，请为我们代祷，荣耀万福圣母，惟愿您救拔我们脱离，从亚当厄娃骄傲之根来的一切罪恶的危险，阿们！</p>
+            </div>
+
+            <h3><mark>🙏🏻 致这个祈祷的所有受益者 🌹</mark></h3>
+            <div class="prayer-block">
+                <p class="noindent"><mark>[天主经:]</mark></p>
+                <p class="noindent"><mark>[圣母经:]</mark></p>
+                <p class="noindent"><mark>[圣三光荣颂:]</mark></p>
+                <p class="noindent">用以上这三个祷文祈祷🙏🏻是最有能力和果效的祈祷🙏🏻</p>
+            </div>
+
+            <div class="scripture">
+                <p>主耶稣说："要谦卑地接受主的旨意，你们必到达终点。要将你们的家人交托于我的宝血，我必拯救他们。我应许在大灾难来临之前，使他们悔改回转，那时必有平安与慈爱。我劝你们，要敬拜、尊崇我的宝血。</p>
+                <p>"凡是交托给我的罪人，我必让我的宝血洒在他们每一个人的心上。我劝你们，要借着我的宝血，把他们托付给我并为他们祈祷，我必摧毁你们家里所有的邪恶。我已经听见了你们的祈祷。要欢喜快乐，因为你们的祈求已蒙应允。</p>
+                <p>"我的孩子们，当时时作见证，称颂祂的美德，因祂爱你们……倘若你们中间有人爱我，那就让他来安慰我，为还没有悔改的罪人祈祷……今后的时日既伟大又神圣。……你们的敬拜既伟大又神圣。愿你们存敬畏和尊荣的心来敬拜你们的上主。"阿们！</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="font-panel-overlay" id="fontOverlay" onclick="closeFontPanel()"></div>
+    <div class="font-panel" id="fontPanel">
+        <div class="drag-handle" id="dragHandle"></div>
+        <div class="panel-header">
+            <span class="panel-title">调整文字大小</span>
+            <button class="panel-reset" onclick="resetFontSize()">恢复默认</button>
+        </div>
+        <div class="slider-row">
+            <span class="slider-label-small">A</span>
+            <input type="range" class="font-slider" id="fontSlider" min="12" max="28" step="1" value="16" oninput="onSliderChange(this.value)">
+            <span class="slider-label-large">A</span>
+        </div>
+        <div class="font-value" id="fontValue">当前字号：16px</div>
+    </div>
+
+    <script>
+        function goBack() {
+            if (window.history.length > 1) { window.history.back(); }
+            else { window.location.href = 'index.html'; }
+        }
+        const MIN_FONT = 12, MAX_FONT = 28, DEFAULT_FONT = 16;
+        const STORAGE_KEY = 'prayerFontSize';
+        const fontPanel = document.getElementById('fontPanel');
+        const fontOverlay = document.getElementById('fontOverlay');
+        const fontSlider = document.getElementById('fontSlider');
+        const fontValue = document.getElementById('fontValue');
+        const pageContent = document.getElementById('pageContent');
+        function openFontPanel() { fontPanel.classList.add('show'); fontOverlay.classList.add('show'); }
+        function closeFontPanel() { fontPanel.classList.remove('show'); fontOverlay.classList.remove('show'); }
+        function applyFontSize(size) { pageContent.style.zoom = size / DEFAULT_FONT; }
+        function onSliderChange(value) {
+            const size = parseInt(value, 10);
+            applyFontSize(size);
+            fontValue.textContent = '当前字号：' + size + 'px';
+            try { localStorage.setItem(STORAGE_KEY, size); } catch (e) {}
+        }
+        function resetFontSize() { fontSlider.value = DEFAULT_FONT; onSliderChange(DEFAULT_FONT); }
+        (function init() {
+            let saved = DEFAULT_FONT;
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const num = parseInt(stored, 10);
+                    if (!isNaN(num) && num >= MIN_FONT && num <= MAX_FONT) saved = num;
+                }
+            } catch (e) {}
+            fontSlider.value = saved; applyFontSize(saved);
+            fontValue.textContent = '当前字号：' + saved + 'px';
+        })();
+        (function setupDragClose() {
+            const handle = document.getElementById('dragHandle');
+            let startY = 0, currentY = 0, isDragging = false;
+            function onStart(e) {
+                isDragging = true;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                currentY = startY; fontPanel.style.transition = 'none';
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', onEnd);
+            }
+            function onMove(e) {
+                if (!isDragging) return;
+                currentY = e.touches ? e.touches[0].clientY : e.clientY;
+                const delta = currentY - startY;
+                if (delta > 0) fontPanel.style.transform = 'translateY(' + delta + 'px)';
+                if (e.cancelable) e.preventDefault();
+            }
+            function onEnd() {
+                if (!isDragging) return;
+                isDragging = false; fontPanel.style.transition = '';
+                const delta = currentY - startY;
+                if (delta > 80) closeFontPanel();
+                fontPanel.style.transform = '';
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('touchend', onEnd);
+            }
+            handle.addEventListener('mousedown', onStart);
+            handle.addEventListener('touchstart', onStart, { passive: false });
+        })();
+    </script>
+	<script>
+	document.addEventListener('plusready', function() {
+	    // 监听系统返回键
+	    plus.key.addEventListener('backbutton', function() {
+	        // 直接跳回首页
+	        window.location.href = '../index.html'; 
+	        // 注意：如果经文在子文件夹里，要改成 '../index.html'
+	    }, false);
+	});
+	</script>
+</body>
+</html>

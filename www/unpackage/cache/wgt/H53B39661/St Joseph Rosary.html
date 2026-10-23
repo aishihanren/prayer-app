@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圣若瑟玫瑰经</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "SimSun", "Songti SC", "Times New Roman", "Georgia", serif;
+            font-size: 16px; background-color: #faf8f5; color: #2a241e;
+            padding-top: 56px; padding-bottom: 40px; overflow-x: hidden;
+        }
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; height: 56px;
+            background-color: #ffffff; border-bottom: 1px solid #e6e0d8;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 12px; z-index: 1000;
+        }
+        .back-btn, .font-btn {
+            width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; border-radius: 50%;
+            transition: background-color 0.2s; color: #4a3729; font-family: inherit; flex-shrink: 0;
+        }
+        .back-btn { font-size: 1rem; }
+        .font-btn { font-size: 1.15rem; font-weight: 700; font-family: Georgia, serif; }
+        .back-btn:hover, .font-btn:hover { background-color: #f5efe8; }
+        .back-btn:active, .font-btn:active { background-color: #e6ddd2; }
+        .top-title {
+            flex: 1; text-align: center; font-size: 1.05rem; font-weight: 600;
+            color: #2c241b; letter-spacing: 2px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 8px;
+        }
+        .page-wrapper { display: flex; justify-content: center; padding: 36px 28px 0; }
+        .container {
+            background-color: #ffffff; padding: 42px 48px;
+            border-radius: 6px; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e8e0d6; max-width: 880px; width: 100%;
+            transform-origin: top center;
+        }
+        h1 {
+            font-size: 26px; font-weight: 700; text-align: center;
+            margin-bottom: 8px; letter-spacing: 3px; color: #3b2f24;
+        }
+        .en-title {
+            text-align: center; font-size: 1rem; color: #8a7a68;
+            letter-spacing: 1px; margin-bottom: 10px;
+        }
+        .note-inner {
+            text-align: center; font-size: 0.92rem; color: #a0937f;
+            margin-bottom: 30px; padding-bottom: 20px;
+            border-bottom: 2px solid #e6ddd2;
+        }
+        h2 {
+            font-size: 1.4rem; font-weight: 700; margin: 38px 0 18px;
+            color: #3b2f24; border-left: 5px solid #b7a48b; padding-left: 12px;
+        }
+        h3 {
+            font-size: 1.15rem; font-weight: 700; margin: 28px 0 12px;
+            color: #a52a2a; border-bottom: 1px dashed #d9cfc2; padding-bottom: 8px;
+        }
+        .vertical-title {
+            text-align: center; letter-spacing: 0.4em; margin: 26px 0 12px;
+            color: #a52a2a; font-size: 1.15rem; font-weight: 700;
+            border: none; padding-bottom: 0;
+        }
+        p { margin: 10px 0; text-indent: 2em; text-align: justify; }
+        .noindent { text-indent: 0 !important; }
+        .noindent1 { text-indent: 0 !important; color: #a52a2a; }
+        .noindent-bc {
+            text-indent: 0 !important; color: #a52a2a;
+            background-color: #fff6b0; padding: 0.1rem 0.35rem;
+            border-radius: 3px; font-weight: 500;
+        }
+        .noindent-bc1 {
+            text-indent: 0 !important; background-color: #d4f0d4;
+            padding: 0.1rem 0.35rem; border-radius: 3px; font-weight: 500;
+        }
+        .intention {
+            background-color: #fdfcfb; padding: 14px 20px;
+            border-radius: 8px; border-left: 4px solid #b7a48b; margin: 16px 0;
+        }
+        .intention p { margin: 6px 0; }
+        .meditation-block {
+            background-color: #f9f6f2; padding: 16px 22px;
+            border-radius: 8px; border: 1px solid #e6ddd2; margin: 14px 0;
+        }
+        .meditation-block p { margin: 8px 0; }
+        .joseph-prayer { margin: 14px 0; }
+        .joseph-prayer p { margin: 8px 0; text-indent: 0; }
+        .mystery-title {
+            font-size: 1.15rem; font-weight: 700; color: #a52a2a;
+            margin: 28px 0 12px; border-bottom: 1px dashed #d9cfc2; padding-bottom: 8px;
+        }
+        .conclusion {
+            margin-top: 40px; padding: 24px 28px;
+            background-color: #f5efe8; border-radius: 8px; border-left: 6px solid #b7a48b;
+        }
+        .conclusion p { text-indent: 2em; color: #2f2a24; line-height: 1.9; }
+        .jesus-prayer {
+            background-color: #fdfcfb; padding: 14px 20px;
+            border-radius: 8px; border: 1px solid #efe9e1;
+            margin: 16px 0; text-indent: 0;
+        }
+        .font-panel-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.35);
+            z-index: 1998; opacity: 0; visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .font-panel-overlay.show { opacity: 1; visibility: visible; }
+        .font-panel {
+            position: fixed; left: 0; right: 0; bottom: 0;
+            background-color: #ffffff; border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
+            z-index: 1999; padding: 8px 24px 32px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+            max-width: 880px; margin: 0 auto;
+        }
+        .font-panel.show { transform: translateY(0); }
+        .drag-handle {
+            width: 40px; height: 4px; background-color: #d9cfc2;
+            border-radius: 2px; margin: 0 auto 18px;
+            cursor: grab; touch-action: none;
+        }
+        .drag-handle:active { cursor: grabbing; }
+        .panel-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .panel-title { font-size: 1rem; font-weight: 600; color: #2c241b; letter-spacing: 1px; }
+        .panel-reset {
+            background: none; border: 1px solid #d9cfc2; color: #4a3729;
+            font-size: 0.85rem; padding: 5px 14px; border-radius: 20px;
+            cursor: pointer; font-family: inherit; transition: background-color 0.2s;
+        }
+        .panel-reset:hover { background-color: #f5efe8; }
+        .slider-row { display: flex; align-items: center; gap: 14px; }
+        .slider-label-small {
+            font-size: 0.85rem; color: #8a7a68; font-weight: 600;
+            flex-shrink: 0; width: 20px; text-align: center;
+        }
+        .slider-label-large {
+            font-size: 1.35rem; color: #8a7a68; font-weight: 700;
+            flex-shrink: 0; width: 24px; text-align: center;
+            font-family: Georgia, serif;
+        }
+        .font-slider {
+            -webkit-appearance: none; appearance: none; flex: 1; height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px; outline: none; cursor: pointer;
+        }
+        .font-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: border-color 0.2s, transform 0.1s;
+        }
+        .font-slider::-webkit-slider-thumb:hover { border-color: #a52a2a; }
+        .font-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+        .font-slider::-moz-range-thumb {
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .font-slider::-moz-range-track {
+            height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px;
+        }
+        .font-value {
+            text-align: center; margin-top: 14px;
+            font-size: 0.85rem; color: #8a7a68; letter-spacing: 1px;
+        }
+        @media (max-width: 700px) {
+            .page-wrapper { padding: 24px 14px 0; }
+            .container { padding: 24px 18px; }
+            h1 { font-size: 22px; letter-spacing: 2px; }
+            h2 { font-size: 1.2rem; }
+            h3 { font-size: 1.05rem; }
+            .vertical-title { font-size: 1.05rem; letter-spacing: 0.3em; }
+            .meditation-block { padding: 12px 14px; }
+            .intention { padding: 12px 14px; }
+            .top-title { font-size: 0.98rem; letter-spacing: 1px; }
+        }
+        @media print {
+            body { padding-top: 0; }
+            .top-bar, .font-panel-overlay, .font-panel { display: none !important; }
+            .page-wrapper { padding: 0; }
+            .container { box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <button class="back-btn" onclick="goBack()" title="返回">返回</button>
+        <div class="top-title">圣若瑟玫瑰经</div>
+        <button class="font-btn" onclick="openFontPanel()" title="调整字号">Aa</button>
+    </div>
+
+    <div class="page-wrapper">
+        <div class="container" id="pageContent">
+            <h1>圣若瑟玫瑰经</h1>
+            <div class="en-title">Rosary of St Joseph</div>
+            <div class="note-inner">（热心敬礼，内部使用）</div>
+
+            <h3 class="vertical-title">信 经</h3>
+            <div class="meditation-block">
+                <p>我信全能的天主父，天地万物的创造者。</p>
+                <p>我信父的唯一子，我们的主耶稣基督。</p>
+                <p>我信祂因圣神降孕，由童贞玛利亚诞生。</p>
+                <p>我信祂在比拉多执政时蒙难，被钉在十字架上，死而安葬。</p>
+                <p>我信祂下降阴府，第三日从死者中复活。</p>
+                <p>我信祂升了天，坐在全能天主父的右边。</p>
+                <p>我信祂要从天降来，审判生者死者。</p>
+                <p>我信圣神，我信圣而公教会，诸圣的相通，</p>
+                <p>我信罪过的赦免，肉身的复活，永恒的生命。阿们。</p>
+            </div>
+
+            <h3 class="vertical-title">天 主 经</h3>
+            <div class="meditation-block">
+                <p>我们的天父，愿祢的名受显扬；</p>
+                <p>愿祢的国来临；愿祢的旨意奉行在人间，如同在天上。</p>
+                <p>求祢今天赏给我们日用的食粮；</p>
+                <p>求祢宽恕我们的罪过，</p>
+                <p>如同我们宽恕别人一样；</p>
+                <p>不要让我们陷于诱惑；</p>
+                <p>但救我们免于凶恶。阿们。</p>
+            </div>
+
+            <h3>圣母经</h3>
+            <div class="meditation-block">
+                <p>万福玛利亚，妳充满圣宠！主与妳同在。</p>
+                <p>妳在妇女中受赞颂，妳的亲子耶稣同受赞颂。</p>
+                <p>天主圣母玛利亚，求妳现在和我们临终时，</p>
+                <p>为我们罪人祈求天主。</p>
+                <p>阿们。（三遍）</p>
+            </div>
+
+            <h3 class="vertical-title">圣三光荣经</h3>
+            <div class="meditation-block">
+                <p>愿光荣归于父、及子、及圣神。</p>
+                <p>起初如何，今日亦然，直到永远。</p>
+                <p>阿们。</p>
+            </div>
+
+            <h3>第一端：若瑟娶玛利亚为妻 (玛 1:18)</h3>
+            <div class="meditation-block">
+                <p>耶稣基督的诞生是这样的：</p>
+                <p>祂的母亲玛利亚许配于若瑟后，在同居前，她因圣神有孕的事己显示出来。</p>
+            </div>
+            <div class="intention">
+                <p class="noindent">请为圣教会祈祷：</p>
+                <p>求主护佑普世教会，赐神职人员体康灵健、有活力；团体间常以兄弟之情彼此担待、彼此欣赏、互相尊重、精诚团结，使能成为地上的盐，世界的光，在人前为主作证。<span class="noindent1"><strong>（可更换意向）</strong></span></p>
+            </div>
+            <h3 class="vertical-title">天 主 经</h3>
+            <div class="meditation-block">
+                <p>我们的天父，愿祢的名受显扬；</p>
+                <p>愿祢的国来临；愿祢的旨意奉行在人间，如同在天上。</p>
+                <p>求祢今天赏给我们日用的食粮；</p>
+                <p>求祢宽恕我们的罪过，</p>
+                <p>如同我们宽恕别人一样；</p>
+                <p>不要让我们陷于诱惑；</p>
+                <p>但救我们免于凶恶。阿们。（一遍）</p>
+            </div>
+            <h3 class="vertical-title">圣若瑟经（十遍）</h3>
+            <div class="joseph-prayer">
+                <p><span class="noindent-bc"><strong>荣福大圣若瑟，你是圣祖之辉耀，达味之荣裔，圣母之净配，基督之勤卫。</strong></span></p>
+                <p><span class="noindent-bc1"><strong>大圣若瑟，你是圣家之长，教会主保，求你现在和我们临终时，为我们罪人祈求天主。阿们。</strong></span></p>
+            </div>
+            <h3 class="vertical-title">圣三光荣经</h3>
+            <div class="meditation-block">
+                <p>愿光荣归于父、及子、及圣神。</p>
+                <p>起初如何，今日亦然，直到永远。</p>
+                <p>阿们。</p>
+            </div>
+            <div class="jesus-prayer">
+                <p><span class="noindent-bc"><strong>吾主耶稣，请宽赦我们的罪过，救我们于永火之中，求你把众人的灵魂，特别是那些需要你怜悯的灵魂，领到天国里去！</strong></span></p>
+            </div>
+
+            <h3>第二端：圣若瑟领报 （玛 1:19‑21）</h3>
+            <div class="meditation-block">
+                <p>她的丈夫若瑟，因是义人，不愿公开羞辱她，有意暗暗的休退她。当他在思虑这事时，看，在梦中上主的天使显现给他说："达味之子若瑟，不要怕娶你的妻子玛利亚，因为那在她内受生的，是出于圣神。她要生一个儿子，你要给祂起名叫耶稣，因为他要把自己的民族，由他们的罪恶中拯救出来。"</p>
+            </div>
+            <div class="intention">
+                <p class="noindent">请为家庭祈祷：</p>
+                <p>求主赐家长们能效法圣若瑟的榜样，善尽家庭责任，身体力行，引领家人的心灵归向圣洁与良善，度充实的信仰生活；也求主护佑困苦家庭，早日走出黑暗，获得慰藉。<span class="noindent1"><strong>（可更换意向）</strong></span></p>
+            </div>
+            <h3 class="vertical-title">天 主 经</h3>
+            <div class="meditation-block">
+                <p>我们的天父，愿祢的名受显扬；</p>
+                <p>愿祢的国来临；愿祢的旨意奉行在人间，如同在天上。</p>
+                <p>求祢今天赏给我们日用的食粮；</p>
+                <p>求祢宽恕我们的罪过，</p>
+                <p>如同我们宽恕别人一样；</p>
+                <p>不要让我们陷于诱惑；</p>
+                <p>但救我们免于凶恶。阿们。（一遍）</p>
+            </div>
+            <h3 class="vertical-title">圣若瑟经（十遍）</h3>
+            <div class="joseph-prayer">
+                <p><span class="noindent-bc"><strong>荣福大圣若瑟，你是圣祖之辉耀，达味之荣裔，圣母之净配，基督之勤卫。</strong></span></p>
+                <p><span class="noindent-bc1"><strong>大圣若瑟，你是圣家之长，教会主保，求你现在和我们临终时，为我们罪人祈求天主。阿们。</strong></span></p>
+            </div>
+            <h3 class="vertical-title">圣三光荣经</h3>
+            <div class="meditation-block">
+                <p>愿光荣归于父、及子、及圣神。</p>
+                <p>起初如何，今日亦然，直到永远。</p>
+                <p>阿们。</p>
+            </div>
+            <div class="jesus-prayer">
+                <p><span class="noindent-bc"><strong>吾主耶稣，请宽赦我们的罪过，救我们于永火之中，求你把众人的灵魂，特别是那些需要你怜悯的灵魂，领到天国里去！</strong></span></p>
+            </div>
+
+            <h3>第三端：耶稣诞生 （玛 1:22‑25）</h3>
+            <div class="meditation-block">
+                <p>这一切事的发生，是为了应验上主藉先知所说的话："看，一个贞女，将怀孕生子，人将称祂的名字为厄玛奴耳，意思是：天主与我们同在。"若瑟从睡梦中醒来，就照上主的天使所嘱咐的办了，娶了他的妻子；若瑟虽然没有认识她，她就生了一个儿子，给祂起名叫耶稣。</p>
+            </div>
+            <div class="intention">
+                <p class="noindent">请为世界和平祈祷：</p>
+                <p>求主赐予各国领导人智慧，好能以和平的沟通方式來解决各种问题；让世人明了和平的真谛，放下仇恨，互相包容，和平共处，使人人都能享受和平的生活。<span class="noindent1"><strong>（可更换意向）</strong></span></p>
+            </div>
+            <h3 class="vertical-title">天 主 经</h3>
+            <div class="meditation-block">
+                <p>我们的天父，愿祢的名受显扬；</p>
+                <p>愿祢的国来临；愿祢的旨意奉行在人间，如同在天上。</p>
+                <p>求祢今天赏给我们日用的食粮；</p>
+                <p>求祢宽恕我们的罪过，</p>
+                <p>如同我们宽恕别人一样；</p>
+                <p>不要让我们陷于诱惑；</p>
+                <p>但救我们免于凶恶。阿们。</p>
+            </div>
+            <h3 class="vertical-title">圣若瑟经（十遍）</h3>
+            <div class="joseph-prayer">
+                <p><span class="noindent-bc"><strong>荣福大圣若瑟，你是圣祖之辉耀，达味之荣裔，圣母之净配，基督之勤卫。</strong></span></p>
+                <p><span class="noindent-bc1"><strong>大圣若瑟，你是圣家之长，教会主保，求你现在和我们临终时，为我们罪人祈求天主。阿们。</strong></span></p>
+            </div>
+            <h3 class="vertical-title">圣三光荣经</h3>
+            <div class="meditation-block">
+                <p>愿光荣归于父、及子、及圣神。</p>
+                <p>起初如何，今日亦然，直到永远。</p>
+                <p>阿们。</p>
+            </div>
+            <div class="jesus-prayer">
+                <p><span class="noindent-bc"><strong>吾主耶稣，请宽赦我们的罪过，救我们于永火之中，求你把众人的灵魂，特别是那些需要你怜悯的灵魂，领到天国里去！</strong></span></p>
+            </div>
+
+            <h3>第四端：圣家避难埃及 （玛 2:13‑15）</h3>
+            <div class="meditation-block">
+                <p>他们离去后，看，上主的天使托梦显于若瑟说："起来，带着婴孩和祂母亲逃往埃及去，住在那里，直到我再通知你，因为黑落德即将寻找这婴孩，要把祂杀掉。"若瑟便起来，星夜带了婴孩和祂的母亲，退避到埃及去了。留在那里，直到黑落德死去。这就应验了上主藉先知所说的话："我从埃及召回我的儿子。"</p>
+            </div>
+            <div class="intention">
+                <p class="noindent">请为众教友祈祷：</p>
+                <p>求主恩赐我们效法圣若瑟的榜样，忠实地信靠天主，顺从地接受天主给我们每个人的安排；在日常生活中，表现基督的慈爱。<span class="noindent1"><strong>（可更换意向）</strong></span></p>
+            </div>
+            <h3 class="vertical-title">天 主 经</h3>
+            <div class="meditation-block">
+                <p>我们的天父，愿祢的名受显扬；</p>
+                <p>愿祢的国来临；愿祢的旨意奉行在人间，如同在天上。</p>
+                <p>求祢今天赏给我们日用的食粮；</p>
+                <p>求祢宽恕我们的罪过，</p>
+                <p>如同我们宽恕别人一样；</p>
+                <p>不要让我们陷于诱惑；</p>
+                <p>但救我们免于凶恶。阿们。</p>
+            </div>
+            <h3 class="vertical-title">圣若瑟经（十遍）</h3>
+            <div class="joseph-prayer">
+                <p><span class="noindent-bc"><strong>荣福大圣若瑟，你是圣祖之辉耀，达味之荣裔，圣母之净配，基督之勤卫。</strong></span></p>
+                <p><span class="noindent-bc1"><strong>大圣若瑟，你是圣家之长，教会主保，求你现在和我们临终时，为我们罪人祈求天主。阿们。</strong></span></p>
+            </div>
+            <h3 class="vertical-title">圣三光荣经</h3>
+            <div class="meditation-block">
+                <p>愿光荣归于父、及子、及圣神。</p>
+                <p>起初如何，今日亦然，直到永远。</p>
+                <p>阿们。</p>
+            </div>
+            <div class="jesus-prayer">
+                <p><span class="noindent-bc"><strong>吾主耶稣，请宽赦我们的罪过，救我们于永火之中，求你把众人的灵魂，特别是那些需要你怜悯的灵魂，领到天国里去！</strong></span></p>
+            </div>
+
+            <h3>第五端：纳匝肋隐居生活 （玛 2:23；路2:51‑52）</h3>
+            <div class="meditation-block">
+                <p>他们去住在一座名叫纳匝肋的城中，如此应验了先知们所说的话："祂将称为纳匝肋人。"</p>
+                <p>祂就同他们下去，来到纳匝肋，属他们管辖。祂的母亲把这一切默存在心中。耶稣在智慧和身量上，并在天主和人前的恩爱上，渐渐地增长。</p>
+            </div>
+            <div class="intention">
+                <p class="noindent">请为患病者得善终祈祷：</p>
+                <p>求主恩赐病患者勇气和忍耐去面对病痛，护佑他们能早日康复；赖善终主保圣若瑟的转求，愿重病者能得善终，获享永福于天乡。<span class="noindent1"><strong>（可更换意向）</strong></span></p>
+            </div>
+            <h3 class="vertical-title">天 主 经</h3>
+            <div class="meditation-block">
+                <p>我们的天父，愿祢的名受显扬；</p>
+                <p>愿祢的国来临；愿祢的旨意奉行在人间，如同在天上。</p>
+                <p>求祢今天赏给我们日用的食粮；</p>
+                <p>求祢宽恕我们的罪过，</p>
+                <p>如同我们宽恕别人一样；</p>
+                <p>不要让我们陷于诱惑；</p>
+                <p>但救我们免于凶恶。阿们。</p>
+            </div>
+            <h3 class="vertical-title">圣若瑟经（十遍）</h3>
+            <div class="joseph-prayer">
+                <p><span class="noindent-bc"><strong>荣福大圣若瑟，你是圣祖之辉耀，达味之荣裔，圣母之净配，基督之勤卫。</strong></span></p>
+                <p><span class="noindent-bc1"><strong>大圣若瑟，你是圣家之长，教会主保，求你现在和我们临终时，为我们罪人祈求天主。阿们。</strong></span></p>
+            </div>
+            <h3 class="vertical-title">圣三光荣经</h3>
+            <div class="meditation-block">
+                <p>愿光荣归于父、及子、及圣神。</p>
+                <p>起初如何，今日亦然，直到永远。</p>
+                <p>阿们。</p>
+            </div>
+            <div class="jesus-prayer">
+                <p><span class="noindent-bc"><strong>吾主耶稣，请宽赦我们的罪过，救我们于永火之中，求你把众人的灵魂，特别是那些需要你怜悯的灵魂，领到天国里去！</strong></span></p>
+            </div>
+
+            <h2>结束祷文</h2>
+            <div class="conclusion">
+                <p>蒙福的圣若瑟，救世主的守护者，圣母玛利亚的净配。天主把独生子托付于你；玛利亚把她的信任交托给你；基督在你的守护下降生为人。</p>
+                <p>大圣若瑟，请与我们同在，请您做我们的父亲，在人生的旅途中引导我们，使我们获得恩宠、怜悯和勇气，并保护我们免受一切邪恶的侵害。阿们。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="font-panel-overlay" id="fontOverlay" onclick="closeFontPanel()"></div>
+    <div class="font-panel" id="fontPanel">
+        <div class="drag-handle" id="dragHandle"></div>
+        <div class="panel-header">
+            <span class="panel-title">调整文字大小</span>
+            <button class="panel-reset" onclick="resetFontSize()">恢复默认</button>
+        </div>
+        <div class="slider-row">
+            <span class="slider-label-small">A</span>
+            <input type="range" class="font-slider" id="fontSlider" min="12" max="28" step="1" value="16" oninput="onSliderChange(this.value)">
+            <span class="slider-label-large">A</span>
+        </div>
+        <div class="font-value" id="fontValue">当前字号：16px</div>
+    </div>
+
+    <script>
+        function goBack() {
+            if (window.history.length > 1) { window.history.back(); }
+            else { window.location.href = 'index.html'; }
+        }
+        const MIN_FONT = 12, MAX_FONT = 28, DEFAULT_FONT = 16;
+        const STORAGE_KEY = 'prayerFontSize';
+        const fontPanel = document.getElementById('fontPanel');
+        const fontOverlay = document.getElementById('fontOverlay');
+        const fontSlider = document.getElementById('fontSlider');
+        const fontValue = document.getElementById('fontValue');
+        const pageContent = document.getElementById('pageContent');
+        function openFontPanel() { fontPanel.classList.add('show'); fontOverlay.classList.add('show'); }
+        function closeFontPanel() { fontPanel.classList.remove('show'); fontOverlay.classList.remove('show'); }
+        function applyFontSize(size) { pageContent.style.zoom = size / DEFAULT_FONT; }
+        function onSliderChange(value) {
+            const size = parseInt(value, 10);
+            applyFontSize(size);
+            fontValue.textContent = '当前字号：' + size + 'px';
+            try { localStorage.setItem(STORAGE_KEY, size); } catch (e) {}
+        }
+        function resetFontSize() { fontSlider.value = DEFAULT_FONT; onSliderChange(DEFAULT_FONT); }
+        (function init() {
+            let saved = DEFAULT_FONT;
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const num = parseInt(stored, 10);
+                    if (!isNaN(num) && num >= MIN_FONT && num <= MAX_FONT) saved = num;
+                }
+            } catch (e) {}
+            fontSlider.value = saved; applyFontSize(saved);
+            fontValue.textContent = '当前字号：' + saved + 'px';
+        })();
+        (function setupDragClose() {
+            const handle = document.getElementById('dragHandle');
+            let startY = 0, currentY = 0, isDragging = false;
+            function onStart(e) {
+                isDragging = true;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                currentY = startY; fontPanel.style.transition = 'none';
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', onEnd);
+            }
+            function onMove(e) {
+                if (!isDragging) return;
+                currentY = e.touches ? e.touches[0].clientY : e.clientY;
+                const delta = currentY - startY;
+                if (delta > 0) fontPanel.style.transform = 'translateY(' + delta + 'px)';
+                if (e.cancelable) e.preventDefault();
+            }
+            function onEnd() {
+                if (!isDragging) return;
+                isDragging = false; fontPanel.style.transition = '';
+                const delta = currentY - startY;
+                if (delta > 80) closeFontPanel();
+                fontPanel.style.transform = '';
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('touchend', onEnd);
+            }
+            handle.addEventListener('mousedown', onStart);
+            handle.addEventListener('touchstart', onStart, { passive: false });
+        })();
+    </script>
+	<script>
+	document.addEventListener('plusready', function() {
+	    // 监听系统返回键
+	    plus.key.addEventListener('backbutton', function() {
+	        // 直接跳回首页
+	        window.location.href = 'index.html'; 
+	        // 注意：如果经文在子文件夹里，要改成 '../index.html'
+	    }, false);
+	});
+	</script>
+</body>
+</html>

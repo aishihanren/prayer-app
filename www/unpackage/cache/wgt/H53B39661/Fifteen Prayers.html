@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>十五首经</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "SimSun", "Songti SC", "Times New Roman", serif;
+            font-size: 16px; background-color: #faf8f5; color: #2a241e;
+            padding-top: 56px; padding-bottom: 40px; overflow-x: hidden;
+        }
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; height: 56px;
+            background-color: #ffffff; border-bottom: 1px solid #e6e0d8;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 12px; z-index: 1000;
+        }
+        .back-btn, .font-btn {
+            width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; border-radius: 50%;
+            transition: background-color 0.2s; color: #4a3729; font-family: inherit; flex-shrink: 0;
+        }
+        .back-btn { font-size: 1rem; }
+        .font-btn { font-size: 1.15rem; font-weight: 700; font-family: Georgia, serif; }
+        .back-btn:hover, .font-btn:hover { background-color: #f5efe8; }
+        .back-btn:active, .font-btn:active { background-color: #e6ddd2; }
+        .top-title {
+            flex: 1; text-align: center; font-size: 1.05rem; font-weight: 600;
+            color: #2c241b; letter-spacing: 2px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 8px;
+        }
+        .page-wrapper { display: flex; justify-content: center; padding: 36px 28px 0; }
+        .container {
+            background-color: #ffffff; padding: 42px 48px;
+            border-radius: 6px; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e8e0d6; max-width: 860px; width: 100%;
+            transform-origin: top center;
+        }
+        h1 {
+            text-align: center; margin-bottom: 28px; font-size: 28px;
+            font-weight: 700; letter-spacing: 3px; color: #3b2f24;
+            border-bottom: 2px solid #d9cfc2; padding-bottom: 16px;
+        }
+        .preface {
+            margin-bottom: 30px; text-indent: 2em; background-color: #fdfcfb;
+            padding: 16px 22px; border-left: 4px solid #b7a48b;
+            color: #3b332b; border-radius: 0 6px 6px 0;
+        }
+        .preface p:first-child {
+            font-weight: 700; margin-bottom: 6px; text-indent: 0;
+            color: #4a3729; font-size: 1.05rem;
+        }
+        h2 {
+            font-size: 1.35rem; margin: 34px 0 16px; color: #3b2f24;
+            font-weight: 700; border-left: 5px solid #b7a48b; padding-left: 12px;
+        }
+        ul.boon-list {
+            padding-left: 2em; margin-bottom: 24px; list-style-type: none;
+        }
+        ul.boon-list li {
+            margin-bottom: 10px; position: relative;
+            padding-left: 0.2em; line-height: 1.8;
+        }
+        ul.boon-list li::before {
+            content: "✦"; color: #b7a48b; font-weight: 400;
+            margin-right: 8px; font-size: 0.85rem;
+        }
+        .qna {
+            margin: 28px 0; padding: 16px 22px; background-color: #f9f6f2;
+            border-radius: 8px; border: 1px solid #e6ddd2;
+        }
+        .qna p.question {
+            font-weight: 700; margin-bottom: 10px; color: #4a3729; font-size: 1.05rem;
+        }
+        .qna p.answer { text-indent: 2em; color: #2f2a24; }
+        .poem-item {
+            margin: 32px 0; padding: 18px 22px; background-color: #fdfcfb;
+            border-radius: 8px; border: 1px solid #efe9e1;
+            transition: box-shadow 0.2s ease;
+        }
+        .poem-item:hover { box-shadow: 0 3px 12px rgba(183, 164, 139, 0.12); }
+        .poem-title {
+            font-weight: 700; margin-bottom: 12px; color: #a52a2a;
+            font-size: 1.1rem; letter-spacing: 0.5px;
+            border-bottom: 1px dashed #d9cfc2; padding-bottom: 8px;
+        }
+        .poem-content {
+            text-indent: 2em; text-align: justify; color: #2f2a24;
+            line-height: 1.9; font-size: 1rem;
+        }
+        .conclusion {
+            margin-top: 40px; padding: 24px 28px; background-color: #f5efe8;
+            border-radius: 8px; border-left: 6px solid #b7a48b; text-indent: 2em;
+        }
+        .conclusion p:first-of-type {
+            font-weight: 700; text-indent: 0; margin-bottom: 10px;
+            color: #4a3729; font-size: 1.1rem;
+        }
+        .conclusion p:last-of-type {
+            text-indent: 2em; color: #2f2a24; line-height: 1.9;
+        }
+        .font-panel-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.35);
+            z-index: 1998; opacity: 0; visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .font-panel-overlay.show { opacity: 1; visibility: visible; }
+        .font-panel {
+            position: fixed; left: 0; right: 0; bottom: 0;
+            background-color: #ffffff; border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
+            z-index: 1999; padding: 8px 24px 32px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+            max-width: 860px; margin: 0 auto;
+        }
+        .font-panel.show { transform: translateY(0); }
+        .drag-handle {
+            width: 40px; height: 4px; background-color: #d9cfc2;
+            border-radius: 2px; margin: 0 auto 18px;
+            cursor: grab; touch-action: none;
+        }
+        .drag-handle:active { cursor: grabbing; }
+        .panel-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .panel-title { font-size: 1rem; font-weight: 600; color: #2c241b; letter-spacing: 1px; }
+        .panel-reset {
+            background: none; border: 1px solid #d9cfc2; color: #4a3729;
+            font-size: 0.85rem; padding: 5px 14px; border-radius: 20px;
+            cursor: pointer; font-family: inherit; transition: background-color 0.2s;
+        }
+        .panel-reset:hover { background-color: #f5efe8; }
+        .slider-row { display: flex; align-items: center; gap: 14px; }
+        .slider-label-small {
+            font-size: 0.85rem; color: #8a7a68; font-weight: 600;
+            flex-shrink: 0; width: 20px; text-align: center;
+        }
+        .slider-label-large {
+            font-size: 1.35rem; color: #8a7a68; font-weight: 700;
+            flex-shrink: 0; width: 24px; text-align: center; font-family: Georgia, serif;
+        }
+        .font-slider {
+            -webkit-appearance: none; appearance: none; flex: 1; height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px; outline: none; cursor: pointer;
+        }
+        .font-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: border-color 0.2s, transform 0.1s;
+        }
+        .font-slider::-webkit-slider-thumb:hover { border-color: #a52a2a; }
+        .font-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+        .font-slider::-moz-range-thumb {
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .font-slider::-moz-range-track {
+            height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px;
+        }
+        .font-value {
+            text-align: center; margin-top: 14px;
+            font-size: 0.85rem; color: #8a7a68; letter-spacing: 1px;
+        }
+        @media (max-width: 700px) {
+            .page-wrapper { padding: 24px 14px 0; }
+            .container { padding: 24px 18px; }
+            h1 { font-size: 22px; letter-spacing: 2px; }
+            h2 { font-size: 1.2rem; }
+            .poem-item { padding: 14px 16px; }
+            .preface { padding: 12px 16px; }
+            .conclusion { padding: 18px 20px; }
+            .top-title { font-size: 0.98rem; letter-spacing: 1px; }
+        }
+        @media print {
+            body { padding-top: 0; }
+            .top-bar, .font-panel-overlay, .font-panel { display: none !important; }
+            .page-wrapper { padding: 0; }
+            .container { box-shadow: none; border: none; }
+            .poem-item:hover { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <button class="back-btn" onclick="goBack()" title="返回">返回</button>
+        <div class="top-title">十五首经</div>
+        <button class="font-btn" onclick="openFontPanel()" title="调整字号">Aa</button>
+    </div>
+
+    <div class="page-wrapper">
+        <div class="container" id="pageContent">
+            <h1>十五首经</h1>
+
+            <div class="preface">
+                <p>前言</p>
+                <p>在罗马圣保禄大殿内，耶稣在十字架上显现于瑞典籍圣女毕哲，(St.Bridget also as St.Birgitta)亲口宣示经文，经圣教会上批准。并载于1966年11月18日之圣教法典中。</p>
+            </div>
+
+            <h2>耶稣允许特恩</h2>
+            <p style="margin-bottom: 14px; text-indent: 2em; color: #3b332b;">谁在一年内每日念此十五首经者，吾主允许特恩如下：</p>
+            <ul class="boon-list">
+                <li>(1) 我会救他血统内的十五个灵魂出炼狱。</li>
+                <li>(2) 他血统内的十五个灵魂常保持圣宠地位。</li>
+                <li>(3) 他血统内的十五个罪人回头改过。</li>
+                <li>(4) 谁念此经者可修得第一级圣德。</li>
+                <li>(5) 在他死前十五天，我会把圣体圣血赐给他，使他永不饥渴。</li>
+                <li>(6) 在他死前十五天，会得尽心痛悔的圣宠。</li>
+                <li>(7) 在他面前，我将安置我得胜了的十字架，为帮助他克胜敌人的攻击。</li>
+                <li>(8) 在他临终前，我将和我极可爱的母亲来迎接他。</li>
+                <li>(9) 我将温和亲切地带领他到永福之所。</li>
+                <li>(10) 到达天国之后，我赏赐他喝我天主性的特别水泉，不念此经者所喝不到的水泉。</li>
+                <li>(11) 无论谁，即使在大罪下生活了30年，如果热心或抱有意念诵念此经者，主也会宽恕他的所有罪过。</li>
+                <li>(12) 我将在强烈的诱惑中保护他。</li>
+                <li>(13) 我将保全和防守他的五官，免于犯罪。</li>
+                <li>(14) 我将护佑他免于猝死。</li>
+                <li>(15) 他的灵魂将会脱免永死。</li>
+                <li>(16) 他将得到他向天主和圣母所求的所有恩典。</li>
+                <li>(17) 假如他一生只追求自己的旨意生活，而要在第二天死去的话，他的生命将被延长，以助他悔改。</li>
+                <li>(18) 每次念此经者得100日大赦。</li>
+                <li>(19) 念此经的，保证他在天堂享最高合唱队天使的席位。</li>
+                <li>(20) 谁传给别人念此经的，将得到永不休止的神乐和功劳。</li>
+                <li>(21) 无论那里有念此经或将会念此经的地方，天主常带着圣宠亲临于那里。</li>
+            </ul>
+
+            <div class="qna">
+                <p class="question">问：为得特恩是否必须每日诵念此经而不可间断？</p>
+                <p class="answer">答：他应愈少失误愈好。但假如因重大原因而错失的话，也不失去此特恩，条件是他应在该年内念足5480首经文。念此经文时应热心并专注于字的内容。此经亦可作为苦路善功。</p>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第一首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣基督！祢的慈爱永远常存，爱慕祢便是我们的喜乐和慰藉，祢是我们罪人的救主和希望。祢为顺从天父的旨意，又为爱我们，甘愿降生成人。由在母胎中到受难死亡，一直为我们忍受着无限痛苦。噢，我的主，请纪念祢在最后晚餐中为祢的门徒洗脚，并将祢的圣体和圣血赐给他们，就在祢安慰他们的同时，祢便预言祢将受的苦难。请纪念祢在心灵感到忧伤和苦痛时，祢说：「我的心灵忧闷得要死。」请纪念祢在那神圣的逾越节晚上，在被钉十字架前，祢软弱的身躯承担着极大的惊慌、苦恼和痛苦，祢满身血汗淋漓，一而再，再而三地向天父恳切祈祷；到最后，祢的门徒犹达斯把祢出卖了，将祢交给那个祢要举扬的民族手中；经过三次不公平的审判，祢终因假见证的诬告，而被定罪。请纪念祢被面罩复盖，被无情殴打，并被肆意摧残，在一片嘲笑声中，更被恶人剥去衣裳，他们公然的侮辱祢，以紫红袍作祢的华衣，以茨冠作祢的冠冕，以芦苇作祢的权杖；那时候，祢被拳头所击伤，被侮辱所压倒。主耶稣，因祢在被钉十字架前所受的苦痛，恳求祢赐予我在临终前有一个完整和真切的忏悔，好使我得到一切罪过的赦免，亚孟。</div>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第二首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣！自由和喜乐的根源，请纪念祢的仇敌如狂怒的狮子包围着祢，在他们肆意的侮辱、唾沫、拳打、鞭鞑、与及一些闻所未闻的残酷折磨下，祢饱受恐惧和悲痛。主，我的救主，因祢所受的种种侮辱和折磨，我恳求祢把我从所有有形和无形的仇敌中解救出来，并在祢的庇荫下，带领我迈向完美及永恒的救恩中，亚孟。</div>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第三首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣！天地万物的创造者，祢是万有的根源，无所不能的天主，一切万物都在祢爱的掌权下。请纪念祢被犹太人钉在十字架上时，他们毫不怜惜地以又大又钝的钉，猛击在祢神圣的手脚上，眼见祢所受的苦楚，未能饱逞他们的兽性，他们竟不惜扩大祢的伤口，增加祢的痛苦，更惨无人道地胡乱扭动祢的身躯，以致四肢关节都被他们拉脱了。主耶稣，因祢在十字架上所受的苦痛，恳求祢赐予我恩宠去敬畏祢及爱慕祢，亚孟。</div>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第四首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣！天上全能的医治者，藉着祢在十字架上被高举而治好了我们的创伤，请纪念祢所受的伤痛，已超越了人所能忍受的程度，祢的圣躯已被鞭打至体无完肤，但在祢极度伤痛之时，祢还不断的为仇敌向天父请求说：「父啊！宽赦他们吧！因为他们不知道他们做的是什麼。」藉着祢伟大的慈爱和所受的至悲惨苦难，恳求主赐予我们有一颗真诚向祢忏悔的心，以获得祢赦免我一切的罪过，亚孟。</div>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第五首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣！永恒光辉的明镜，请纪念祢在神圣的光照下，世人藉着祢的受难圣死而获得救恩。但同时祢为看见那些已堕落了的人将因自己所犯的罪而受到谴责，与及那些祢曾严厉斥责但仍令祢失望的可怜罪人感到忧愁和悲痛。藉着祢深渊似的怜悯和同情，特别是祢向右边强盗显露慈爱时说：「我实在告诉祢，今天祢就要同我一同在乐园里。」可爱的主耶稣，我恳求祢，在我临终时，也同样对我显示祢的仁慈，亚孟。</div>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第六首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣！令人深爱又令人渴望的君王。请纪念祢像囚犯般赤裸裸钉在十字架上然后被高举时，祢所有的亲友都遗弃了祢，只有祢至爱的母亲玛利亚还紧紧的伴随着祢。在祢精神和肉体上都感到极大痛苦之际，祢将她交托给祢的门徒若望说：「女人，看，妳的儿子。」然后又对那门徒说：「看，你的母亲。」主，我的救主，因祢母亲的心灵被利剑所刺透，我恳求祢，在我精神和肉体上都感到忧苦时，特别在我临终时，怜悯我、扶助我，使我能超越一切的考验，亚孟。</div>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第七首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣！无穷恩泽的泉源。因祢深渊似的慈爱，祢渴望解救世人，在十字架上祢说：「我渴。」主，我的救主，我恳求祢以祢的爱炽热我们的心灵，使我们在言行上都能完全归向美善，并恳求祢熄灭我们人性在色慾和物慾上的追求，亚孟。</div>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第八首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣！心灵的甘饴和喜乐。祢为爱我们，在十字架上嚐透了苦醋，使我们在现世能藉着祢的圣体和圣血来分享祢的恩宠，及在我们临终时，以祂作为我们灵魂的补赎和慰藉，亚孟。</div>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第九首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣！天地的君王，喜乐美善之源。请纪念祢在面对死亡时，不但为犹太人所侮辱和折磨，更被天父所遗弃，使祢陷入无边苦海中，祢大声喊说：「我的天主，我的天主，祢为什麼舍弃了我？」藉着祢所受的剧烈苦痛，我恳求祢在我面对死亡和经历惊慌痛苦时，不要遗弃我，亚孟。</div>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第十首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣！祢是元始和终末，生命和美善的主宰。请纪念祢为爱我们，整个人都陷入痛苦的深渊中，因祢所受的沉重创伤，教会了我，只要凭着真诚的爱，就能轻易地遵行祢的诫命，亚孟。</div>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第十一首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣！慈爱的泉源。请纪念祢所受的痛苦，直透骨髓，到达祢心的深处。我恳求祢将我这个被罪过所淹没的可怜罪人，从罪恶中拯救出来，并让我躲藏在祢的圣伤内，免我面对祢义愤的面容，直到祢愤怒全消时，亚孟。</div>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第十二首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣！真理的明镜，爱德和合一的象征。请纪念祢全身上下伤口裂开，染满祢流出的宝血。祢为爱我们，甘心忍受着身体上的一切沉重伤痛。可爱的主耶稣，为了我们的益处，祢在世上可以为人类做的，都已经完全做了。藉着纪念祢的圣死和得享祢苦难的成果，恳求祢不断更新我的灵魂，并使祢的爱在我心内与日俱增，直至与祢共聚于永生中。可爱的主耶稣，祢是一切美善和喜乐的根源，恳求祢赏赐我在天国中享见祢光辉的圣容，亚孟。</div>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第十三首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣！宇宙万有的元首，掌管天上地下一切权柄的君王。请纪念祢强忍着痛苦，直至祢在精神和肉体上都完全耗尽一切力量时，祢低下头说：「完成了。」主耶稣，因祢所受的剧烈痛苦和忧伤，我恳求祢在我临终心志烦乱，灵魂忧伤时，怜悯我，亚孟。</div>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第十四首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣！唯一的圣子，天父完美的肖像。请纪念祢简单而谦逊地交付祢的灵魂给天父时说：「父啊！我把我的灵魂交托在祢手中。」祢为救赎我们，圣身和圣心都撕裂破碎。藉着祢的圣死，我恳求祢，圣人们的君王，能安慰我、帮助我抵御魔鬼、世俗及自我，好使我能死于世俗，唯独为祢而生。我恳求祢在我临终时接纳我，好使祢的追随者在经过流亡的生活后回归到祢的身边，亚孟。</div>
+            </div>
+
+            <div class="poem-item">
+                <div class="poem-title">第十五首：天主经、圣母经</div>
+                <div class="poem-content">主耶稣！结真实果子的葡萄树。请纪念祢从祢的圣体中倾出大量宝血，就像葡萄被压榨一样。一个士兵用枪刺透祢的肋旁，立即流出血和水，直至祢的身体全干枯为止；最后祢就像一束没药悬挂在十字架上，祢的肉身被摧残至不似人形，留下来的只是一个枯萎了的躯壳，和一堆干枯了骨髓的骨头。可爱的主耶稣，因祢为我们而倾流的宝血和所受的至悲惨苦难，我恳求祢在我临终身心都受着极大痛苦时，接受我的灵魂，亚孟。</div>
+            </div>
+
+            <div class="conclusion">
+                <p><strong>总结：</strong></p>
+                <p>可爱的主耶稣！请刺透我的心灵，好使我心中的爱火以及忏悔的泪水，成为我日用之粮，让我整个人更新肖似祢，让我的心灵成为祢永久的居所，让我的言谈取悦祢，让我终生去承行祢的旨意，好使我能在天国中，与天上的圣人圣女一同光荣赞美祢，直到永远，亚孟。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="font-panel-overlay" id="fontOverlay" onclick="closeFontPanel()"></div>
+    <div class="font-panel" id="fontPanel">
+        <div class="drag-handle" id="dragHandle"></div>
+        <div class="panel-header">
+            <span class="panel-title">调整文字大小</span>
+            <button class="panel-reset" onclick="resetFontSize()">恢复默认</button>
+        </div>
+        <div class="slider-row">
+            <span class="slider-label-small">A</span>
+            <input type="range" class="font-slider" id="fontSlider" min="12" max="28" step="1" value="16" oninput="onSliderChange(this.value)">
+            <span class="slider-label-large">A</span>
+        </div>
+        <div class="font-value" id="fontValue">当前字号：16px</div>
+    </div>
+
+    <script>
+        function goBack() {
+            if (window.history.length > 1) { window.history.back(); }
+            else { window.location.href = 'index.html'; }
+        }
+        const MIN_FONT = 12, MAX_FONT = 28, DEFAULT_FONT = 16;
+        const STORAGE_KEY = 'prayerFontSize';
+        const fontPanel = document.getElementById('fontPanel');
+        const fontOverlay = document.getElementById('fontOverlay');
+        const fontSlider = document.getElementById('fontSlider');
+        const fontValue = document.getElementById('fontValue');
+        const pageContent = document.getElementById('pageContent');
+        function openFontPanel() { fontPanel.classList.add('show'); fontOverlay.classList.add('show'); }
+        function closeFontPanel() { fontPanel.classList.remove('show'); fontOverlay.classList.remove('show'); }
+        function applyFontSize(size) { pageContent.style.zoom = size / DEFAULT_FONT; }
+        function onSliderChange(value) {
+            const size = parseInt(value, 10);
+            applyFontSize(size);
+            fontValue.textContent = '当前字号：' + size + 'px';
+            try { localStorage.setItem(STORAGE_KEY, size); } catch (e) {}
+        }
+        function resetFontSize() { fontSlider.value = DEFAULT_FONT; onSliderChange(DEFAULT_FONT); }
+        (function init() {
+            let saved = DEFAULT_FONT;
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const num = parseInt(stored, 10);
+                    if (!isNaN(num) && num >= MIN_FONT && num <= MAX_FONT) saved = num;
+                }
+            } catch (e) {}
+            fontSlider.value = saved; applyFontSize(saved);
+            fontValue.textContent = '当前字号：' + saved + 'px';
+        })();
+        (function setupDragClose() {
+            const handle = document.getElementById('dragHandle');
+            let startY = 0, currentY = 0, isDragging = false;
+            function onStart(e) {
+                isDragging = true;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                currentY = startY; fontPanel.style.transition = 'none';
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', onEnd);
+            }
+            function onMove(e) {
+                if (!isDragging) return;
+                currentY = e.touches ? e.touches[0].clientY : e.clientY;
+                const delta = currentY - startY;
+                if (delta > 0) fontPanel.style.transform = 'translateY(' + delta + 'px)';
+                if (e.cancelable) e.preventDefault();
+            }
+            function onEnd() {
+                if (!isDragging) return;
+                isDragging = false; fontPanel.style.transition = '';
+                const delta = currentY - startY;
+                if (delta > 80) closeFontPanel();
+                fontPanel.style.transform = '';
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('touchend', onEnd);
+            }
+            handle.addEventListener('mousedown', onStart);
+            handle.addEventListener('touchstart', onStart, { passive: false });
+        })();
+    </script>
+	<script>
+	document.addEventListener('plusready', function() {
+	    // 监听系统返回键
+	    plus.key.addEventListener('backbutton', function() {
+	        // 直接跳回首页
+	        window.location.href = 'index.html'; 
+	        // 注意：如果经文在子文件夹里，要改成 '../index.html'
+	    }, false);
+	});
+	</script>
+</body>
+</html>

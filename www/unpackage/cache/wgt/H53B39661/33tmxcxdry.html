@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>33天迈向晨曦的荣耀 · 导航版</title>
+
+    <script>
+        function goBack() {
+            try {
+                window.location.href = 'index.html';
+            } catch (e) {
+                if (window.history.length > 1) { window.history.back(); }
+            }
+        }
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', 'Noto Serif SC', '宋体', 'SimSun', serif;
+            background-color: #f8f6f0;
+            color: #2e241f;
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== 顶部栏 ===== */
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; height: 56px;
+            background-color: #ffffff; border-bottom: 1px solid #e6e0d8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 12px; z-index: 1000;
+        }
+        .back-btn, .font-btn {
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; border-radius: 50%;
+            transition: background-color 0.2s; color: #4a3729;
+            font-family: inherit; flex-shrink: 0;
+        }
+        .back-btn { font-size: 1rem; }
+        .font-btn { font-size: 1.15rem; font-weight: 700; font-family: Georgia, serif; }
+        .back-btn:hover, .font-btn:hover { background-color: #f5efe8; }
+        .back-btn:active, .font-btn:active { background-color: #e6ddd2; }
+        .top-title {
+            flex: 1; text-align: center; font-size: 1.05rem; font-weight: 600;
+            color: #2c241b; letter-spacing: 2px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            padding: 0 8px;
+        }
+
+        header {
+            background: #3a2c22;
+            color: #f0e6d8;
+            padding: 1.2rem 2rem;
+            text-align: center;
+            border-bottom: 4px solid #b89b7a;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin-top: 56px;  /* 避开固定顶部栏 */
+        }
+        header h1 { font-size: 1.8rem; font-weight: 400; letter-spacing: 2px; margin-bottom: 0.25rem; }
+        header .sub { font-size: 0.9rem; color: #cbb9a5; font-style: italic; }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 1.5rem 1rem;
+            gap: 1.5rem;
+        }
+
+        /* ===== 侧边栏（汉堡目录） ===== */
+        .sidebar {
+            width: 320px;
+            flex-shrink: 0;
+            background: #eae3d9;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            height: calc(100vh - 56px - 50px);
+            position: sticky;
+            top: 72px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #d6cbbc;
+            transition: transform 0.3s ease;
+        }
+        .sidebar-header {
+            padding: 1rem 1.25rem;
+            background: #d6cbbc;
+            border-bottom: 1px solid #b89b7a;
+            font-weight: 600;
+            color: #3a2c22;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sidebar-header span { font-size: 0.8rem; font-weight: 400; color: #5f4d3a; }
+        .nav-scroll { overflow-y: auto; padding: 0.5rem 0; flex: 1; }
+        .nav-scroll ul { list-style: none; }
+        .nav-scroll li { border-bottom: 1px solid #e0d6ca; }
+        .nav-scroll a {
+            display: block;
+            padding: 0.6rem 1rem 0.6rem 1.5rem;
+            color: #3a2c22;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.15s, color 0.15s;
+            border-left: 4px solid transparent;
+        }
+        .nav-scroll a:hover {
+            background: #d6cbbc;
+            border-left-color: #8b6f53;
+            color: #1e1510;
+        }
+        .nav-scroll .group-label {
+            background: #e0d6ca;
+            padding: 0.5rem 1rem 0.5rem 1.5rem;
+            font-weight: 600;
+            color: #4a3a2b;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border-left: 4px solid #8b6f53;
+            margin-top: 0.25rem;
+        }
+        .nav-scroll .msg-link {
+            padding-left: 2rem;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .nav-scroll .msg-link .day-num {
+            color: #7a6a58;
+            font-size: 0.75rem;
+            margin-left: 8px;
+            white-space: nowrap;
+        }
+
+        /* ===== 内容区 ===== */
+        .content {
+            flex: 1;
+            min-width: 0;
+            background: #fffdf9;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            padding: 2rem 2.5rem;
+            border: 1px solid #e6ddd1;
+            overflow-y: auto;
+            height: calc(100vh - 56px - 50px);
+        }
+        .content h2 {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: #3a2c22;
+            border-bottom: 2px solid #d6cbbc;
+            padding-bottom: 0.5rem;
+            margin: 1.8rem 0 1rem 0;
+        }
+        .content h2:first-of-type { margin-top: 0; }
+        .content h3 { font-size: 1.2rem; font-weight: 600; color: #5f4d3a; margin: 1.5rem 0 0.75rem 0; }
+        .content .msg-block {
+            margin-bottom: 1.8rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed #d6cbbc;
+            scroll-margin-top: 72px; /* 解决锚点跳转被顶部栏遮挡 */
+        }
+        .content .msg-title { font-size: 1.15rem; font-weight: 600; color: #4a3a2b; margin-bottom: 0.25rem; }
+        .content .msg-meta { font-size: 0.85rem; color: #7a6a58; margin-bottom: 0.75rem; font-style: italic; }
+        .content .msg-text { font-size: 1rem; color: #2e241f; text-align: justify; }
+        .content .msg-text p { margin-bottom: 0.75rem; text-indent: 2em; /* 首行缩进 2 个中文字符的宽度 */}
+        .content .intro-text {
+            background: #f9f5ef;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 6px solid #b89b7a;
+            font-size: 0.95rem;
+        }
+        .content blockquote {
+            background: #f9f5ef;
+            border-left: 4px solid #b89b7a;
+            padding: 1rem 1.2rem;
+            margin: 1rem 0;
+            color: #4a3a2b;
+            font-style: italic;
+        }
+
+        .nav-scroll::-webkit-scrollbar, .content::-webkit-scrollbar { width: 6px; }
+        .nav-scroll::-webkit-scrollbar-thumb, .content::-webkit-scrollbar-thumb { background: #b89b7a; border-radius: 3px; }
+        .nav-scroll::-webkit-scrollbar-track, .content::-webkit-scrollbar-track { background: #eae3d9; }
+
+        .menu-btn {
+            display: none;
+            position: fixed;
+            top: 64px;
+            right: 16px;
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: #3a2c22;
+            color: #fff;
+            font-size: 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 1100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+        }
+        .menu-btn:hover { background: #5f4d3a; }
+
+        /* ===== 字号面板 ===== */
+        .font-panel-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.35);
+            z-index: 1998; opacity: 0; visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .font-panel-overlay.show { opacity: 1; visibility: visible; }
+        .font-panel {
+            position: fixed; left: 0; right: 0; bottom: 0;
+            background-color: #ffffff; border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+            z-index: 1999; padding: 8px 24px 32px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+            max-width: 900px; margin: 0 auto;
+        }
+        .font-panel.show { transform: translateY(0); }
+        .drag-handle {
+            width: 40px; height: 4px; background-color: #d9cfc2;
+            border-radius: 2px; margin: 0 auto 18px;
+            cursor: grab; touch-action: none;
+        }
+        .drag-handle:active { cursor: grabbing; }
+        .panel-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .panel-title { font-size: 1rem; font-weight: 600; color: #2c241b; letter-spacing: 1px; }
+        .panel-reset {
+            background: none; border: 1px solid #d9cfc2; color: #4a3729;
+            font-size: 0.85rem; padding: 5px 14px; border-radius: 20px;
+            cursor: pointer; font-family: inherit; transition: background-color 0.2s;
+        }
+        .panel-reset:hover { background-color: #f5efe8; }
+        .slider-row { display: flex; align-items: center; gap: 14px; }
+        .slider-label-small { font-size: 0.85rem; color: #8a7a68; font-weight: 600; flex-shrink: 0; width: 20px; text-align: center; }
+        .slider-label-large { font-size: 1.35rem; color: #8a7a68; font-weight: 700; flex-shrink: 0; width: 24px; text-align: center; font-family: Georgia, serif; }
+        .font-slider {
+            -webkit-appearance: none; appearance: none; flex: 1; height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px; outline: none; cursor: pointer;
+        }
+        .font-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: border-color 0.2s, transform 0.1s;
+        }
+        .font-slider::-webkit-slider-thumb:hover { border-color: #a52a2a; }
+        .font-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+        .font-slider::-moz-range-thumb {
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .font-slider::-moz-range-track {
+            height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px;
+        }
+        .font-value { text-align: center; margin-top: 14px; font-size: 0.85rem; color: #8a7a68; letter-spacing: 1px; }
+
+        @media (max-width: 900px) {
+            .main-container { flex-direction: column; padding: 1rem; padding-top: 0.5rem; }
+            .sidebar {
+                position: fixed; top: 56px; left: 0;
+                width: 100%; height: calc(100vh - 56px);
+                z-index: 1500; transform: translateX(-100%);
+                border-radius: 0; max-height: none;
+                background: #eae3d9;
+                box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+            }
+            .sidebar.active { transform: translateX(0); }
+            .nav-scroll { height: 100%; }
+            .content {
+                height: auto;
+                padding: 1.5rem 1.2rem;
+                border-radius: 8px;
+                min-height: calc(100vh - 56px - 40px);
+            }
+            header { padding: 1rem 1.5rem; margin-top: 56px; }
+            header h1 { font-size: 1.4rem; }
+            .menu-btn { display: flex; align-items: center; justify-content: center; }
+            .content .msg-title { font-size: 1.1rem; }
+            .content .msg-text { font-size: 0.98rem; }
+            .top-title { font-size: 0.95rem; letter-spacing: 1px; }
+            .content .msg-block { scroll-margin-top: 80px; }
+        }
+        @media (max-width: 480px) {
+            .content { padding: 1rem 0.8rem; }
+            header h1 { font-size: 1.2rem; letter-spacing: 1px; }
+            header .sub { font-size: 0.75rem; }
+        }
+        @media print {
+            body { padding-top: 0; }
+            .top-bar, .font-panel-overlay, .font-panel, .menu-btn { display: none !important; }
+            .sidebar { display: none !important; }
+            .main-container { padding: 0; }
+            .content { box-shadow: none; border: none; height: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <button class="back-btn" onclick="goBack()" title="返回首页">返回</button>
+        <div class="top-title">33天迈向晨曦的荣耀</div>
+        <button class="font-btn" onclick="openFontPanel()" title="调整字号">Aa</button>
+    </div>
+
+    <button class="menu-btn" id="menuBtn">☰</button>
+
+    <header>
+        <h1>33天迈向晨曦的荣耀</h1>
+        <div class="sub">“玛利亚奉献”个人避静 · Fr. Michael E. Gaitley</div>
+    </header>
+
+    <div class="main-container">
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                目录导航 <span>引言 · 33天 · 奉献</span>
+            </div>
+            <div class="nav-scroll" id="navScroll">
+                <ul>
+                    <li><a href="#copyright" class="msg-link">翻译说明与版权</a></li>
+                    <li><a href="#pope-francis" class="msg-link">教宗方济各的话</a></li>
+                    <li class="group-label">引言与准备</li>
+                    <li><a href="#intro" class="msg-link">引言 · 为什么写这本书？</a></li>
+                    <li><a href="#schedule" class="msg-link">避静开始日与圣母庆节</a></li>
+                    <li><a href="#intro-consecration" class="msg-link">“玛利亚奉献”介绍</a></li>
+
+                    <li class="group-label">第一周：圣路易·蒙福</li>
+                    <li><a href="#day1" class="msg-link">第1天 · 布列塔尼亚充满激情的圣人 <span class="day-num">激情</span></a></li>
+                    <li><a href="#day2" class="msg-link">第2天 · 圣路易对教会的影响 <span class="day-num">影响</span></a></li>
+                    <li><a href="#day3" class="msg-link">第3天 · 圣路易的奉献（上） <span class="day-num">领洗</span></a></li>
+                    <li><a href="#day4" class="msg-link">第4天 · 圣路易的奉献（下） <span class="day-num">礼物</span></a></li>
+                    <li><a href="#day5" class="msg-link">第5天 · 真的要把一切献给圣母么？（上） <span class="day-num">善功</span></a></li>
+                    <li><a href="#day6" class="msg-link">第6天 · 真的要把一切献给圣母么？（下） <span class="day-num">慷慨</span></a></li>
+                    <li><a href="#day7" class="msg-link">第7天 · 简单、快捷、稳妥的成圣之路 <span class="day-num">道路</span></a></li>
+
+                    <li class="group-label">第二周：圣马希连·国柏</li>
+                    <li><a href="#day8" class="msg-link">第8天 · 圣马希连·国柏，你是谁？ <span class="day-num">勇士</span></a></li>
+                    <li><a href="#day9" class="msg-link">第9天 · 无原罪之始胎，你是谁？（上） <span class="day-num">始胎</span></a></li>
+                    <li><a href="#day10" class="msg-link">第10天 · 无原罪之始胎，你是谁？（下） <span class="day-num">净配</span></a></li>
+                    <li><a href="#day11" class="msg-link">第11天 · 无染原罪者总是完美奉行天主的圣意 <span class="day-num">圣意</span></a></li>
+                    <li><a href="#day12" class="msg-link">第12天 · 天主的圣者，你是谁？ <span class="day-num">成圣</span></a></li>
+                    <li><a href="#day13" class="msg-link">第13天 · 成为工具——确切的说，众多的工具 <span class="day-num">工具</span></a></li>
+                    <li><a href="#day14" class="msg-link">第14天 · 圣国柏的奉献祈祷 <span class="day-num">祈祷</span></a></li>
+
+                    <li class="group-label">第三周：圣德肋撒姆姆</li>
+                    <li><a href="#day15" class="msg-link">第15天 · 耶稣圣心的爱人 <span class="day-num">我渴</span></a></li>
+                    <li><a href="#day16" class="msg-link">第16天 · 9月10日天主的恩赐 <span class="day-num">恩赐</span></a></li>
+                    <li><a href="#day17" class="msg-link">第17天 · 1947年的神视 <span class="day-num">神视</span></a></li>
+                    <li><a href="#day18" class="msg-link">第18天 · 圣母无玷圣心 <span class="day-num">圣心</span></a></li>
+                    <li><a href="#day19" class="msg-link">第19天 · 心灵默想祈祷 <span class="day-num">默想</span></a></li>
+                    <li><a href="#day20" class="msg-link">第20天 · 奉献盟约 <span class="day-num">盟约</span></a></li>
+                    <li><a href="#day21" class="msg-link">第21天 · 成为那一位（与玛利亚一起） <span class="day-num">安慰</span></a></li>
+
+                    <li class="group-label">第四周：圣若望保禄二世</li>
+                    <li><a href="#day22" class="msg-link">第22天 · 圣母慈悲的恩赐 <span class="day-num">法蒂玛</span></a></li>
+                    <li><a href="#day23" class="msg-link">第23天 · 母性中保 <span class="day-num">中保</span></a></li>
+                    <li><a href="#day24" class="msg-link">第24天 · 玛利亚的避静（上） <span class="day-num">母性</span></a></li>
+                    <li><a href="#day25" class="msg-link">第25天 · 玛利亚的避静（中） <span class="day-num">加纳</span></a></li>
+                    <li><a href="#day26" class="msg-link">第26天 · 玛利亚的避静（下） <span class="day-num">加尔瓦略</span></a></li>
+                    <li><a href="#day27" class="msg-link">第27天 · 向玛利亚的托付（上） <span class="day-num">托付</span></a></li>
+                    <li><a href="#day28" class="msg-link">第28天 · 向玛利亚的托付（下） <span class="day-num">慈悲</span></a></li>
+
+                    <li class="group-label">最后五天：综述与回顾</li>
+                    <li><a href="#day29" class="msg-link">第29天 · 圣路易蒙福 <span class="day-num">激情·圣洗·恩赐</span></a></li>
+                    <li><a href="#day30" class="msg-link">第30天 · 圣马希连·国柏 <span class="day-num">奥秘·勇士·爱</span></a></li>
+                    <li><a href="#day31" class="msg-link">第31天 · 圣德肋撒姆姆 <span class="day-num">我渴·圣心·盟约</span></a></li>
+                    <li><a href="#day32" class="msg-link">第32天 · 圣若望保禄二世 <span class="day-num">母亲·托付·慈悲</span></a></li>
+                    <li><a href="#day33" class="msg-link">第33天 · 综述 <span class="day-num">奉献祈祷</span></a></li>
+
+                    <li class="group-label">奉献日与附录</li>
+                    <li><a href="#consecration-day" class="msg-link">奉献日 · 荣耀的新晨曦</a></li>
+                    <li><a href="#appendix" class="msg-link">参考书目及尾注</a></li>
+					<li><a href="#im-thirst" class="msg-link">教宗若望保禄二世《我渴》文告</a></li>
+                    <li><a href="#examination" class="msg-link">省察的方法（BAKER）</a></li>
+					<li><a href="#postscript" class="msg-link">后记（译者心语）</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="content" id="pageContent">
+            <div class="intro-text">
+                <p><strong>《33天迈向晨曦的荣耀》</strong> 是一本由 Fr. Michael E. Gaitley 编写的“玛利亚奉献”个人避静手册。本书通过33天的灵修阅读与默想，帮助读者藉着圣母玛利亚，将自己全然奉献给耶稣基督。</p>
+            </div>
+            <h2 id="copyright">翻译说明与版权</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>本书译自英文。书中楷体部分大多摘录自原有翻译版本。其中《孝爱真谛》《玛利亚的秘密》采用天主教在线提供的译本。详见书后参考书目。</p>
+                    <p>为保持英文版原貌，又兼顾中文的可读性，本书基本采用了逐词逐句翻译的方法，个别部分取了意思。尾注部分只选取了原著的主要部分，省略了与圣母有关的祈祷经文。</p>
+                    <p>本书中文版已取得原作者 Fr. Michael 神父的允许和版权，请勿擅自翻印。特此说明。</p>
+                </div>
+            </div>
+
+            <h2 id="pope-francis">教宗方济各的话</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <blockquote>
+                        <p>在圣人伟大的汇聚中，天主要保留第一位予耶稣的母亲。玛利亚是圣人相通的核心，成为普世教会与基督结合的一位独特托管人。对于那些要在福音路上跟随耶稣的人，她是一位安全的指导，因为她是第一个门徒，一位留心和体贴的母亲，在她身上，我们可以托付每一个愿望和困难。</p>
+                        <p style="text-align: right;">——教宗方济各</p>
+                    </blockquote>
+                </div>
+            </div>
+			<h2 id="acknowledgements">致谢</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>藉着可爱的基督之侣团体，我明白了天主是爱，认识了耶稣基督是救世主，也让我在圣神内重新获得了新生。如今，又借着团体，使我回到圣母玛利亚——天上母亲的怀抱，享受她母性的关爱与呵护。感谢主！赞美主！</p>
+                </div>
+            </div>
+            <h2 id="cfc-letter">基督之侣团体致所有成员的信</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p><strong>COUPLES FOR CHRIST</strong><br>
+                    A Private International Association of the Faithful of Pontifical Right<br>
+                    Families in the Holy Spirit Renewing the Face of the Earth</p>
+                    
+                    <p style="text-align: right;">Ref No 14-96</p>
+                    
+                    <p>2014年12月7日，基督之侣举行特别的祈祷大会，大会的主题为：“万福玛利亚！家庭的母后：圣母玛利亚携基督之侣继续前行。”每一位基督之侣成员以及全体家庭使命事工，都将通过33天的自我预备，借助迈克尔神父（Fr. Michael Gaitley）的《33天迈向晨曦的荣耀》避静学习材料，将自己奉献给圣母妈妈。</p>
+                    
+                    <p>过去的3年，基督之侣偕同圣母玛利亚，走过了特别而辉煌的旅程。</p>
+                    
+                    <p>2012年，圣母妈妈教导并陪伴我们，一同在福传和关爱穷人的工作中踏上成圣之路。我们与她一起高唱《谢主曲》（路1：46-55），全球每一位家庭成员也一起蒙召“颂扬天主的伟大”。</p>
+                    
+                    <p>2013年，作为加纳婚宴的仆人（若2:1-11），我们有幸聆听圣母妈妈的吩咐：“他无论吩咐你们做什么，你们就做什么”。得以见证耶稣如何将空虚转为满盈，将清水变成美酒的奇迹。天主的光荣得以展现，我们也踏上“服从并见证”的旅程。</p>
+                    
+                    <p>2014年，基督之侣成立33周年，如圣母妈妈经常所做的一样，在祈祷中“将这一切默存在心”（路2:16-19, 51-52），我们学会了默想。</p>
+                    
+                    <p>今年即将结束，我们也藉着教宗方济各有关今年主题的默想，（若19:26 耶稣看见母亲，又看见他所爱的门徒站在旁边，就对母亲说：“女人，看，你的儿子！”，准备好去注视，铭记并与建立真诚的关系。</p>
+                    
+                    <p>耶稣将自己的母亲托付给我们，这样做了之后他方“知道一切事都完成了”（若19:28）。在十字架下，在这重要的时刻，耶稣基督将我们引向玛利亚。耶稣这样做，是不想让我们在旅途中没有母亲的陪伴，而众人读到此处母亲的形象，也就读出了福音的全部奥秘。（福音的喜乐285）</p>
+                    
+                    <p>若望福音19章17节记载：“就从那时起，那门徒把她接到自己家里。”我们也要像耶稣钟爱的门徒若望一样，将圣母接到自己的家里。我们号召基督之侣全球团体，凝望圣母妈妈——家庭的母后、穷人的贞女、福传的明星、团体的母亲。</p>
+                    
+                    <p>要求每一位团体成员为我们本次的玛利亚奉献个人避静献上特别地祈祷，让我们真切地领会并热切期待继续有圣母妈妈陪伴同行的旅程。</p>
+                    
+                    <p style="text-align: right;">基督之侣<br>2014年9月9日</p>
+                </div>
+            </div>
+            <h2 id="intro">引言：为什么写这本书？如何使用？</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>我写本书有一个主要目的：籍玛利亚全然奉献给耶稣（玛利亚奉献），确实是一条稳妥、方便、快捷以及最完美的成圣之路。应该有这样一条方便和更新的道路，以便蒙受这份祝福。</p>
+                    <p>迄今为止，还没有一条捷径……我在写另一本自我避静的书——《安慰耶稣圣心》的时候遇到了难题。在书中我曾谈到，藉着玛利亚全然奉献给耶稣，是何等的惊人、神奇并能改变人的生命，但当时没有时间给出全面的解释。因此，我曾建议大家去自行阅读圣路易蒙福关于玛利亚奉献的经典著作：《孝爱真谛》。</p>
+                    <p>在《孝爱真谛》中，圣路易展示了持续33天的玛利亚奉献预备教导。问题是遵照书中所列的方式去做并非易事。（祈祷分散在不同的章节，你得前后翻阅，来回寻找，诸如此类）为解决这个问题，De Muntfort Fathers出版了一本小册子，名为《预备全然奉献》，书中将所有的祈祷整合在一起，这样照圣路易33天的准备去做更为方便，但对我来说，仍存在问题。</p>
+                    <p>圣路易33天的预备教导，虽包含冗长而枯燥的陈述和祈祷，但仰赖的都是奉献的信息。多年前，当第一次按照他的方式开始准备，我清楚地记得当时的感受，“我这是在干什么呀？”好像我开始的是一个33天的马拉松祈祷。我当时都怀疑自己是否能够坚持到底。最终，我放弃了要去赢得玛利亚奉献这一荣誉的想法，因为这要“付出代价”，每周去诵读越来越长的祈祷词。别误解我的意思，为了得到像玛利亚奉献这样大的恩赐，为此做出点牺牲是十分恰当的。再者，我也无意贬低口祷，因为口祷有着巨大的价值，“口祷是基督徒生活的基本要素。”只是我个人认为在心中默想关于玛丽亚奉献的启发式教导，比诵念长长的祈祷更能获得灵性的果实。我知道有同样感受的人不在少数，况且我也不愿意他们因着冗长的祈祷而错失了玛利亚奉献的宝藏。</p>
+                    <p>为此我撰写了这本书。这样做是因为我坚信，预备玛利亚奉献（或者是预备再奉献），并不是非得需要一个马拉松式的祈祷，确切说，它可以是一个并不那么令人望而却步的灵修阅读体验和默想祈祷。当然，有人在原来的33天预备中得到更多灵性滋养，那真是太好不过了。不过，我要为那些和我一样，挣扎在冗长的念经祈祷中的人们，提供另一个选择。我也想为所有人，包括钟爱口祷的人，提供一部圣路易33天预备奉献的更新版本，它将包含当今时代的丰富资源，献给第三个千年的玛利亚奉献。</p>
+                    <p>迄今为止，还没有一个更新的途径……在《安慰耶稣圣心》那本书中，我曾大胆放言，不必花30天的功夫，而只要一周的时间，你就可以得到依纳爵30天避静的所有恩宠。之所以如此大胆，是源自令人尊敬的兰特里神父（Fr. Pio Bruno Lanteri, 1759- 1826），他曾说过，任何人想要拥有一个伟大的圣人所拥有的一切，不必花费 30 天的时间, 8 天就够了。为什么兰特里神父认为他的短时间避静能和 30 天有一样的效果? 因为他特别强调给予了他们我所称谓的“秘密武器”: 救主慈悲和圣母玛利亚。那为什么我敢说我的避静比兰特里神父的还要短呢? 因为兰特里神父 180 年前就已经去世, 从那时起, 人们对他的秘密武器有了更多更深刻的理解, 使其更为有力, 有了这些更为有力的武器, 我才敢说, 我们一周内的避静会更有效。</p>
+                    <p>在《安慰耶稣圣心》中, 我用了大部分篇幅来阐述有关兰特里神父的秘密武器- - 救主慈悲- - 丰富而新颖的见解。其中包括两位当代伟大的慈悲圣人, 里修的小德兰和圣女傅天娜。遗憾的是, 那时我没有足够的时间, 去详述她们关于玛利亚奉献的丰富而深刻的见解。我被这些见解深深地感动, 却不能讲的太深。幸好, 这正是现在我们所要做的。</p>
+                    <p>接下来的部分, 我们不仅会学习玛利亚奉献的门徒- - - 圣路易蒙福的教导, 也会了解他之后的其他几位敬礼圣母的伟人。这样做, 我们也是效仿圣路易的典范。在他的那个年代, 他也是收集并综合了当时玛利亚灵修权威人士的教导。如果他活到现在, 毫无疑问, 也会介绍当代玛利亚灵修“权威人士”的教导。</p>
+                    <p>谁是当今玛利亚灵修的权威人士? 太多了, 但我在默想材料中只选了“三巨头”。我特别挑选了三位顶级的敬礼玛利亚的圣人, 他们极大地丰富了玛利亚灵修学, 并为之增色不少。他们是圣马希连国柏, 加尔各答的圣德肋撒姆姆, 还有圣教宗若望保禄二世。这组合中再加上圣路易蒙福, 我们总共有四位玛利亚灵修方面的巨匠, 他们将合力提供帮助, 将我们引入更新的玛利亚奉献形式。</p>
+                    <p><strong>如何开展避静。</strong>四周的避静中（另加五天的回顾），每周我们都会学习一位玛利亚奉献的圣人，看他（她）们怎样实践经由玛丽亚奉献给耶稣。阅读他们的教导并不是目的，我们要像玛利亚一样，在心里默想他们带来的讯息。这样，33天中，我们就不必经历冗长的祈祷，而是在默想每天的教导中，努力过好一整天，每一天。（或者，如果我们在晚上才阅读当天的教导，可以在一天中默想前一天的教学。）正如从圣经中所了解的，我们默存在心的态度正是玛利亚的特别之处（参见路2:19,51），而且不管你有多忙都可以做到。此外，每天的学习材料后面还附有简短的祈祷，帮助我们去默想当天的内容。而且由于我们33天的目的是在心中保持默想祈祷的氛围，因此我将此过程称为避静，而不仅仅是预备奉献。</p>
+                    <p>无疑，33天的避静时间是在长了一点，而且极有可能发生的是，尽管我们有好的意向并努力去做了，但还是会遗漏一天（或几天）的学习材料和祈祷。如果发生了，我们不必气馁，更不应退出！而我建议，一旦有时间，就应简单补读错过的材料，然后继续坚持避静。天主最知道我们的心思，如果真心渴望奉献，任何诱惑都不能让我们停止。请相信我，很有可能我们会受到诱惑取消这预备，但请不要放弃。让我们每天都能忠实地阅读学习并祈祷默想。如果我们因为粗心大意而动摇，跟天主说我很抱歉，信赖他的宽仁，补上所缺的学习，继续前进。</p>
+                    <p>我之所以建议要补读所缺的学习材料，是与避静的结构有关，每天的教导都是以前一天的基础，每一部分在最后汇集到一起，组成一幅完整的玛利亚奉献图画。因此，每一部分的要素都不应错过。况且，考虑到避静的结构，开始就将四个完整的星期分解，保留最后五天作为回顾。</p>
+                </div>
+            </div>
+
+            <h2 id="schedule">33天避静开始日与圣母庆节</h2>
+            <p style="text-indent: 2em" > 在开始避静之前，我想先介绍一下玛利亚奉献，这介绍不是33天预备的一部分，而是为预备部分所做的准备。我认为这是一件好事，因为介绍部分随时都可以阅读，我建议避静部分在一些特定的时间段去做。换言之，我建议遵从圣路易的建议，专门安排33天的预备，以便避静正好在圣母的某个节日前夕结束。为帮助大家方便知道何时开始，下面列出开始日期和庆节图表：</p>
+            <p style="text-indent: 2em" > 伴随圣路易，我强烈推荐从表中的日期开始避静。话虽如此，我想补充一点，开始奉献的准备永远没有不好的一天或错误的一天。上面所说的只是理想的日期。如果你决定等到特定的某一天开始，大可不必等到那一天才阅读下面的介绍，事实上你可以现在就去阅读。实际上，阅读介绍之前，还有一件事情需要你考虑，那就是建立一个避静小组。照惯例是个人自己做避静，但很多人发现小组的形式特别有效。</p>
+			<div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr><th>33天避静开始日</th><th>圣母庆节</th><th>奉献日/瞻礼日</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1月9日</td><td>露德圣母</td><td>2月11日</td></tr>
+                        <tr><td>2月20日</td><td>天使领报</td><td>3月25日</td></tr>
+                        <tr><td>4月10日</td><td>法蒂玛圣母</td><td>5月13日</td></tr>
+                        <tr><td>4月28日</td><td>圣母访亲</td><td>5月31日</td></tr>
+                        <tr><td>不确定日期</td><td>圣母无玷圣心</td><td>基督圣体节后周六</td></tr>
+                        <tr><td>6月13日</td><td>加尔默罗圣母</td><td>7月16日</td></tr>
+                        <tr><td>7月13日</td><td>圣母升天</td><td>8月15日</td></tr>
+                        <tr><td>7月20日</td><td>圣母元后</td><td>8月22日</td></tr>
+                        <tr><td>8月6日</td><td>圣母诞辰</td><td>9月8日</td></tr>
+                        <tr><td>8月13日</td><td>七苦圣母</td><td>9月15日</td></tr>
+                        <tr><td>9月4日</td><td>玫瑰圣母</td><td>10月7日</td></tr>
+                        <tr><td>10月19日</td><td>圣母奉献日</td><td>11月21日</td></tr>
+                        <tr><td>11月5日</td><td>圣母无染原罪</td><td>12月8日</td></tr>
+                        <tr><td>11月9日</td><td>瓜达卢佩圣母</td><td>12月12日</td></tr>
+                        <tr><td>11月29日</td><td>天主之母节</td><td>1月1日</td></tr>
+                        <tr><td>12月31日</td><td>献耶稣于圣殿</td><td>2月2日</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 id="intro-consecration">“玛利亚奉献”介绍：为什么称为晨曦的荣耀？</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>当你第一次看到本书的时候，你可能会感到奇怪，为什么书名是：《33天迈向晨曦的荣耀》？“33天”你可能已经清楚了，是指预备的时间，但“晨曦的荣耀”可能就不太明白了。之所以取这么个书名，是因为我认为它最能契合玛利亚奉献的全部精神——在基督内的全新生活方式。经由玛利亚将自己奉献给基督，标志着荣耀的崭新一天的开始，一个新的黎明，标志着一个人灵性生命的全新的晨曦，是全新的开始，而这会改变一切。</p>
+                    <p>1995年12月8日，我生平第一次将自己奉献给圣母的时候，我就曾体验到这种灵性生命旅途中的荣耀的晨曦。那是我大学第一年的学期末，开学伊始，一位朋友送给我一本圣路易蒙福的著作《孝爱真谛》。当我看到封底的文字，宣称提供一条“快捷、方便、稳妥和完美”的成圣之路时，我深信不疑。我心里想，“嘿，这正是我想要的那条路！”因此，不顾还有很多作业，我便开始阅读那本书。快读到一半的时候，我停下来，毅然作出决定：“我要做这奉献。”接下来，我挑选了下一个合适玛利亚的庆日，开始了33天的马拉松祈祷，怀着极大地热情开始奉献。那一天完全改变了我的生命。现在回过头去看看，真的可以说一切都改变了。一切都已开启，这真是我与主同行的路上一个荣耀的晨曦，现在同行的还有圣母玛利亚。</p>
+                    <p>圣若望保禄二世对奉献给玛利亚有着类似的描述。他甚至说阅读圣路易蒙福的著作是他生命的“转折点”。事实上，藉着圣母奉献给耶稣对他来说是如此重要，他将圣路易对此总结的话语，作为他任教宗后的座右铭：“全属于你”（Totus Tuns，Totally Yours）。而且据称，教宗每天都要诵念很长一段圣路易撰写的奉献祈祷词。</p>
+                    <p>我曾遇到很多人，他们都曾将自己奉献给圣母玛利亚，而且完全和教宗所说的一样——奉献怎样成为一个人生命的转折点，或者，我将之称为，一个人灵性生命旅程中的“荣耀的晨曦”。真的有所不同，这真是一条“快捷、方便、稳妥和完美”的成圣之路，这也是我选择“荣耀的晨曦”书名的另一个原因。</p>
+                </div>
+            </div>
+
+            <h2 id="week1-title">第一周：圣路易·蒙福</h2>
+            <div class="intro-text">
+                <p>本周，我们将把目光聚集于最早敬礼玛利亚的伟大先驱，及其典范和教导上。我们将从了解他的生平开始，默想其有关玛利亚教导的各个方面。【请留意：这里无法完整地叙述圣路易蒙福全部的基本教导，省略的部分将在后面几星期中补足。】</p>
+				
+			</div>
+
+            <h2 id="day1">第一天：布列塔尼亚充满激情的圣人</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>看一下法国地图，注意它的形状。看看是否有一块伸出的部分，试图从其它大陆地区挣脱逃走，仿佛要跳入凯尔特海？西北方向向外伸出的部分就是布列塔尼亚，圣路易·蒙福（Saint Louis De Montfort）正是在那里长大。</p>
+                    <p>布列塔尼亚好像有一些特别的东西影响了圣路易，那就是凯尔特人传统（Celtic roots）。人们普遍认为布列塔尼亚是六个凯尔特民族之一，意味着凯尔特语言和文化依旧保留。（如此，勾画出地图上那即将跳入凯尔特海的布列塔尼亚部分，实际上它就已经在海里游泳了。）凯尔特文化的一部分似乎深深地渗透到圣路易的心中：凯尔特高涨的勇士精神。</p>
+                    <p>很久以前，提到凯尔特勇士就让敌人胆战心惊。如果你看过电影《勇敢的心》，你就会明白我所说的。想想电影中威廉·华莱士（梅尔·吉布森扮演）以及其苏格兰高地疯狂队友，在数倍于他们的英军敌人面前所表现出的无畏形象，这正体现了凯尔特人的战斗精神，但在真正生活中的表现更甚。</p>
+                    <p>真正的凯尔特勇士往往赤身投入战斗，身上仅涂蓝色的战漆，他们嗜血狂暴，在咆哮尖叫声中冲入敌阵，双手拿着巨大的剑猛砍、痛击并肢解敌人。这些凶狠的斗士，尽管缺乏训练，缺少装备和秩序，凭着无以匹敌的激情和凶猛，屡建奇功。查遍历史，无人愿意与这些疯狂的凯尔特勇士遭遇。</p>
+                    <p>圣路易的父亲，让·格里宁（Jean Grignion）想必是源于这些狂暴的勇士，因为同样没有人愿意与他交恶。事实上，在整个布列塔尼亚，他是公认的脾气最为狂暴的人。有人曾这么说：“他是一座时常会喷发的火山”。那么，圣路易一定是像绵羊一样温良，对么？错了！众所周知的，他有着像他父亲一样的坏脾气。不同的是，圣路易的坏脾气不是威胁和暴力，而是将他燃烧的激情引向光荣天主的劳作当中，但有一次例外，那是在他的讲道当中，几个醉酒的人不断诘问，当场被他打昏。如果反思路易短暂而富有成效的司铎生活，我们可以更好地了解他那非凡的热情。</p>
+                    <p>1716年圣路易去世时，刚满43岁，作神父也仅16年。持续不断地教会传教讲道，特别是孜孜不倦地透过玛利亚，将灵魂引向耶稣。辛苦的劳作导致了他的英年早逝。这些侵蚀生命的劳作给他的苦楚仿佛还不够多，路易还不得不忍受来自教士和詹森主义异教徒的迫害，遭到他们的身体攻击甚至下毒。尽管如此，我们这位不屈不挠的勇士，继续在战场上前进，不断展开他标志性的宣讲：一条经由玛利亚到达耶稣的道路。事实上，当法国教会认为已经阻止了他的工作时，他却远赴罗马向教宗寻求智慧和建议。教宗不仅告诉他回到法国继续宣讲，还赐予他“使徒传教者”的名号。出于对耶稣、圣母玛利亚和众灵魂的爱，圣人顺服并喜悦地返回法国继续宣讲、写作，并耐心忍受着许多苦难。</p>
+                    <p>圣路易的激情和热心在年轻的卡罗尔·沃伊蒂瓦（Karol Wjtyla），即后来的教宗若望保禄二世心中燃起了热火。这位教宗在去世前几年，实现了他一生的一个梦想，拜谒了圣路易·蒙福的坟墓。教宗当时说道：“我很高兴能在这位伟大的人物面前开始我的法国朝圣之旅。这位圣人以及他的著作《孝爱真谛》帮助我很多。”</p>
+                    <p>现在的我们又如何呢？当我们开始这次避静的时候，心中是否充满热火呢？回答是：应该有，或者至少应该为此而努力。渴望和慷慨是成功避静的关键。愿圣母玛利亚为我们转祷，切愿圣神充满我们，克服疲倦和干扰，怀着热情做好这次避静。也让我们记着，无论在我们祈祷中有怎样的境遇，总无法与圣路易所遭遇的境况相提并论，何况他会为我们代祷。依托天主之母以及圣路易的代祷，让我们现在就下定决心，在这次避静当中，以凯尔特勇士般的高度热情奉献自己，当然尖叫和脸上涂漆就免了。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，帮助我在这次避静中充满慷慨与热情。</p>
+                </div>
+            </div>
+
+            <h2 id="day2">第二天：圣路易对教会的影响</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>昨天提到关于圣路易·蒙福的激情，有一个故事可以很好地说明。在蓬特沙托（Pentchateau）镇，圣路易曾授意村民在附近的山上修建一座巨大的基督受难纪念碑。数百村民自发贡献出他们的专长和劳动，苦干15个月来建造。矗立起来的巨大建筑，是一项真正的爱心工程，在即将由主教主礼奉献的前一天，有消息传给路易说，他的仇人已说服当局要拆毁纪念碑。（他们给当局撒谎说那建筑是用来对抗政府的堡垒）。当路易得到这个令人沮丧的消息时，他告诉数千名已经汇聚起来准备祝福庆典的人们说：“我本来希望在这里建成一个加尔瓦略，现在让我们在心里建造吧。愿天主受赞美！”</p>
+                    <p>完成天主的工作一个要点是：它并不总是按照我们的计划进行。比如，按照圣路易的计划，他所要建造的基督纪念碑远不止存留一天。然而圣人却顺服地接受他的计划被摧毁，而且赞美天主。正是这种对自己意愿的超然态度和对天主旨意的忠诚，路易成为天主用来完成更伟大工程的工具。因此，尽管他那有形的纪念碑被摧毁了，他的教导却最终成为教会中对多位教宗和天主教灵修学产生巨大影响的宏伟巨著。的确如此，尽管他在有生之年并未亲眼目睹，圣路易充满热诚的劳动最终得到了回报。</p>
+                    <p>当我们开始准备透过圣母将自己奉献给耶稣的时候，让我们默想不同教宗对圣路易教导的称赞之辞。愿这些赞美的见证能强化我们奉献的决心，帮助我们坚信，尽管还不完全明白如何去做，但我们的奉献一定会在生活中结出丰硕的果实。</p>
+                    <p>真福教宗庇护九世（1846- 1878）曾说过，圣路易对圣母的奉献是最好也是最合意的形式。</p>
+                    <p>教宗良十三世（1878- 1903）不仅于1888年对蒙福行宣福礼，而且还对那些按照蒙福的方式奉献自己于圣母玛利亚的教友赐予教会大赦。另外据报道，教宗还深受路易努力传播玫瑰经的影响，亲自撰写了11篇奉献于玛利亚的通谕。</p>
+                    <p>教宗圣庇护十世（1903- 1914）像良十三世一样，极力推荐忠实于圣路易关于玛利亚的教导。实际上，对任何按照圣路易的方式奉献自己于圣母玛利亚祈祷的人，他都赐予全大赦，并对任何一位《孝爱真谛》的读者赐予宗座祝福。这位教宗之所以如此强烈地鼓励忠诚于对玛利亚奉献，是因为他自己亲历了她的力量。事实上，在他关于敬礼玛利亚的通谕Ad DemIIum中，这位圣人教宗表达了他在写作当中对圣路易·蒙福的依靠，如果与《孝爱真谛》做个对比，将会很明显地看出来。教宗的通谕继续反映了路易作品的经典口吻与精髓，有下面的例句可以证明：“要使所有的人与基督共融，没有比玛利亚更可靠、更容易的途径了。”</p>
+                    <p>教宗庇护十一世（1922- 1939）只是说：“我在年轻的时候就实践过这奉献。”</p>
+                    <p>教宗庇护十二世（1939- 1958）于1947年为圣路易封圣，在封圣弥撒证道中称圣路易有关玛利亚的教导“正确而可靠”。之后，他又对前来参加封圣的朝圣者致辞说，圣路易将我们引向玛利亚，并通过玛利亚而至耶稣，由此给奉献于玛利亚的含义做出总结。</p>
+                    <p>圣教宗若望保禄二世（1978- 2005）比其他教宗更加推崇圣路易的教导。我们将在第四周的避静当中了解到更多内容。这里只谈两个奇妙的事实就已足够。第一、教宗若望保禄二世的座右铭是：“全属于你（Totus Tuns）”，直接选自圣路易简短的奉献祈祷；第二、教宗若望保禄二世描述阅读《孝爱真谛》是他人生“决定性的转折点”。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，让我充分准备自己，活出正确而可靠的奉献生活。</p>
+                </div>
+            </div>
+
+            <h2 id="day3">第三天：圣路易的奉献（上）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>本周的第一天，我们要大家付出更大的激情与热心，为奉献自己做准备。昨天，我们又回想了圣路易短暂的一生对教会产生的难以置信的影响。先教宗们权威有力的见证更进一步燃起我们的热情去思考：“一个仅仅活了43岁的神父，他那极富影响的教导究竟是什么？”当然，他的教导就是玛利亚奉献，但这到底意味着什么？</p>
+                    <p>回到本次玛利亚奉献避静的前言部分。在那里我曾提出奉献就是向玛利亚说“是”，允许她在我们内实现天主所赋予的使命——把我们塑造成另一个基督。千真万确，但不止如此，圣路易在教导中指出两个重点，进一步讲解了上述论点。这两个重点是：1）重申领洗誓愿；2）把自己作为特别的礼物献于圣母。我们会在今明两天分别讨论这两点。（一个今天，另一个明天）。</p>
+                    <p>领洗那天是每个人一生当中最为重要的时刻，领洗不仅将我们赤贫、罪恶的受造物洗净，还赋予我们奇妙的神性，使我们得享作为全能天主子女的荣耀。在这欢乐的时刻，在接受这奇异的恩典之前，我们庄严宣告（如果我们在婴儿时领洗，则由他人以我们的名义承诺）弃绝魔鬼，并宣认我们对耶稣的信仰与承诺（或由他人以我们的名义代为宣认）。之后的每一个复活节，我们又庄严地重申誓言和承诺。但我们遵守了吗？我们信守誓言了吗？没有！很不幸，我们会犯罪，至少在一些小的方面，屈服于撒旦的虚荣与事业，拒绝了基督。</p>
+                    <p>为什么会如此？简单地答案是原罪。我们有着失落的天性，易于走向犯罪。真是这样。但圣路易邀请我们划向深处，拷问自己的良知。这样做就会发现，我们之所以容易失足犯罪，是因为我们的健忘，忘记领洗时向耶稣基督所发的誓言和做出的承诺。圣路易建议，如果我们个人能真诚地重申领洗誓愿，并交托在圣母的手中，这一小小的举动本身就能对我们生活中躲避犯罪大有裨益。为此，他将重申领洗誓愿作为奉献祈祷的必不可少的元素。实际上，在祈祷的第一段，他让我们向圣母玛利亚诉说，作如下的祈祷：</p>
+                    <blockquote>“我（某某某），不忠心的罪人，我今天在你手中，重申我领洗的誓愿。我要永远弃绝魔鬼，弃绝魔鬼的虚荣，弃绝魔鬼的事业，我现在完全献于降生为人的智慧耶稣基督，以后一直到死，每天要背负我的十字架跟随耶稣。”</blockquote>
+                    <p>这样，圣路易教我们从根源上杜绝罪恶——撒旦及他的虚荣与事业，将我们的生活再一次委身于基督，通过圣母并协同圣母完成这一切。为什么要通过圣母？因为天主让她和魔鬼之间彼此为仇（创3:15），而撒旦无法战胜她。实际上，根据圣路易的观点，撒旦对圣母的畏惧不但远超众天使和圣人，甚至超过天主本身！为什么？他写道：“一向骄傲的撒旦，受到一个娇小的、谦卑的天主婢女打击与惩罚，会有无限的痛苦，她谦卑的力量比天主的神力让撒旦更显卑贱。”如此，圣路易给我们指出了战胜生活中罪恶的实际而有效的方法：正式宣告弃绝撒旦，并通过圣母将我们奉献于基督。</p>
+                    <p>本周的最后一天，我们会听到更多关于圣母玛利亚战胜魔鬼的奇能。明天，我们默想圣路易·蒙福玛利亚奉献的第二个要素，把自己作为特别的礼物献于圣母。今天，就让我们默想我们领洗时所做的承诺：弃绝魔鬼，爱上并追随基督。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，赐我恩宠，好能弃绝魔鬼，紧紧追随基督。</p>
+                </div>
+            </div>
+
+            <h2 id="day4">第四天：圣路易的奉献（下）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>昨天提到，圣路易在玛利亚奉献教导中指出两个重点：1）重申领洗誓愿；2）把自己作为特别的礼物献于圣母。昨天讲了第一点，现在从下面这个问题开始，我们看看第二点：“为什么我们要将自己奉献于圣母玛利亚？”</p>
+                    <p>要效仿我们的救主，耶稣基督，像他那样将自己交给圣母。毕竟，耶稣不是从道成肉身的那一刻起就将自己交给了圣母了么？完全正确！他做了。我们不是也被召叫要效法基督么？是这样的！玛利亚是受造物么？她是，但她是独特的受造物。她不仅没有原罪，彻底服从了天主的旨意，而且因着天主的意愿和美意，正如前言中提到的，玛利亚在这个神圣的工作中扮演了特殊的角色。只因为如此，我们才应该将自己奉献给天主之母，这样她就可以帮助我们成圣，将我们塑造成为另一个基督。我们应该向她说“是”。圣路易要求将这一切更进一步。他的“是”是奉献于玛利亚的一个更为深厚和密切的礼物。</p>
+                    <p>“这敬礼的本质，是把自己完全献于圣母，为了通过圣母，完全属于耶稣。为此我们应该：一、奉献我们的肉身与四体百肢；二、奉献我们的灵魂和所有的能力。三、奉献我们身外所有的一切。现在有的或将来有的财产；四、奉献我们所有的超性财产：我们的功劳、德行、过去现在将来的一切善功。”</p>
+                    <p>第四点很有意思。根据圣路易的说法，这种自我奉献于玛利亚作为献礼的要求，甚至超过了人们将自己献于上主天主的宗教誓言的要求。比如，一位修女发了关于神贫，贞洁，服从的愿，她不会让天主去除她行善功的恩典，也不会要求放弃她的优点。允许我用更多的笔墨关注一下，什么是真正完全的玛利亚奉献。</p>
+                    <p>首先，对于他人来说，如果我们允许圣母玛利亚去除我们的做善功的恩典，这意味着我们将不能无条件地将这恩典施与他人。比如说，做了这样的奉献，我就不能再坚持要求将我忍受病痛奉献所带来的恩宠分施于我原本想给予的人。另外，对我们自己来说，如果我们将自己奉献于圣母玛利亚，那么我们死后，在天主面前，我们将不会披带我们祈祷和善功带来的功劳，实际上，我们会空手出现在天主面前，因为我们要把所有的功劳奉献给玛利亚。</p>
+                    <p>如果这奉献的彻底性让你忧烦，完全不必。明天，我们将会看到为什么不必担心，并且还会看到，为什么这奉献是难以置信的美妙和完全值得。届时，我们再默想圣路易玛利亚奉献方法的第二部分，它是这样谈及把自己作为亲切的礼物献于圣母的：</p>
+                    <blockquote>“我今天在天朝全体神圣之前，奉你为我的主母。我以奴隶的身份，将我的肉身灵魂，内外所有一切，连过去现在将来所行善功的价值，全部交给你，奉献于你，从此你能随意支配我，支配我所有的一切，为天主更大的光荣，从今日起，适于永远。”</blockquote>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，帮助我通过圣母将自己完全奉献给耶稣。</p>
+                </div>
+            </div>
+
+            <h2 id="day5">第五天：我们真的要把一切都献给圣母么？（上）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>圣路易敬礼玛利亚的第二个准则是把一切都奉献给圣母，包括“奉献我们所有的超性财产：我们的功劳、德行、过去现在将来的一切善功。”这是不是有点过分呢？不会，这样才完美！这样才出色！我们看看这奉献如何影响他人和我们自己。</p>
+                    <p>对他人而言，当我们把自己完全奉献给圣母，我们失去了支配自己祈祷和善功价值的权利，换句话说，我们把权利给了圣母，等于告诉她：“玛利亚，我们把分配这恩典的权利交付给你，你看给谁合适就给吧。”</p>
+                    <p>对玛利亚这样的敬礼有大益处。能确保我们祈祷的恩典将会得到最好的发挥。过程如下：鉴于她在天独特的有利地位，以及与圣子最亲密的交流，玛利亚会做出最好的决定，把我们祈祷的恩典赐给那最需要的人，帮助那濒死的人信奉天主，接受上主的怜悯。也许这会引发我们的思考：</p>
+                    <p>哇，太伟大了！我很高兴帮助那个我并不认识的濒死的人，可能在遥远的中国，但是，如果这样就无法用祈祷和善功的恩典帮助那些我认识的人了，多少会有些遗憾。我担心如果将这祈祷和善功的恩典分配权交予玛利亚，对那些我特别爱着的人，尽管他们可能没有世上那些人急需这份祈祷，我就再无权为他们祈祷。</p>
+                    <p>这想法很正常，但不必为此担心。原因有二：第一、玛利亚将我们的奉献变得更完美，换言之，她将我们给她的善功变得更大、更纯洁，使之更完美、更丰厚。圣路易用一个难忘的比喻来解释：</p>
+                    <blockquote>“这好比一个乡下人，要讨国王的喜欢，向皇后献上仅有的一个苹果，请皇后转献给国王。皇后接受了这乡下人的轻微礼物，便把苹果放在一只精致的金盘中，献给国王；这只苹果本来不配进贡，可是一放在金盘中，而且由皇后转献，国王当然悦纳了。”</blockquote>
+                    <p>我们不用担心的第二个原因是：玛利亚的慷慨无人能比肩。因此，如果我们能做到慷慨地将自己的善功全献于玛利亚，她对我们所爱的人当然也会慷慨。实际上，她对我们所爱的人的照顾要比我们好得多。比如，假设我们的家人或朋友需要祈祷，但我们并不知晓。但是圣母玛利亚知道，所以可以肯定他们不会缺乏什么。将善功的分配权交予玛利亚并不意味着我们不能再去为所爱的人祈祷，我们能并且应该为他们祈祷。我们只是让圣母玛利亚最终来决定，这祈祷的恩典赐予谁，为了什么。</p>
+                    <p>记着，玛利亚的慷慨无人能比肩。她特别会倾听我们当中那些将一切都奉献给她的人的祈祷，包括善功的价值，她愿意我们将心中挂念的人和意向都告诉她。如果我们将一切都奉献给她，她将会慷慨地将我们心中的任何所求赐予那些我们心爱的人，这还用怀疑么？</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，请帮助我将所有一切都奉献给圣母玛利亚。</p>
+                </div>
+            </div>
+
+            <h2 id="day6">第六天：我们真的要把一切都献给圣母么？（下）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>昨天我们讨论了将自己完全奉献给玛利亚，即为了他人放弃自己祈祷及善功的分配权，结果我们看到一切都进展的更好。今天，我们转向自己。我们将所有的善功和祈祷都交予玛利亚，两手空空去见天主，这是否有点疯狂？不，一点也不。别忘了，玛利亚的慷慨无人可比。如果我们将所有的功劳都给她，她会把她的一切也给我们，这可是一件大事！</p>
+                    <p>我曾读过一个圣人的故事，她看到一个关于天堂的神视。她看到天堂上圣人们，他们的荣耀程度有等级之分。她惊讶地发现，有些圣人与大天使色拉芬一起在高处敬拜天主。另一次在圣女付天娜的日记中也读到一段关于天堂的神视。如果我们想在天堂达到高层的境界，那就要乐意在现世受相应的磨难。读了这些见证，我对自己说，“我不仅要进天国，还要尽力到达那荣耀的最高境界。”有一个简单地方法：把一切交付给玛利亚。不要靠自己的功劳，而要靠圣母的功劳，圣路易解释说：</p>
+                    <blockquote>“圣母是甘饴之母，仁慈之母，决不肯让别人超过自己的慈爱。圣母看见人为光荣奉事自己，不惜牺牲一切，放弃最心爱的东西，自然要用难以形容的方式，把本身赏给这人。圣母要把他浸沉于圣宠的深渊中，要用自己的功劳装饰他，要用自己的大能支持他，用自己的光明照耀他，用自己的爱情包围他；还要把自己的谦逊、信仰、洁净……各种德行传授给他；在耶稣面前，圣母要做他的中保，后盾，和他的万有。最后，这人既然完全献于圣母，圣母也将完全属于这人。”</blockquote>
+                    <p>尽管有这些安慰的话语，人仍然会心灵不安，说：“很好。我就想要天堂更大的光荣。但我所担心的是炼狱。我担心如果我把一切功劳献给圣母，让圣母支配，我就要在炼狱中受更久的苦。”圣路易答复到：</p>
+                    <blockquote>“这个疑问，完全出于自私，不认识天主圣母的慷慨大方，因此根本不能成立。一个热心而大方的灵魂，忘却本身，专心为天主的利益工作，捐献出全部所有，不留一丝一毫，只希望通过圣母。耶稣的神国来到此世，为耶稣牺牲一切。如此慷慨的灵魂，死后会因过分大方，过分忘我而受炼火的罚吗？相反，不论本性方面、超性方面，不论现在将来，主耶稣和圣母对于这样的灵魂，也最慷慨大方。”</blockquote>
+                    <p>好了，就这样吧——总之我们受到了温柔的责备。圣路易重申了关键的一点：玛利亚的慷慨无人能比！如果我们对她慷慨，她也必将慷慨地待我们。他还指出另外一点：那温柔的责备。他说这些顾虑来自于自私的爱。如此说来，我们的目标应该更高。是的，我们应该怀有神圣的理想，要达致圣洁的最高点，但是我们的动机不能是出于自私，而应该是出于悦乐上主，并光荣赞美他。让我们牢记这重要的一点，以便明天继续了解玛利亚奉献的更多益处。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，帮助我通过将一切奉献给圣母而光荣赞美天主！</p>
+                </div>
+            </div>
+
+            <h2 id="day7">第七天：一条简单、快捷、稳妥的成圣之路</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>过去两天，我们了解了通过玛利亚把自己奉献给耶稣给我们自己和亲人带来的美妙益处。今天，在默想圣路易教导的最后一天，我们要关注其他方面的益处。即了解到奉献玛利亚是一条简单、快捷、稳妥的成圣之路。读到这里，我们需要记住的是，不要认为有了这些益处做礼物，就能放松下来，轻易成圣。（如果这样，就成了昨天圣路易提到的自私的爱）。进而，当意识到天主慷慨地将玛利亚奉献这个礼物赐予我们的时候，我们更应该加倍努力，更加虔诚地在成圣的道路上努力生活，不断成长。</p>
+                    <p>让我们从简单快捷开始：从玛利亚到耶稣的奉献之路就是一条快捷简单的成圣之路。何为圣洁？就是致死自我，单这一点就确定不那么容易。尽管就本性而言可能不太容易，会花费很长的时间，但相对来说，玛利亚奉献依然不失为一条简单快捷之路。圣路易如此介绍说：</p>
+                    <blockquote>“生产方面，有秘诀，有窍门，圣宠方面也如此，为清除内心，为争取天主，为成全自己，也有简便而事半功倍的超性方法。”</blockquote>
+                    <p>那么，我们如何跟随这一简单快捷的方法呢？通过圣母将自己交给耶稣。玛利亚引领我们走上这条简单快捷的成圣之路，尽管她不会去掉我们的十字架。实际上，圣母特别钟爱的人往往要比其他人背负更多的十字架，但圣母会使十字架更甘甜和轻省：</p>
+                    <blockquote>“圣母最忠心的仆役，也是圣母最宠爱的子女，圣母当然赏赐他们特殊的恩宠，就是十字架，但是我认为圣母的忠仆背十字架，觉得最轻松、最有功劳、最有光荣；别人背时，或许要中途停止，或跌在地上，他们能够一次也不停顿，稳步前进；因为满被圣宠、满被圣神的好母亲，把这些特制的十字架，用母亲的慈祥，和圣爱的油蜜煎过。十字架虽然苦，一到他们口中，变成非常甘怡。一人真正愿意在耶稣怀中热心生活，应该忍受磨难，天天背十字架。这人如果不热心恭敬圣母，一定背重大的十字架，而且背不到终点，因为圣母是使十字架变苦为甘的蜜糖。</blockquote>
+                    <p>短时间服从和依靠圣母所获得的进步，超过好几年依靠自己，自定主意所走的路程。你忠实奉行这敬礼后，一个月中所给予天主的光荣，比别人用其他方式，花上多少心血，经过多少年，挣得的光荣，更大更多。</p>
+                    <p>相比之下，奉献给玛利亚确实是一条简单、快捷的成圣之路。正如圣路易经常所得，这好比一个雕塑家，他用凿子需要好几周时间的辛苦劳动来雕刻一尊塑像，而另外一个人却用模具快速而简单地造出了同样的塑像。玛利亚就是那能将我们方便、快速而且完美地塑造成基督肖像的模具。</p>
+                    <p>现在让我们以圣路易有关这也是一条稳妥之路的描述，来结束今天的默想，也就意味着，当我们这样做时，我们也自然受到保护而免受邪恶的攻击。</p>
+                    <blockquote>“圣母在他们周围保卫他们，如严阵以待的大军（雅6：3），一人有十万雄师保卫，还怕什么敌人？圣母的忠仆，有圣母的大能保障，更有恃无恐了！这位好母亲，这位大能的母后，一定要发动百万天神去救援自己的子女忠仆，决不会让他们孤军无援，陷入罪恶。”</blockquote>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，帮助我为这快捷、简单而稳妥的成圣之路，赞美你！</p>
+                </div>
+            </div>
+
+            <h2 id="week2-title">第二周：圣马希连·国柏</h2>
+            <div class="intro-text">
+                <p>本周我们把目光转向20世纪敬礼玛利亚的使徒典范及其言语——圣马希连·国柏。圣国柏熟知圣路易有关玛利亚奉献的教导并热心宣讲。在形成他自己对敬礼玛利亚的真谛的见解中，不仅对圣路易的见解更加深入，而且透过对玛利亚的奥秘的默观，提出了许多新的观点。在了解他的新观点之前，让我们先认识一下他是谁。</p>
+            </div>
+
+            <h2 id="day8">第八天：圣马希连·国柏，你是谁？</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>如果是在一次面试中如此向圣人提问，我们可能会感到失望，至少在最初的时候会如此。他很可能会温和而谦卑地回答说：</p>
+                    <p>“这个问题并不重要。真正重要的问题是：‘你是谁，无原罪之始胎？’”</p>
+                    <p>如果我们面试的目的是想要知道谁是圣国柏，那么这个答案并不会让我们失望，因为正是这答案告诉了我们许多关于他的信息。事实上，他一生当中情有独钟的是了解玛利亚的秘密，特别是当玛利亚向露德的伯尔纳德显现时说的，“我是始胎无染原罪”。为什么她自称“始胎无原罪”？，他的名字不是玛利亚么？明天，我们将默思这一新奇的秘密。今日，在我们假设的面试中，先看看圣国柏如何回答。</p>
+                    <p>圣国柏是谁？我们通过下面的头衔了解到：仁爱殉道者，奥斯维辛集中营中的圣人，骑士修道会创始人，玛利亚的使徒，20世纪的主保圣人。但是在这以前，他只是被称为雷蒙·国柏，1894年出生在波兰的一个穷苦农家。一开始，并没有人想到他最后竟会成为一位圣人。实际上，他的行为举止曾使他的母亲大为失望，有一天，他母亲恼怒中大叫说：“雷蒙，你将来究竞会成为啥样啊？”这问题正切中了他的要害。满怀悲痛，他即刻转向天主之母并问道：“我究竟会成为什么样呢？”之后，他走进一座教堂，不停地重复这个问题。这位未来的圣人是这样描述接下来所发生的事情的：</p>
+                    <blockquote>“那天晚上，我向天主之母祈祷，向她询问我的将来。她显现给我，手里拿着两个皇冠，一个是白的，一个是红的。她问我想选择哪一个。白色象征着我将度坚守贞洁的生活，红色象征着我将成为殉道者。我说我都想要。之后童贞玛利亚温柔的望着我，就消失了。”</blockquote>
+                    <p>象征贞洁的白色皇冠最先来到。作为马希连弟兄，他的入会三愿之一就是贞洁。但是他的贞洁不仅仅是肉体的，还有另外一种贞洁——纯正的意向。即一个人将自己的思言行为指向神圣的目的和使命，并最终引向天主，而不是自己或其他受造物。</p>
+                    <p>或许只是这种强烈的冲动和激情，国柏感觉到一股强烈的渴望，要将自己奉献给一个特别的使命或目标。他的一位修院的同学这样叙述道：“国柏的‘经典创意’开始于1917年，与他的6个同学一起，最后结晶为他自称的‘骑士修道会’”。“骑士修道会”至少对他的抱负而言正如他说的一样，是个“经典创意”。其目的不外乎是在无原罪圣母玛利亚的率领下，将整个世界通过基督引向天主，并且尽快这样做。顺服天主的旨意去完成这项使命，与无玷圣母结合，是国柏的全部思念——他的纯正意向——他牺牲一切来实现它，将我们带向那红色的皇冠。</p>
+                    <p>1941年，在波兰、日本等经历了几十年富有成效的使徒劳作之后，国柏被盖世太保逮捕并关进了奥斯维辛集中营。在遭逮捕之前，他的方济会弟兄们曾恳求他躲起来。他说很感激他们的关爱，但是不能听取他们的劝言。他后来解释道：“我有一个使命，无染原罪有一个使命需要实现。”这一使命在圣母升天瞻礼前夜得以实现，他自告奋勇代替一名囚犯去受死，不耐烦的纳粹以注射毒针的方式结束了国柏的生命。至此，圣马希连·国柏为贞洁殉道，从无染原罪者手中接受了他的第二个皇冠。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，洁净我的身心灵，助我致死自我。</p>
+                </div>
+            </div>
+
+            <h2 id="day9">第九天：无原罪之始胎，你是谁？（上）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>昨天，当提到圣马希连遭到盖世太保逮捕的时候，我忽略了一个关键的细节，这个细节对今日的反思很是重要。在遭逮捕前两个小时，这位未来的圣人写下了他一生中最重要的神学反思。正是那个多年久寻不得的答案，那个从他宗教生活一开始就令他一遍又一遍反复思考问题的答案：“无原罪之始胎，你是谁？”今日默想中，我们将揭开这非凡的档案，但在开始之前，让我们先暂停一下，先默默向无染原罪者祈祷，求她赐予我们接受圣国柏的智慧恩宠。</p>
+                    <p>档案是这样开始的：</p>
+                    <p>始胎无原罪。这话来自于无原罪者自己的口中。所以，它以最精确和重要的方式告诉我们她真的是谁……</p>
+                    <p>那么，你究竟是谁，哦，无原罪之始胎？</p>
+                    <p>问得好，但仍没有答案。档案的后面，国柏指出了看似简单但很关键的一点：在露德的显现中，玛利亚并没有对圣伯尔纳德说：“我是由无染原罪而受孕的”，而是说：“我是始胎无原罪”。这看似有个问题。归根结底，玛利亚是由无染原罪而受孕的。换句话说，因着天主特别的恩宠，并因着可预见的圣子的功劳，她在她的母亲——圣女亚纳胎中受孕，没有沾染任何的原罪。但她的话为什么这么奇怪？她为什么将无染原罪而受孕的恩宠作为自己的名字，这样是否看起来会让她更神圣？毫无疑问，玛利亚不是神。国柏因这明显的“神性问题”斗争了数十年，得出下面的结论：</p>
+                    <p>始胎无原罪是神圣的。但我所说的并不是玛利亚，而是天主圣神。换言之，国柏认为有两个“无原罪之始胎”，即玛利亚和天主圣神。玛利亚是受造的始胎无原罪，而天主圣神是自有的始胎无原罪。或者可以这样说，在没有受造的始胎无原罪（玛利亚）之前，在永恒就存有那自有的始胎无原罪。那自永恒由天主圣父及圣子所共发的爱的始胎，他是全宇宙所有繁衍生命始胎的原型。这样，由圣父所生的独生子，圣神是因他们的爱而共发的“始胎”。既然，从生命和爱的意义上来说，天主圣神是由圣父和圣子的爱所共发的“始胎”，以某种类似的方式，就有了由丈夫和妻子因着爱所“共发”的胎中的孩子。天主圣神是无染原罪之始胎，因为他是天主，当然没有原罪。何况，圣神是“永恒而非受造的”始胎，他本就是天主。</p>
+                    <p>好了，这大致概括了圣国柏关于圣神是始胎无原罪的教导，但是为什么玛利亚要称呼自己同样的名字呢？我们明天来回答这个问题。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，为我揭开胎无原罪的含义。</p>
+                </div>
+            </div>
+
+            <h2 id="day10">第十天：无原罪之始胎，你是谁？（下）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>我们知道了天主圣神是非受造的始胎无原罪，而玛利亚是受造的始胎无原罪。为什么不简化这称呼，将圣神称为始胎无原罪，而称玛利亚为由无染原罪而受孕者？是因为露德！要问就问圣女伯尔纳德吧！</p>
+                    <p>我们应该正儿八经地好好感谢圣女伯尔纳德和圣国柏，正是他们对恩宠忠诚，为我们开启了这光荣的真理，让我们对有关玛利亚奉献的神学思想得以加强。这真理与《圣神与玛利亚的结合》有关。圣国柏在一段冗长而艰涩难解，但同时内容丰富、值得默思的文字中这样解释道：</p>
+                    <blockquote>
+                        <p>在（圣神与玛利亚）之间是怎样的一种结合呢？超越了内在的结合，是她的本质与圣神的“本质”的结合。圣神居住在她内，生活在她内，自她存有的那一刻就是这样，一直这样，并将永远如此。</p>
+                        <p>在玛利亚内的圣神的生活由何而组成呢？他本身是她内非受造的爱，这爱来自圣父、圣子，自有的、三位一体的真爱，硕果累累的爱——“受孕”。在按照天主的肖像所造的所有受造者当中，婚姻带来的结合是最为亲密的（参看玛窦福音19:6）。从更精确、更本质、更基本的方式来说，天主圣神生活在无站者的灵魂内，在她肇始的最深处。从她存有的那一瞬间，她的一生直至永远，他使她硕果累累。</p>
+                        <p>这永恒的始胎无原罪（就是天主圣神），以一种神圣的方式，在玛利亚灵魂的胎中（或深处）创造了神圣的生命，使她成为始胎无原罪，人类的始胎无原罪。而且正如所有重要的事情都会适时出现一样，玛利亚童贞的腹胎为他而保持了神圣，适当的时候在那里受孕，并赋予天主圣子人性的生命。</p>
+                        <p>……如果在人的生活中，妻子结婚后取用丈夫的名字，表示她属于他，与他同等，并将与他在一起作为新生活的开始。那么，就有更大理由相信，天主圣神的名号，神圣的始胎无原罪，将作为玛利亚的名字，因为在她内的是那非受造的爱，是整个超性恩典秩序中的生命的本源。</p>
+                    </blockquote>
+                    <p>依照这一段非凡的话语，我想指出三点：</p>
+                    <p>第一，再深深地、带着祈祷默想一遍，想一想，这是有史以来最伟大的信奉玛利亚的圣人的临别赠言，是他奉献全部的生命和力量，毕生所寻求的问题的答案。</p>
+                    <p>第二，圣国柏关于玛利亚及其与天主圣神的结合这番话，如果你听起来有一点点过火，不必担心。教宗保禄六世认为圣国柏的教导忠实可信，尽可消除疑虑。</p>
+                    <p>第三，如果你从这具有挑战的文字中只收获了一点，那应该是这一点：玛利亚是圣神的净配。实际上，她与圣神的结合远超我们对婚姻关系的理解，可能更深。明天我们继续讨论这个话题。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，为我揭开始胎无原罪的含义。</p>
+                </div>
+            </div>
+
+            <h2 id="day11">第十一天：无染原罪者总是完美奉行天主的圣意</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>昨天，我们知道了圣神与玛利亚之间的亲密结合，了解了非受造的始胎无原罪与受造的始胎无原罪。或许我们现在会想，“这样很好，后来又如何呢？”后来是这样的：玛利亚完美地奉行了天主的圣意——而这关乎重大。让我们停下来，参照现实的蓝图，把这观点融合进去。</p>
+                    <p>根据圣托马斯阿奎那的神学理论，所有的受造物都处于一个“来自天主又回到天主的生命大循环运动”中，他在“生命大循环”中这样写道：</p>
+                    <p>从根本准则而来，受造物完成某种轮回，一个往复运动，这样当所有的事物趋于特有的终结时，又会回到其所由来的准则那里……我们是由圣子和圣神所造，因此我们最终也注定要回到他们那里。</p>
+                    <p>圣国柏，一位杰出的神学理论者，对这个宏伟的结构也曾有过类似的描述，他从我们自身对世界的经验来展开：</p>
+                    <p>在世界任何地方，我们都会注意有这样的行为……离开与返回，出去与归来，分离与团聚。离开时总期待着返回，这个过程富有创造性。所有这一切都简单地反映出三位一体的圣者在受造物生活中的存在。</p>
+                    <p>圣国柏这里所描述的很正确。这正是宇宙的结构。一切都来自于天主，最后又回归天主，或多或少会不完美。有时又称此运动为“退出和返回”。尽管圣国柏用“分离”代替了“退出”，他表达了同样的思想：</p>
+                    <p>起初，天主创造了宇宙，这有点像分离。天主将自然法则置于普世万物，让其据此达致完美，相似他，回到他那里。而智慧的受造物（人类）以意识的方式去爱他，通过这爱，使他们越来越与天主接近，最终找到返回天主的道路。</p>
+                    <p>在所有的受造者中，圣国柏认为最值得一提的就是无染原罪者。</p>
+                    <blockquote>受造者中最完美地接受了那由天主亲自注入圣爱者，就是无染原罪者，她从未沾染过一点罪恶，从未离开过上主的旨意，作为圣神的净配与之结合，使她成为唯一，以无可比拟的完美方式与主同在的圣者，超越其它一切受造者。</blockquote>
+                    <p>让我们默想一下这样一个事实：</p>
+                    <p>首先，一切自天主而来，想一想所有的受造物，天主一命就成。之后，植物和动物，按照它们受造的目的，完成它们的自然使命后回归天主。它们这样并没有想过或经过仔细考虑，也没有刻意享受某种安逸，这些都是因着本能自然而成的。</p>
+                    <p>而另一方面，人类则不同。虽然有时我们的行为也是因着本能，但我们也有不同于动物的行为。我们的行为受理性和意愿的支配，而且当我们付诸行动时，我们能清楚地意识到自己在做什么。这正是我们是按照天主的肖像所造的含义——能知道天主并去爱他。尽管动物也能按着本能去完成天主的旨意，但我们却能自由地、有意识地去做。</p>
+                    <p>问题是，我们会滥用天主赋予的自由。我们并不总是遵循天主的旨意，这导致我们不能按照应该的那样，返回到天主那里。我们会犯罪。如果我们犯了严重的罪而没有彻底的悔改，我们就不能回归天主，这是人生最大的悲剧。但是感谢主！天主差遣他的独生子，带着圣神的威能来拯救我们，将我们带回天父居住的天乡。</p>
+                    <p>同时也要感谢主，在人类犯罪之后，他创造了一位无染原罪而受孕者，因为她与圣神完美的结合，使她自由而完美地与天主的首意保持了一致。她帮助我们战胜了因罪而来的悲剧，她带领我们遵循天父的旨意，回到天主的怀抱，成为圣人。关于这一点，明天我们将会了解更多。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，求你改变全球的面貌，使所有的受造物都能回归天主。</p>
+                </div>
+            </div>
+
+            <h2 id="day12">第十二天：天主的圣者，你是谁？</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>圣马希连国柏经常召集修院的见习修士们给他们上灵修课。一天，他给他们上了永远难忘的一课：“如何成为圣人。”这位未来的圣人一开始便告诉他们，成圣并不难，答案即是他在黑板上写了一个简单的等式：WWS</p>
+                    <p>其中：大写的W代表天主的旨意（God's Will）</p>
+                    <p>小写的W代表我们的意愿（Our wills）</p>
+                    <p>当这两者结合在一起的时候，就成圣了。（S代表Sanctity or Saint）</p>
+                    <p>这堂课不仅仅是给修士们上的。圣国柏给他的团体成员以不同的方式讲了一遍又一遍。在波兰，圣国柏建立了世界上最大的修道院，他称之为“无染原罪之城”（City of the Immaculate），他不断催促600多名修道者，让他们成为无玷圣母玛利亚摩下的天主的勇兵圣徒。为什么要在无玷圣母玛利亚的磨下？因为，普天之下，只有她完美地遵循了天主的旨意。因此，当我们的意愿与她的意愿相结合时，必然符合于天主的圣意。这里列举出无数事例中的两个，来说明圣国柏如何重视这一点：</p>
+                    <p>让我们献上祈祷，以便更好地理解无染原罪者在天使求报时所回应的：“看，上主的婢女，愿照你的话成就于我吧！（路1:38）。按照天主的旨意，诚心所愿。这个想法包含着一些的幸福，今生今世，命中注定的一切完成了……</p>
+                    <p>让我们祈求圣母妈妈，让她教导我们的灵魂如何成为天主和她的婢仆。天主没有直接向天主之母显示自己，而是通过使者。我们也有神圣的使者。……让我们祈祷，学会如何回答这些使者：愿主的旨意承行。这也正是我们被置于此世要学习的。</p>
+                    <p>与圣母玛利亚的意愿保持一致，就能与天主的旨意完美地保持一致，因为她从不因自己的选择而偏离天主的旨意，而让自己的意愿与天主的旨意结合，正是你一生当中最为迫切的任务。</p>
+                    <p>遵行天主的旨意并不容易，除非有无染原罪者的帮助。“通过无染原罪者，我们能成为伟大的圣人，而且，这是一条简单易行的路。”成圣是国柏的首要目标，一点也不夸张。在成为神父之前，他列了一个灵修目标清单。其中第一条就是：“我希望成圣，成为一名伟大的圣人。”他知道无染原罪者会帮助他，并使他的成圣之路变得简单易行。</p>
+                    <p>玛利亚怎样使成圣更为简单易行呢？我们在上周结束的默想中，读到很多圣路易的教导。但国柏更为关注另一个原因。这与“圣母是所有恩宠的中保”有关，他在敬礼玛利亚的有关方法中表示：“天主愿意将所有的慈悲赐予玛利亚。”她按照天主的旨意分配恩宠。为何如此？因为是天主的旨意，通过圣神使天主自己与玛利亚结合。“除非经由无染原罪者，他的净配，否则圣神不会工作。”因此，如果我们紧跟并向那位负责分配天主恩宠的圣者祈求成圣之路，定会“简单易行。”</p>
+                    <p>看看圣母通过显现给圣女加大利纳拉布莱，而展示在显灵圣牌上的形象，我们就会更好的理解玛利亚作为恩宠中保的概念。这形象深深地打动了国柏的心，因为他描述的是，圣母站在地球之上，从她的手指流出一道道恩宠的光芒。在其中一次显现中，加大利纳注意到，光芒并不是从圣母所有的手指中流出。圣母解释说，这些光芒和恩宠都是可得的，之所以有的手指没有流出，只是因为没有求。圣国柏的方法不仅仅是祈求这些恩宠，而且是要让圣母玛利亚将我们完全放在她的手中，让我们成为向世界分施恩宠的管道。明天我们将继续了解这些方法。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，将我们的意愿与无染原罪者的意愿相结合，也与你的旨意相结合。</p>
+                </div>
+            </div>
+
+            <h2 id="day13">第十三天：成为工具——确切的说，众多的工具</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>圣国柏不仅仅只向无染原罪者祈求恩宠，他想要自己本身也成为无染原罪者手中的恩宠。他不仅要遵行她的意愿，他要想成为那意愿本身。等一等，他要成为恩宠和无染原罪者的意愿本身？这要求是不是太过了？圣国柏可不这么想。他认为，“如果人们可以将自已交付给撒旦，被它所有，成为作恶的工具，为什么我们不能将自己交付给天主，为主所用，成为他施爱的工具？”他进一步推断认为，既然无染原罪者被圣神所“拥有”，无人可比，为什么不请圣母妈妈也“拥有”我们，以便更好地与天主的旨意相结合？换句话说，像圣路易经常提到的那样，成为圣母玛利亚的“奴仆”，这对圣国柏来说还不够，他还要更进一步，他要成为无染原罪者手中（施恩的）工具。</p>
+                    <p>成为无染原罪者手中的工具，这成了圣国柏有关敬礼玛利亚全部神学观点的中心。因此，他直接将这写进了奉献祈祷词中：“让我成为你纯洁而富于怜悯的手中一个合用的工具。”目的何在？为转变这个世界。</p>
+                    <p>拜托，国柏似乎有点忘乎所以了，对吗？我的意思是，仅凭一个人怎么能够做到？但这才触及他的关键点和主要策略，他的计划中并不仅仅有他自己，实际上，他想要建立一支由勇兵和战士组成的战斗队伍，使他们全部成为始胎无原罪那充满恩宠的手边的工具。他要组建一支“圣母勇士队”（Militia Immaculata），对此他是这样描述的：</p>
+                    <blockquote>这只队伍要成为无染原罪者的一笔永久真正的财富，在各个方面，无一例外，以一种无比完美的方式永远属于她。他们要深刻理解“属于她”的真正含义，从中得到启发，振奋精神，点燃他们周围那些灵魂的热火，使这些灵魂也如同他们一样，从而为无染原罪者赚得这些灵魂，使之毫无保留地“属于她”，用此方法，使越来越多的灵魂归于她，在尽可能短的时期内，赢得这个世界。</blockquote>
+                    <p>真是天才！请留意国柏整个战略中出色的逻辑，如果我们真的爱天主，真的愿意为天国工作，那就应该找出一条最快捷、最方便的成圣之路，从而归向天主。正如我们从圣路易那里学到的，奉献给圣母玛利亚就是那条快捷、简便的成圣之路。</p>
+                    <p>然而，国柏更进一步，他不只考虑自己，也没有死守他自己成圣的秘密。这样看吧，有一个圣人好呢？还是有两个圣人好？有一千个好呢？还是一百万个？想想如果有上百万的圣人都敬礼圣母玛利亚会发生什么。设想一下，如果圣母玛利亚有上百万的圣人做她的工具，并通过他们去完成天主完美的旨意，多么神奇的想法！因此，国柏呼喊说：“去教别人这么做！为无染原罪者赚取更多的灵魂。”如果这是一条快捷、简便的成圣之路，只要我们教会别人这个方法，那这同样也是一条快捷、简便，为基督赚取整个世界的途径。圣国柏说：“让我们开始工作吧！”</p>
+                    <p>是的，让我们从自己学会这奉献开始，然后再带领其他人学会这奉献。</p>
+                    <p>好了，回到重点，我们需要学会对始胎无原罪的奉献，需要以一种“更完美的方式属于她”。如何做呢？很简单。先学会去爱无染原罪者！</p>
+                    <p>怎么爱？去依赖她强而有力的转祷，去经验她温柔的关爱，用心与她交流，随她的引领，所有的事情都向她求援，完全相信她。</p>
+                    <p>是的，我们需要特别的相信始胎无原罪，并享受在她内的愉悦。我们应效法圣国柏的喜乐，他的一位同修会的弟兄这样描述：</p>
+                    <p>当诸事顺利时，他满心欢喜，热切感谢经由圣母妈妈的转祷而赐予的恩典；</p>
+                    <p>当事情不顺时，他仍然高兴，并会说：“为什么我们要难过？难道无染原罪者，‘我们的母亲’，不知道所发生的事吗？”</p>
+                    <p>明天，我们将了解更多关于圣国柏奉献给“我们的母亲”的方法。在结束今天的避静前，让我们一起默想他的话语：</p>
+                    <p>“亲爱的弟兄们：我们亲爱的妈妈，无染原罪的圣母玛利亚，愿意并能为我们做任何事，我们是她的孩子。投奔她吧，她会战胜一切。”</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，助我预备自己，好成为始胎无原罪者手中可用的工具。</p>
+                </div>
+            </div>
+
+            <h2 id="day14">第十四天：圣国柏的奉献祈祷</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>本周默想的是圣马希连·国柏关于玛利亚奉献的教导，在结束之前，了解他实际的奉献祈祷会对我们大有裨益。现在分三部分来看看：1、开场祈祷；2、恳求圣母玛利亚，接纳我们做她的宝贝；3、恳求圣母玛利亚，用我们来为她争取更多的灵魂。</p>
+                    <p>开场祈祷是这样的：</p>
+                    <blockquote>吁，无染原罪者，天地的母皇，罪人之托，我们至爱的母亲，天主将全部的的仁慈托付给你。</blockquote>
+                    <p>这里我们看到圣国柏最喜爱的对玛利亚的称呼——“无染原罪者”。正如我们从露德的显现中所知道的，这正是圣母的身份。对圣国柏而言，这是她最重要的身份，因为这身份突显了她与天主圣神亲密的结合。这开场祈祷还带出了玛利亚的另一个身份：母亲。玛利亚是最谦卑、和蔼、温柔、可爱的母亲。最后，另一个圣国柏最喜爱的头衔也暗藏在这里，即：所有恩宠的中保。因为“天主将全部的的仁慈托付给了”玛利亚。</p>
+                    <p>奉献祈祷的第二部分表达了我们的请求：请玛利亚接纳我们做她的宝贝。</p>
+                    <blockquote>我，（某某某），一个幡然悔悟的罪人，投身在你的脚前，谦卑地恳求你，将我的现在，我的所有，全部给你，为你所有，做你的宝贝。求你使我灵魂肉身的全部力量，整个的生命、死亡和永恒，凡此一切，都能中尔圣意。</blockquote>
+                    <p>想起在圣路易玛利亚奉献的方法中，曾详细制定和描述过，我们能给玛利亚奉献什么：身体、灵魂、财产、善功等等。同圣路易一样，圣国柏也表达了同样的思想，但他的更为简明：“将我的现在，我的所有，全部给你。”另一方面，圣路易奉献的目的简单而精炼，是为了“更好地光荣天主”。而圣国柏则将此目的展开并进行了详细的阐述。因此，在奉献祈祷的第三部分，圣国柏将奉献的目的不再简单地视为，“更好地光荣天主”，而是做了如下描述：</p>
+                    <blockquote>如蒙悦乐尔心，请将我全部的所是所有，毫无保留地任由你取用，为成就天主关于你而说的话：“她要踏碎你（撒旦）的头颅”，而且“唯你要消灭世界的所有异端。”请让我成为你慈悲的手中一件合用的工具，好最大程度地使那些迷途冷漠的灵魂，都能认识你、增加你的荣耀，并有助于开拓耶稣圣心的幸福王国。你到哪里，哪里就有转变和圣洁的恩宠与你相伴而行，因为由耶稣圣心而来的恩宠，都是经由你的双手赐予我们。</blockquote>
+                    <p>我们很容易忽略本段第一句中的圣国柏的胆魄，但当真正理解它时，就知道这胆魄是惊人的。圣国柏祈求玛利亚使用他来彻底粉碎撒旦的统治！或许当他在祈求圣母使用他，使他最大程度地，有助于开拓耶稣圣心的幸福王国时，他有点（一点点）打退堂鼓了。但他的胆魄仍然令人吃惊。他祈求玛利亚将他当做工具—— “竭尽所能”地使用，来粉碎撒旦，开拓天主的国——耶稣圣心那充满爱的王国。</p>
+                    <p>有趣的是，圣国柏在祈祷中两次提到他所专注的耶稣圣心，这并不是心血来潮。例如，在他赠与他的军旅圣母骑士会的座右铭中也曾提到：“带领所有人、每个人，经由玛利亚抵达耶稣圣心。”关于我们灵性生命的完美目标——耶稣圣心，我们将在下周有关圣德肋撒姆姆（Mother Teresa）的默想和教导中了解更多。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，为了天国，预备将我之所有奉献给无染原罪者。</p>
+                </div>
+            </div>
+
+            <h2 id="week3-title">第三周：圣德肋撒姆姆</h2>
+            <div class="intro-text">
+                <p>本周我们将关注第三位敬礼玛利亚的伟大导师，印度加尔各答的圣德肋撒姆姆及其模范事例和教导。众所周知的是，她将把玛利亚奉献应用到实际的生活环境当中。换句话说，圣路易和圣国柏教给了我们玛利亚奉献的具体内容，而德肋撒姆姆则让我们看到了一幅更为清晰和伟大的与耶稣基督最为亲密的图画。虽然不会现在立刻开始默想她的玛利亚奉献，但随后就会看到很多。</p>
+            </div>
+
+            <h2 id="day15">第十五天：耶稣圣心的爱人</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>加尔各答的德肋撒姆姆是谁？了解她很容易。我们真正需要知道的其实只有两个字：“我渴。”它来自耶稣圣心，是耶稣从十字架的痛苦中发出的，也是德肋撒姆姆全部的切望，她的一切，也可以说是圣母玛利亚的一切。天主之母和德肋撒姆姆心中最深切的渴望，就是充分满足耶稣圣心对爱和人类灵魂的渴求。这样看来，德肋撒姆姆的一生本身就是圣母圣心对我们的启示。她的一生，展现了对玛利亚奉献最丰富的情感。接下来的几天，我们将默想这启示的详情。首先让我们回顾并概述她的一生。</p>
+                    <p>在故乡马其顿，小德肋撒家所属堂区圣堂的名字，碰巧是“耶稣圣心堂”。说“碰巧”，是因为正如她自己说过的：“自小，耶稣圣心就已经是我的初恋。”这份爱大约在她五岁的时候就开始了。那一年，她初领圣体圣事。正是在那个时刻，她体验到了天主对人灵那份燃烧的渴望。这份渴望在随后的几年逐渐成长，直到她12岁得到确认，天主召叫她成为一名传教士。18岁那年，她加入圣玛利亚学院（洛雷托修女会Sisters of Loreto），并提出申请，到孟加拉和印度传教。第二年她被派遣到达印度。一年见习期满，德肋撒又被派往加尔各答的洛雷托修会，在圣玛利亚洛雷托修女会中学任教。这位修女在那里服务达十余年。</p>
+                    <p>德肋撒是一位喜乐、慷慨、勤劳的修女，在圣玛利亚学院度过的那几年，是一段非常快乐的时光。事实上，她对天主是如此的慷慨，在得到神师的许可后，她立下了一个异乎寻常的誓言：对耶稣什么都不拒绝。五年后，耶稣彻底考验了这一誓言。1946年9月10日，在去参加年度避静的火车上，36岁的修女经验到她后来描述的“圣召中的圣召”，这个召唤的详情，透过一大批神秘的体验和神视，在随后的几周至数月当中逐渐变得清晰。这个召唤的中心是：耶稣对爱和人类灵魂燃烧的渴求，以及请求德肋撒聚集教内会众建立仁爱传教会。关于后者，仿佛是要提醒她曾发过的誓言，耶稣不停地问她：“你会拒绝我吗？”</p>
+                    <p>德肋撒没有拒绝主。避静结束后，她与神师商量，并得到准许给主教汇报。当主教对她的计划表现犹豫时，她写信给他：“不要延迟，阁下，不要搁置……，让我们去除耶稣圣心中不断涌出的痛苦。”在同一封信中，她不断重复一个理念，“让我们把喜乐带给耶稣圣心，去除他心中那可怕的痛苦。”最终获得了主教恩许，德肋撒创立了仁爱传教会。她这样阐述建立仁爱传教会的目的：“满足十字架上的耶稣对爱和人类灵魂的渴求。”</p>
+                    <p>新的修会创建伊始，德肋撒便开始体验她灵魂深处“如此可怕的黑暗”，“仿佛一切都已经死亡”。有时似乎难以忍受，她经常感到自己濒临绝望的边缘。1961年，她在这黑暗中看到了一丝亮光。在与神父的一次谈话后，她认识到，自己内心痛苦的渴望其实正是对耶稣渴求的一份分担：“11年来，我第一次开始喜欢这黑暗，因为我相信，这正是耶稣在世所体验到的黑暗和苦痛的一部分，一小部分。”德肋撒这种对黑暗和苦痛的渴望一直持续到生命的最后。她找到了坚持不懈的力量源泉，正如她的神师指出的，因为她认识到：这黑暗实际上变成一个“玄妙的连接”，将她与耶稣圣心结合到了一起。</p>
+                    <p>我们又怎样呢？在主耶稣所受的苦难和我们自己生活中偶尔经验到的黑暗之间，是否认识到那“玄妙的连接”？让我们默想一段德肋撒的话语，这些是她在痛苦当中亲身的体验，让我们像她一样，学会更好地与耶稣圣心相爱。</p>
+                    <blockquote>如果你仰望十字架，定会感受到那份痛苦。他的头低倾——想要亲吻你；他的双手张开——想要拥抱你。他敞开心，准备接纳你。当你内心感到苦不堪言时，看看十字架，你就知道发生了什么。苦楚、痛苦、悲伤，耻辱，孤独的感受，一切只不过是耶稣的亲吻，一个表示你与耶稣亲近，让他亲吻你的标志。你们明白吗，弟兄姐妹们？你们如何想呢？痛苦、悲伤，耻辱——这些是耶稣的亲吻。几时你与十字架上的耶稣如此亲近，他才能够亲吻你。有一次，一位女士非常痛苦，我将这些告诉她，她回答说：“告诉耶稣，不要亲吻我——停止亲吻我。”在圣母的一生当中，在耶稣的生命当中，这痛苦必须来临，我们也一样。要做的只是，永远不要愁眉苦脸！苦难是天主所赐的礼物，只在你和耶稣的内心之间。</blockquote>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，帮助我找到隐藏在黑暗之中耶稣圣心的爱。</p>
+                </div>
+            </div>
+
+            <h2 id="day16">第十六天：9月10日天主的恩赐</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>我们回想一下，在昨天对德肋撒修女生平的概述中，有一件改变了一切的重要事件：9月10日的“圣召中的圣召”——耶稣对爱和人灵的渴求的那份体验。在这之后的许多年，除了她的神师外，德肋撒从未对任何人谈到过这份体验。1993年3月25日，她去世的前四年，在阅读了时任教宗若望保禄二世的四旬期文告《我渴》之后，她深受感动，遂向仁爱传教会写信公开了她的秘密。由于这封信似乎能更好地揭开圣德肋撒姆姆的心，现将此信详细抄录如下，作为今天的默想。</p>
+                    <p>读了圣父所写的“我渴”文告后，我深受感动。我无法形容心中的感受。他的文告使我更明白，我们所得到的圣召有多美好。天主是那样爱我们，他选择我们的修会来满足耶稣对爱、和对人灵的渴求。在教会内，给了我们这特别的地位。同时，我们也提醒世人他的渴求，这是已被遗忘的了。圣父的文告对修会来说是个征兆，每个人应该更深入省察耶稣的渴求对自己来说有什么意义。这对我个人来说，也是个征兆。那时候已经来到了，就是我要公开谈论在9月10日天主给我的恩赐，我要尽力解释耶稣的渴求对我本人的意义。</p>
+                    <p>耶稣要我再一次告诉你们，他是多么地爱你们每一位，远远超过你们的想象。我担心你们中有人还没有与耶稣真正的相遇过，一对一的相遇，只有你和耶稣。我们多数的时间的确在教堂度过，但是你灵魂的眼睛可曾看到过耶稣那爱的目光？你可曾真正认识生活的耶稣——不是从书本上，而是在内心与他连结在一起？你可曾听到他对你说的爱的语言？向他祈求这恩典吧，极其渴望给予你。除非你在自己宁静的心底听到耶稣，否则你就不会听到他从那些穷苦人心中发出的“我渴”的声音。</p>
+                    <p>永远不要放弃每日与耶稣的亲密接触，他是真正活着的人，而不只是个想法。如果有一天没有听到耶稣说“我爱你”，我们可怎么过？绝对不能。我们的灵魂需要他，就像身体需要空气一样。否则，祈祷也是死的，默想也只是不过想想而已。耶稣要我们每个人在内的宁静中听到他。</p>
+                    <p>对任何阻挡我们个人与生活的耶稣接近的事物都要小心。魔鬼试图利用各种伤害、有时候是我们自己的过错，来让你感觉耶稣不可能真的爱你，不可能总粘着你。这对于我们很危险。因为这与耶稣的要求与期待截然相反，对此我很难过，所以要迫不及待的告诉你们，耶稣不仅爱你们，更为甚者，他想念你们。当你们不肯接近他时，他想念你们，他渴求你们。甚至当你自己觉得不配时，他也一直爱着你们。当不被他人接受，甚至自己也不能接受时，他仍然是那个永远接纳你的人。我的孩子们，在耶稣爱你这件事上，你不需要感到和他人不一样，只管相信，你是他眼中的珍宝。带着你所有的苦难到他跟前，敞开心扉，呈现本来的你，让他来爱你，其余的由他来做。</p>
+                    <p>你们的头脑中都知道耶稣爱你，但在这封信中，我要触及你们的心。……这就是为什么我要求你们在基督圣体前阅读这封信，它正是在基督圣体前写成的。在那里，耶稣会亲自与你们每一位说话。</p>
+                    <p>……那句写在仁爱修会每一个小圣堂墙上耶稣的话，“我渴”，这不是他从前说过的一句话，是此时此刻对你说的。你相信么？如果相信，那你就会听到他的声音，并感受到他的临在。请如姆姆一般与他亲近，这是你们给我的最大的喜乐。姆姆只是努力想帮助你们明白，但给你们说“我渴”的一定是耶稣本人，你将听到你们自己的名字，不止一次，而是每天。如果你用心听，你就会听到，就能明白。</p>
+                    <p>为什么耶稣要说：“我渴”？这是什么意思？这难以用文字来解释，如果你们还记得我的信，请记住这一点，耶稣说“我渴”比说“我爱你”寓意更深长，除非你从内心深处了解耶稣对你的渴求之情，否则，你还未能开始了解耶稣之于你是谁，或你对于耶稣又是谁。</p>
+                    <p>圣母玛利亚是第一位听到耶稣说“我渴”的人，还有圣若望，当然还有玛利亚玛达肋纳。因为圣母当时就在加尔瓦略山，她了解耶稣对你，对穷苦人那份真实而深刻的渴望。我们知道吗？像她一样感受到了吗？向她请教，她的职责就是带你与耶稣面对面，像若望和玛达肋纳一样，体验十字架上耶稣圣心的爱。之前是圣母玛利亚呼求姆姆，现在姆姆以她的名义呼求你们——“倾听耶稣的渴求。”让这成为每个人……生命的话语。</p>
+                    <p>如何进入并感受耶稣的渴求？秘诀只有一个——越接近耶稣，你越能理解他的渴求。“悔改并相信”，耶稣告诉我们说。悔改什么？我们的冷漠，我们的心硬。相信什么？在你心里，在穷苦人中，耶稣现在就渴望。他了解你的软弱，他只要你的爱，只要你给他爱你的机会。他不受时间限制，我们无论什么时候靠近他，我们就成了陪伴圣母的圣若望，玛达肋纳。去倾听他，听他呼唤你的名字，让你我的喜乐满全。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，助我倾听耶稣的渴求。</p>
+                </div>
+            </div>
+
+            <h2 id="day17">第十七天：1947年的神视</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>在德肋撒姆第一次感受到“圣召中的圣召”几个月之后，她曾经验到三次神视，这些神视经验进一步表达了她的圣召。</p>
+                    <p>在第一个神视中，她看见一大群人——各种人——包括“很穷的人和儿童”，他们都把手高举伸向她，他们叫喊着：“来，来，拯救我们——带我们去找耶稣。”</p>
+                    <p>在第二个神视中，那里同样有一大群人。这次德肋撒姆妈看见他们满脸悲伤和痛苦。她跪在圣母旁边，圣母的脸面向人群，尽管她看不见圣母的脸，但她能听见她说：“照顾他们，他们属于我，带他们去耶稣那里，带耶稣去他们当中，别害怕。”</p>
+                    <p>在第三个神视中，同样的那一大群人还在那里，但他们被黑暗覆盖着，但是德肋撒姆妈却看得见他们，这场景中，耶稣高悬在十字架上，圣母在距离十字架不远处。德肋撒，像一个小孩子，站在圣母面前。圣母的左手放在她的左肩上，右手抓着德肋撒的右臂。她们都面对着十字架，耶稣对德肋撒说：</p>
+                    <blockquote>“我已对你提出要求，他们也对你提出要求，而她，我的母亲，也对你提出要求，你要拒绝为我做这件事吗？——照顾他们，带他们来找我。”</blockquote>
+                    <p>请注意这神视中圣母的角色，她在那里，帮助德肋撒听到主心中的渴望，帮助她看到人群的痛苦。圣母在那里仿佛一个母亲牵着她的“小孩子”共同面对十字架上的耶稣。如同对十字架下的圣若望所做的一样，她给予德肋撒安慰和支持。</p>
+                    <p>仁爱传教神父会的创建者之一若瑟兰德福德神父对这个神视做了如下这样的默想：</p>
+                    <p>没有圣母，在面对生活中的十字架时，我们就会对耶稣的临在视而不见。面对考验时，我们经常像神视中的那一大群人一样被黑暗所覆盖，不理会耶稣其实就在我们中间。没有圣母对德肋撒那份尽职尽责，世人就听不到“我渴”的声音，也无法看到今天的生活。结果表明，圣母不仅出现在德肋撒的神视中，也出现在9月10日最初的恩赐中。</p>
+                    <p>在纪念蒙召日50周年庆典中，德肋撒姆姆首次披露：“如果那天圣母没有同我在一起，我永远不会明白耶稣说的‘我渴’是什么意思。”德肋撒明白了什么？当我们再次默想3月25日她关于“我渴”的信件时，她的意思就会显露出来。</p>
+                    <p>“圣母玛利亚是第一位听到耶稣说‘我渴’的人，还有圣若望，当然还有玛利亚玛达肋纳。因为圣母当时就在加尔瓦略山，她了解耶稣对你，对穷苦人那份真实而深刻的渴望。我们知道吗？像她一样感受到了吗？向她请教，她的职责就是带你与耶稣面对面，像若望和玛达肋纳一样，体验十字架上耶稣圣心的爱。之前是圣母玛利亚呼求姆姆，现在姆姆以她的名义呼求你们——‘倾听耶稣的渴求’。”</p>
+                    <p>这段话触及到德肋撒姆姆与圣母关系的核心。用下面的金句来做个小结最贴切不过了：圣母的角色就是带你与被钉在十字架上的耶稣圣心的爱面对面相见！</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，带我与十字架上的耶稣面对面的相见。</p>
+                </div>
+            </div>
+
+            <h2 id="day18">第十八天：圣母无玷圣心</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>圣母的角色是带领我们面对面与十字架上耶稣圣心的爱相见。但如果我们虽然面对面与耶稣相见，但不为所动怎么办？虽然我们站立在十字架下，想着主耶稣的苦难，但什么也感受不到怎么办？或者因着己罪，使我们变得心硬，麻木不仁又如何？这些都会发生。我们都会犯罪，而罪会使我们心硬。除了罪，还会产生神枯与无味。无论何因，我们的心会变得冷酷无情，这将是一个问题！谢天谢地，那位圣洁完美的无玷圣心会帮助我们，她将给予我们慈悲的心。只要我们将心给她，她甚至会让我们住在她的心里！</p>
+                    <p>在默想圣路易的那一周，我们明白了当我们将自己奉献给圣母玛利亚时，我们给她全部，而玛利亚会将她的全部给我们。那一周的重点是善功，如果我们将善功给圣母，她的善功会给我们，这是一件绝妙无比的事！然而德肋撒姆姆给出的重点与这有一点不同。她所关切的是心。换句话说，她对玛利亚的全然奉献是心与心的交换：我们将心交给圣母，她将无玷圣心给了我们。对德肋撒姆姆而言，通过奉献换来的是圣母圣心，这一恩赐基本上意味着两件事情，通过她简单的两句祈祷即可表达：“赐我尔心”以及“铭记我于尔至洁净圣心。”</p>
+                    <p>首先，“赐我尔心”这样的祈祷，德肋撒姆姆是在祈求圣母赐予她心中的爱。换言之，她是说：“圣母玛利亚，相帮我能用你那无玷圣心完美的爱去爱。”记住，德肋撒姆姆热切的期望是去满足耶稣对爱的渴求，她想要以尽可能最好的方法去做，还有什么能比母亲的那颗谦卑、完美的无玷圣心更好的爱耶稣的方法呢？</p>
+                    <p>在这里，德肋撒姆姆找到一个完全活出其圣召的秘诀：“圣母玛利亚，赐我尔之无玷圣心。”</p>
+                    <p>然而，圣母真的要将她的心赐予我们吗？当然，这个想法看似包含有一些虔诚的诗意，但确有真理蕴含其中。当德肋撒姆姆经常向圣母玛利亚说：“赐我尔心”的时候，这是她的真实意愿。她是想让玛利亚从天降下，从身体取出体内的器官赐予她吗？当然不是。心本身是身体的一个器官，但这里有更深的灵性的真实。这里的“心”指的是一个人内心的生活以及内住的圣神——天主圣神。至此，我们才谈到这问题的真正重点。</p>
+                    <p>回顾我们与圣国柏一起度过的那一周，他是如何强调天主圣神与圣母玛利亚的结合的。他说玛利亚是圣神的净配，他们的结合比婚姻的结合更加深入。他接着这样说：“除非经过他的净配无染原罪者，否则，天主圣神不会开始工作。因此，她是圣神所有恩典的中保。”因此，如果我们想要完全、虔诚、完美地去爱耶稣——像德肋撒姆姆那样——我们就需要爱的圣神，而无原罪圣母玛利亚会将他带给我们。让我们一起祈祷：“圣母玛利亚，赐我尔心，赐我圣神。”祈望我们坚硬的心能为耶稣燃起爱火，相帮我们的心能为他的爱而燃烧。</p>
+                    <p>第二句的祈祷是：“铭记我于尔至洁净圣心。”或者，更完整的一句祈祷：“玛利亚的无玷圣心，请铭记我于尔至洁净圣心，如此我便能通过你，在你内，借同你悦乐主耶稣。”</p>
+                    <p>德肋撒姆姆敬礼玛利亚的这一部分意义最为深远。她不仅要求内心存有玛利亚的圣心，而且她自己也要居于玛利亚的圣心之中！</p>
+                    <p>因此，这是一个通过圣母，在圣母内并偕同圣母去爱耶稣的祈祷。这比简单地祈求圣母“赐我尔心”更进一步。想要理解并生活出来，需要对圣母玛利亚爱的信靠和与她完全的结合。后天，我们将论及其中的含义以及如何才能达到。明天，我们将了解圣母玛利亚对心的看法。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，铭记我于尔至洁净圣心。</p>
+                </div>
+            </div>
+
+            <h2 id="day19">第十九天：心灵默想祈祷</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>你准备好奉献给圣母玛利亚了吗？如果没有，请做好准备！正如我在前言中说过的，奉献日之后，一切都将改变。我们的灵性生命将步入光荣崭新的一天，将迎来新的曙光。事实上，当我们对圣母说“是”的时候，她已经开始以一种美妙、温柔和爱的方式为我们安排一切了。因此，我们要特别的准备，准备好迎接她的净配一天主圣神，以及将要赐给你的丰盛的慈爱。</p>
+                    <p>我们经常意识不到天主在日常生活中倾注给我们的丰富的恩赐，关注的常常是生活中的苦恼、负担、困难和麻烦，这些东西吸引了我们的注意，带来抱怨，使情绪变坏，进而耗尽我们的精力。如果通过奉献，我们接受到更多恩赐，但负面情绪和态度却没有改变，这可就是个悲剧了。是的，确实是。因此，我们需要准备好，圣德助撒姆姆会帮助我们。</p>
+                    <p>德肋撒姆姆曾在地球上最穷困的环境中生活，她不得不忍受炎热的天气、糟糕的空气，闷热的小屋、无休止的崂叨、没完没了的责任，乏味的食物，坚硬的床板，人体的气味，冷水洗浴，还有令人烦恼的神枯。然而，尽管如此，她所散发的总是喜乐，她总是微笑。她钦佩天主在自己和别人生活中所做的美善，她默想圣母精心安排的无数的细节。她正是因为能看到并认识到这些，所以从不抱怨。</p>
+                    <p>德肋撒姆姆是如何培养出这种灵性的敏感和感恩的态度的呢？她的秘诀是什么？有两点。</p>
+                    <p>第一，她效法圣母玛利亚，圣母总是将天主在她身上所行的“一切”“默存在心”。（参考路2:19,51）当然，与德肋撒姆姆一样，圣母玛利亚也曾历经贫穷，也曾承受祈祷中的黑暗。但她能在生活的细节中发现天主，在心中默想天主的美善，并以“谢主曲”赞美回应。事实上，她在所有的事情上感谢赞美上主，因为在一切事情上，她都能在内心深处默想上主的爱意。</p>
+                    <p>第二，德肋撒姆姆以圣依纳爵·罗耀拉为榜样，他是一位骑士圣人，实践祈祷的大师。具体地说，她采用依纳爵的方法每天查问自己的良知（省察），在一天结束的时候，在天主面前，藉此回顾一天。与普通人通常认为的省察相反，依纳爵的方法不只是简单地罗列一长串的罪。实际上，依纳爵告诉人们，花更多的时间去默想这一天当中得到的种种祝福，而不是罪过。这的确是一种操练，教我们去认识天主在生活当中所赐予的各种美善，我们如何或是否回应了他的大爱。这是圣母玛利亚心灵默想方法的翻版。</p>
+                    <p>天主总是用各种方法向我们展现他的大爱与仁慈。重要的是我们开始意识到这些祝福并感谢他。特别是因为，一旦我们将自己奉献给圣母，这些祝福就会变成汹涌而至的恩宠。因此，让我们准备好！让我们记住这一点：德肋撒姆姆认为，我们活出奉献的一条重要途径，就是认识天主的祝福，并和圣母一起，在内心深处默想这些祝福。这样的心灵默想祈祷将引领我们去赞美和感谢，而赞美和感谢会让神圣的爱火点燃我们。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，帮助我认识并默想你在我身上所行的一切美善。</p>
+                </div>
+            </div>
+
+            <h2 id="day20">第二十天：奉献盟约</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>昨天谈到，通过学习认识天主倾注在我们身上的各种祝福，我们要准备好将自己奉献给圣母玛利亚。今天，我们转换一个话题，默想对于玛利亚奉献做出承诺有多么重要，这也是我们去做准备的重要部分，因为我们对此承诺有多认真，天主之母也就有多认真。今天，圣德肋撒姆姆将提供特别的帮助，因为她曾非常认真地对待了对玛利亚的奉献。</p>
+                    <p>德肋撒姆姆如此认真对待奉献的另一个原因，和她的阿尔巴尼亚文化根源有关。她们文化中有一个关键词——“bessa”（阿尔巴尼亚语）。按字面翻译，意思是“信念”，但完整的意思是“以名誉保证”及“遵守诺言”，德肋撒姆姆如此解释：</p>
+                    <blockquote>Besa，意思就是，即使你因为杀了我父亲而被警察追捕，只要我承诺过不会供出你的姓名，那么就算是警察要杀我，我也不会说。</blockquote>
+                    <p>换句话说，在德肋撒心中，如果你的话说给了别人，就等于把自己也给了别人。Besa有一个神圣的特性，就如一句誓言，一个誓约，或者说盟约。让我们默想一下“盟约”这个词，德肋撒就是用它描述她的玛利亚奉献的。这是一个富有圣经内涵的词汇，它指的是救恩史上天主与他的子民之间的联结关系。这个联结的内涵远远超过“合同”，圣经学者史考特汉（Scott Halm）曾解释说：</p>
+                    <blockquote>合同和盟约的主要不同，可以从其各具特色的交换物的构成加以区别。合同是以货物和服务等财产形式进行的相互交换。（“那是我的，这是你的”）。然而，盟约要求的则是人与人之间的交换（“我是你的，你是我的”），生成的是一个共享的人际交流。</blockquote>
+                    <p>盟约的另一个特征是，它往往承担一定的权利和义务。比如，在婚姻的盟约中，丈夫和妻子有权彼此享受配偶之间无私的爱的拥抱，但他们也有义务要彼此照顾和互相支持——“无论环境是好是坏”。圣德肋撒姆姆同样明白，她与圣母之间“奉献的盟约”也包含某种权利和义务，她曾与仁爱传教会的家人们沟通过玛利亚灵修学。</p>
+                    <p>仁爱传教会的若瑟兰福德神父，从德肋撒姆姆所教导的奉献盟约中得到启发，阐明了仁爱传教会与圣母玛利亚之间的权利与义务，列出了12条相互对应的权利和义务清单。清单意味深长地以玛利亚有义务献出她的“心与灵”开始，以每一位仁爱传教会成员，都有“权利”进入玛利亚的圣心、并分享她的内在生命结束。因此，与圣母玛利亚的盟约的“开始与结尾”两端，正是前文提到过的德肋撒姆姆的祈祷：“赐我尔心”以及“铭记我于尔至洁净圣心”，中间部分只是彼此之间关系的体现。</p>
+                    <p>结束之前，让我们默想一下仁爱传教会奉献圣母玛利亚的盟约，并以盟约序言的一段作为开始：</p>
+                    <blockquote>为此生与你生活在最亲密的结合之中，从而能更完全、更稳妥地与你的爱子达到合一，被这种热切的渴望所感动，在这里我保证按照以下奉献盟约的精神和条款，尽我所能，忠实慷慨地去生活。</blockquote>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr><th>圣母玛利亚的责任</th><th>我的责任</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1.献出她的心与灵</td><td>1.我之所有尽做献礼</td></tr>
+                                <tr><td>2.看守、保护、改变我</td><td>2.全然信靠她</td></tr>
+                                <tr><td>3.激励、引导、启发我</td><td>3.响应她的神魂</td></tr>
+                                <tr><td>4.分享她祈祷与赞美的经验</td><td>4.忠诚地祈祷</td></tr>
+                                <tr><td>5.对我的成圣负责</td><td>5.信靠她的转祷</td></tr>
+                                <tr><td>6.对临于我的一切负责</td><td>6.接受来自她的一切</td></tr>
+                                <tr><td>7.与我分享她的美德</td><td>7.效法她的精神</td></tr>
+                                <tr><td>8.为我提供物质和灵性方面的需求</td><td>8.恒常求助于她</td></tr>
+                                <tr><td>9.与她的圣心结合</td><td>9.牢记她的临在</td></tr>
+                                <tr><td>10.洁净我及我之行为</td><td>10.意向纯正，舍弃自我</td></tr>
+                                <tr><td>11.处置我，以及我的祈祷、转祷和恩宠的权利</td><td>11.为天国的缘故，运用她及她的能力的权利</td></tr>
+                                <tr><td>12.我之内外完全自由，凡事随她喜欢</td><td>12.进入她的圣心、并分享她内在生命的权利</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，助佑我能虔诚地与圣母玛利亚订立奉献的盟约。</p>
+                </div>
+            </div>
+
+            <h2 id="day21">第二十一天：成为那一位（与玛利亚一起）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>倘若昨天提到的12条义务让一些人感到不知所措，今天我们将集中讨论一个简单的途径，方便我们记住圣德肋撒姆姆奉献给圣母的精华部分：“成为那一位”。或者，更具体一点说：“成为与玛利亚一起的那一位”。这是什么意思？主要来源于耶稣圣心瞻礼弥撒中的奉献经文（圣咏69:21）：</p>
+                    <blockquote>侮辱破碎了我心，使我忧伤难过；我期望有人同情，却未寻到一个，我渴盼有人安慰，也未找到一个。</blockquote>
+                    <p>德肋撒回应姆姆：“成为那一位”。她要成为一个安慰耶稣的人，满足耶稣对爱强烈的渴求。她写道：</p>
+                    <blockquote>告诉耶稣“成为那一位”。我愿意安慰他、鼓励他、爱他……要陪伴耶稣。他祈祷再祈祷，一再寻求安慰，却找不到……我常常抄写那句经文：“我期望有人同情，却未寻到一个。”然后我写下：“成为那一位”。现在轮到你们了。你们要成为能为他分担愁苦，安慰他，开解他的人。请求圣母帮助我们更加明白。</blockquote>
+                    <p>最后一句是关键。我们需要圣母帮助我们明白耶稣的渴求。她是耶稣最好的安慰，他是安慰者——圣神的净配。藉着圣母玛利亚，圣神能帮助我们明白，成为耶稣圣心的安慰者意味着什么：</p>
+                    <blockquote>让我们一起用特别的方法，尽可能是自己的血肉之心靠近耶稣圣心，并尝试了解耶稣所承受的可怕的痛苦。这痛苦源于我们的罪以及对我们爱的渴求。……感谢天主，圣母就在他身旁，所以完全明白耶稣对爱的渴求。她当时一定立刻回答说：“我以爱、以心里受着的苦，满足你的渴求。”</blockquote>
+                    <p>没错，为着圣母我们要感谢天主。她教导我们和她一起去“成为那一位”，去安慰加尔瓦咯山上的耶稣。她帮助我们“立刻”回答，“耶稣，我来满足你的渴求”。但这究竟是什么意思呢？满足耶稣的渴求指的是什么？有两点：去安慰耶稣，安慰奥体的头；去安慰奥体的肢体。</p>
+                    <p>我们如何安慰奥体的头——耶稣基督？通过成为喜乐的使徒，意思是透过喜乐安慰耶稣圣心，特别是要带着圣母的喜乐去做。德肋撒姆姆说：“请代我求圣母赐给我她的无玷圣心”。圣母是一位尽管自己身处黑暗，仍在一切事情上赞美感谢天主，对他微笑，用她的爱去安慰他的人。这既简单又奇妙。德肋撒姆姆以她著名的三样美德来总结：对天主“完全服从，以爱信奉，全然喜悦。”主要意思就是，要像小孩子一样，与圣母在一起，对耶稣微笑，在十字架下爱他。</p>
+                    <p>好了，我们又如何安慰他的肢体呢？通过了解他们的渴求。无论贫穷富贵，无论年老年轻，也无论信主与否，每个人都有渴求。人人对天主都有一颗不安的心，因为人本身就是不安的渴求。透过他人去安慰耶稣，就是要回应他们的苦难，特别是回应那最普遍的、最深的苦难——对爱的渴求。不是用冷漠，而应微笑着回应说：“我因你的存在而喜悦，也深深理解你渴求的痛苦”。德肋撒姆姆解释说：</p>
+                    <blockquote>最大的恶是没有爱，没有慈悲，对邻人的漠不关心……今天的人们都渴望被爱，渴望有同情心的爱，这种爱的力量更大，也是解决孤独和极度贫穷的唯一答案。</blockquote>
+                    <p>（在圣母的帮助下）德肋撒姆姆选择接纳自己内心的渴求，而不是逃离。这选择也让她明白了他人的渴求——明白了十字架上耶稣的渴求，也明白了邻人的渴求。从而使她成为了一位真正饱含喜乐与慈悲的使徒，一位真正的仁爱传教士。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，帮助我“成为那一位”，与圣母一起去安慰耶稣。</p>
+                </div>
+            </div>
+
+            <h2 id="week4-title">第四周：圣若望保禄二世</h2>
+            <div class="intro-text">
+                <p>第四周，也是最后一周，我们将目光集中于另一位敬礼玛利亚的伟大导师，以及他的典范和言论——圣若望保禄二世。他被称为“最敬奉圣母的教宗”，他深刻地强化了教会对玛利亚的敬礼的理解。以梵蒂冈第二次大公会议为基础，他为我们提供了完整的玛利亚奉献的圣经阐释，他也将奉献称为“托付”，这寄意于一个思想——圣母玛利亚的角色就是引领我们达至基督教赎之爱的奥秘，并将自我奉献给天父。</p>
+            </div>
+
+            <h2 id="day22">第二十二天：圣母慈悲的恩赐</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>1917年，一战肆虐期间，童贞圣母玛利亚在葡萄牙的法蒂玛显现给三个牧童。她告诉他们战争即将结束，但是如果人们再不悔改，另一场更严酷的战争会接踵而至，俄国会将其错误蔓延到全世界，导致更多的战争、殉道以及对教会的迫害。为阻止这些灾难，圣母向圣父祈求，将俄国奉献给她的无玷圣心，并要求人们连续五周领“首六”圣体作为补赎。她最后还说，她的无玷圣心将会胜利。</p>
+                    <p>有趣的是圣母玛利亚提到俄国。那时侯，这给人造成困惑，俄国？神圣的俄国？这个国家会将什么错误蔓延到全世界？这个贫穷的虔诚的基督教国家怎么会有如此大的影响？（在历史上，那时的苏联革命还处于预备阶段，苏联政体尚未建立。）</p>
+                    <p>玛利亚说出关于俄国的预言之后，孩子们看到一幅景象，包括一位“身穿白衣的主教”，他们当时的理解是那是教宗。非常不幸的是，他们看到那一位将遭受痛苦并被枪杀。孩子们只是向教会当局描述了他们所看到的，而教会决定不向大众公开此事。这也成为众所周知的法蒂法的最后一个“秘密”。</p>
+                    <p>法蒂玛圣母最早的第一次显现是在1917年5月13日下午5点，恰好64年后的1981年5月13日下午5点，一辆小型篷吉普车驶入圣伯多禄广场，车上坐的是时任教宗若望保禄二世，正热情地向在广场上聚集的朝圣者致敬。车停到了一处，教宗抱起一个小女孩，小女孩刚被送还给喜悦的父母，吉普车就继续驶入挥手欢呼的朝圣者中。突然，一名枪手从不远处向教宗开了两枪。第一发子弹擦伤了他的肘部，第二发打中了腹部并在体内反弹，造成小肠破裂和结肠穿孔。奇迹般的是，子弹离腹部主要动脉仅仅十分之一英寸。如果不幸击中动脉，那怕只是擦破，若望保禄二世也将会在去医院的路上因失血而亡。认识到这是一份祝福，教宗曾这样说：“有一只手扣动了扳机，另有一只手引导了子弹”。</p>
+                    <p>谁的手引导了子弹？若望保禄二世相信是法蒂玛圣母的手（他没有忘记5月13日的庆典）。实际上，枪击发生后，他请求打开那个装有法蒂玛最后的秘密——关于“身穿白衣的主教”的信封。脑海里想着法蒂玛，他决定尽快将自己奉献给圣母玛利亚无玷圣心，并着手开始付诸行动，之后为此虔敬地祈祷了近一个月。而在此之前，在枪击发生前一周，在圣伯多禄广场对朝圣者的致辞（有记录）中，他重申了他个人对圣母玛利亚的奉献：“我向你，圣母玛利亚，重申：我所有的一切都属于你”。</p>
+                    <p>1984年3月25日，圣伯多禄广场，在一尊临时空运过来的法蒂法圣母像前，若望保禄二世再一次庄严地将全世界托付给圣母玛利亚无玷圣心。他的结束祈祷是这样的：</p>
+                    <blockquote>让救赎的无限力量，慈悲之爱的力量，再一次在世界历史上彰显，愿它阻止邪恶！愿它转化良知！愿圣母的无玷圣心向全人类昭显希望之光！</blockquote>
+                    <p>曾目睹法蒂法圣母显现的唯一健在者——路济亚，在听到教宗庄严的托付奉献后宣称：这完全满足了圣母最开始的要求。五年之后，可怕的极权政体，使数百万人倍感恐惧的苏联，突然解体了。</p>
+                    <p>赢得胜利后，教宗并没有休息。他曾称言的“百年的眼泪”远未结束。面对世界持续不断的邪恶和不公平，他更加频繁地极力宣讲天主教恩的力量——“慈悲的爱”。他为促进这一信息所做的努力，随着2000年全球慈悲主日的建立，以及2002年将世界奉献给救主慈悲达到顶峰。三年之后，这位伟大的最敬奉玛利亚、最慈悲的教宗，于首瞻礼六，慈悲主日守夜时去世。圣母玛利亚在他任教宗之初挽救了他的生命，她的圣子耶稣通过若望保禄二世，用慈悲和她的无玷圣心，引领教会迈向胜利。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，求你垂怜我们及普世。</p>
+                </div>
+            </div>
+
+            <h2 id="day23">第二十三天：母性中保</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>作为（玛利亚）奉献日的导引人之一，若望保禄二世可算是“三倍的礼物”，他不仅跟其他三位一样，是一位最敬礼玛利亚的圣人；他不仅才华横溢，像圣路易蒙福和圣国柏一样充分接受过神学培训；他还是一位教宗，因此，他的教导带着从圣伯多禄宗徒继承而来的权威性……带有大公会议权威的份量！事实确是如此，他关于天主之母的教导深深植根于梵二会议权威圣母论中。因为对大公会议的信赖，在我们开始若望保禄二世玛利亚奉献的教导之前，我们先看看大公会议对圣母玛利亚是怎么说的。（明天，我们将要默想若望保禄二世建立在梵二会议基础上的教导）。</p>
+                    <p>在梵二文献《教会宪章》（Lumen Gentium）最后一章，人们可以找到有关对敬礼玛利亚的主要教导。这些教导的核心和我们通常所说的圣母玛利亚的“母性中保”（maternal meditation）有关。“母性中保”的意思主要指的是，玛利亚是我们灵性的母亲（因此是“母性”）。她在天上用祈祷帮助我们，并以母亲的关怀帮助我们引向天主（因此是“中保”）。“母性”我们很熟悉，“中保”可能需要解释一下。</p>
+                    <p>中保是指在两个人之间，将他们统一到一起的人。因此，耶稣基督是中保。在人类犯罪后，他是在天主和失落的人类之间，将人带回到与天主的共融之中的那位中保，而且只有一位，圣保禄宗徒清楚地说过：“在天主与人之间的中保也只有一个，就是取了人性的基督耶稣”（弟前2:5）。</p>
+                    <p>如果在天主和人之间只有一位中保，那一位就是耶稣基督，那么为什么梵二会议要将玛利亚说成是中保呢？因为天主是慷慨的天主。换句话说，耶稣不只是要自己当中保，他还要玛利亚——不只是玛利亚，他还要所有的基督徒——去分享他的中保职分，尽管是以从属的方式。例如，当我们在基督内彼此代祷时，我们每人都分担了基督内中保的职分。在前言中也提到，天主要我们每个人都参与到他的救赎工程中。根据梵二文献，这个特殊的角色被称为“母性中保”。</p>
+                    <p>所有受造者中，玛利亚在持续的救赎工程中所担当的角色，到目前为止是最重要的。对天主而言，赋予她如此重要的角色，“并非出自一种必然性，而是来自上主的心愿”。这里我们再一次看到天主的慷慨，将我们——他要救赎的所有受造物，都纳入到拯救工程中。下面一段选自《教会宪章》，概括了玛利亚过去在世以及如今在天上的配合工程。</p>
+                    <blockquote>
+                        <p>童贞圣母在人间作了救主的母亲、他的特殊慷慨伴侣，及上主的谦逊婢女。她怀孕、生产、养育了基督，她在圣殿里将基督奉献给圣父，与死于十字架的基督共受痛苦，以服从、信德、希望和炽热的爱情和救主超绝地合作，为重建人灵的超性生命。因此，在圣宠的境界内，圣母是我们的母亲。</p>
+                        <p>在圣宠的境界里，玛利亚为母亲的这种职分：一直延续不断，从天神来报时她以信德表示同意，她毫不犹豫地在十字架下坚持此一同意，直到所有被选者获得荣冠的时候。事实上，她升天以后，犹未放弃她这项救世的职分。而以她频频的转求，继续为我们获取永生的恩惠。以她的母爱照顾她圣子尚在人生旅途上为困难包围的弟兄们，直到他们被引进幸福的天乡。因此荣福童贞在教会内被称为保护人、辅佐者、援助者、中保，不过这一点的意思，对基督唯一中保的尊严与能力，并无任何增损。</p>
+                    </blockquote>
+                    <p>如此，在世时，玛利亚“特殊”配合天主的救恩计划，生养了耶稣。现今在天上，她仍然以特殊的方式配合着天主的救恩计划，以她“频频的转求”和“母爱”，“为我们获取永生的恩惠”。明天，我们来看看若望保禄二世，看他如何将玛利亚母亲般的恩典发扬光大。现在，让我们默想天主伟大的恩赐，玛利亚是我们灵性的母亲，天主给她的工作就是通过她爱的祈祷，带给我们温柔的爱、礼物和恩惠。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，让赞美上主之声充满我心，因为他将玛利亚赐给了我做灵性的母亲。</p>
+                </div>
+            </div>
+
+            <h2 id="day24">第二十四天：玛利亚的避静（上）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>本次避静中，我们已经在心中默想了部分信仰的真理，都与玛利亚奉献有关。不妨这样说，我们是行进在信仰的朝圣旅途中，正迈向奉献日。在圣母的早期生活中，她也曾行进在避静和信仰的朝圣旅途中，也曾在心中反复思量有关奉献的真理。但终究没能立即完全明白，她的圣召是将要成为灵性的母亲和中保。和我们一样，玛利亚也需要在心中默想，并靠着信德一步步前进。她也需要花时间准备，以便去做好她的特殊角色——“诸惠的母亲”。</p>
+                    <p>由于玛利亚的母性中保是正确理解玛利亚奉献的核心，在接下来的几天中，我们将通过默观玛利亚的避静，做一次避静中的避静。换句话说，我们将陪同玛利亚一起，在天主的引领下，去一步步发现她的圣召——做我们灵性的母亲和中保。</p>
+                    <p>某种意义上讲，玛利亚的避静开始于天使报喜，开始于她对天主说的“是”，开始于她接受做耶稣的母亲这一圣召。但她是否也一样知道，所接受的这个圣召，将使她成为所有基督徒灵性的母亲？这我不清楚。我所知道的是，整个天使报喜的奥秘，蕴含了一些令人惊讶的事情，都与玛利亚奉献和托付有着深刻的联系，这些都促使玛利亚去思想。这样说吧，谁是第一个将自己托付给玛利亚的人？不是圣路易蒙福，是天主父。若望保禄二世解释说：“首先是天主永生的父自己，他信赖纳匝肋的童贞女，在降生奥迹中将自己的圣子给予她。”玛利亚也一定对天主的这份谦卑感到惊奇，在惊奇与默想的同时，她也许会有一些模糊的概念，那就是，可能以后天主要让那些他要救赎的人以她为榜样？</p>
+                    <p>在准备完全成为我们恩宠的母亲之前，玛利亚还有很多其它事情需要去默想。在对观福音（玛窦福音、马尔谷福音和路加福音）中，有几处提到了有关玛利亚的灵性母亲的职分。例如，在马尔谷福音第三章31- 35节中描述，玛利亚和耶稣的表亲在外面要见耶稣，派人到他跟前去叫他，耶稣回答他们说：“谁是我的母亲和我的兄弟？”然后，他环视周围坐着的人说：“看，我的母亲和我的兄弟！因为谁奉行天主的旨意，他就是我的兄弟、姊妹和母亲。”</p>
+                    <p>这样的回答，是不是耶稣不是个好儿子？不是的。他才是天父希望的那位儿子。同时，他也是在为使他的母亲成为天父希望的那一位母亲而做准备。更确切的说，他是在向玛利亚揭示一种全新的她与天国的子女关系，而这超越了肉性的子女关系。换言之，他指出灵性远比肉性重要，天主超性的父性远比人性的父性（或母性）重要。玛利亚很可能立刻就领会了耶稣想要教给她的，毕竟，另一句耶稣奇怪的回答已经在她心里默存了许多年，那是经过三天苦苦寻找后，在圣殿找到耶稣时他说的：“你们为什么找我？你们不知道我必须在我父亲那里吗？”（路加福音2:49）。</p>
+                    <p>在公开传教期间，耶稣所关切的的确完全是天父的事业。至此，这项事业涉及到关键的一部分——在天国为他的母亲预备一个新的角色。耶稣清楚，“在天主的国的幅度中”玛利亚的母性“有另一种意义”。在前面读过的马尔谷福音中，耶稣指出了这个意义：“谁奉行天主的旨意，他就是我的兄弟、姊妹和母亲。”可以肯定的是，玛利亚一定将这些话在心中反复默想：耶稣说这些话，并不是拒绝她，而是在预备她。</p>
+                    <p>我们能确定耶稣不是在拒绝她吗？是的，能确定。即便耶稣的话听起来像是拒绝她，但不是。事实上，我们想一下路加福音中另一段类似的话（路11:27- 28），就会清楚地看到，耶稣的确是在祝福他的母亲。那一段中，“有一个妇人高声向他说：“怀过你的胎，及你所吮吸过的乳房，是有福的！”耶稣的回答与我们在马尔谷福音中读到的类似：“可是那听天主的话而遵行的人，更是有福的！”前面的读经中，听起来好像有对玛利亚指责的口气，但那不是。毕竟，有谁听了天主的话而遵行的比玛利亚更好呢？一个也没有！因此，耶稣确实是在祝福他的母亲，她也应该觉察到了。</p>
+                    <p>玛利亚是一位非常感性的女子，她密切留意耶稣的一言一行，耶稣讲话的每一个细微之处她都不会错过，进而，她也认识到自己特殊母性职分的奥秘，正在一点点展开。</p>
+                    <blockquote>但她圣子的默西亚使命，在她（玛利亚）的眼里和心灵中逐渐明显，她身为母亲，对那母性的新幅度愈来愈开放，此幅度与其子都成了她的“一部分”。在一开始，她不是就说：“看，我是主的婢女，愿照你的话成就于我吧”（路1：38）？藉着信德，玛利亚继续聆听并思索此话，以“远超人所能知道的”（弗3：19）方法，使生活天主的自我启示，越来越清楚。可以说身为母亲的玛利亚，成了她圣子的第一个“门徒”，是第一个被耶稣召叫“跟随我”的人……</blockquote>
+                    <p>有一位能完全理解他的“门徒”，对耶稣来说是多么大的喜乐啊！发现对天主圣言能有如此的专注，耶稣圣心会受到多大的安慰啊！</p>
+                    <p>明天，我们将继续默想玛利亚的这份专注，并默想这份专注如何引领她，去发现她在圣子救赎工程之外的另一幅度的职分。正如若望保禄二世说过的，这部分并不包括“母性的新幅度”。所以，在加纳，我们将看到，她通过促成耶稣的第一个奇迹，使他的门徒们“产生”了信德，这奇迹的发生正是起始于她母性的专注。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，帮助我像圣母玛利亚一样，忠实于内心默想祈祷。</p>
+                </div>
+            </div>
+
+            <h2 id="day25">第二十五天：玛利亚的避静（中）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>昨天，通过和玛利亚一起避静，我们开始了避静中的避静，开始默想耶稣预备玛利亚的方法，使她明白并全然接受在天国的母亲职分。今天我们通过加纳婚宴继续避静，在那里，玛利亚的母性中保光荣地闪耀出来。我们先回顾一下那一情景（若2:1- 12）。</p>
+                    <p>耶稣的母亲去参加婚宴，耶稣和他的门徒们也受邀出席——大概是因为玛利亚吧。酒用完了，玛利亚注意到了这一点，也让她的儿子留意：“他们没有酒了。”耶稣好像指责她说：“女人，这与我和你有什么关系？我的时刻尚未来到。”虽然如此，玛利亚告诉仆人说：“他无论吩咐你们什么，你们就作什么。”仆人们遵照耶稣的吩咐用水将石缸灌满，水就变成了酒，因此门徒们就信了。</p>
+                    <p>现在让我们深入默想若望保禄二世就此所做的注释，他的话直接指向核心——玛利亚在我们生活中的角色。他解释了为什么我们要争取将自己奉献给她。</p>
+                    <blockquote>
+                        <p>此一事件确实很清楚地描绘出，圣母母性的新幅度，新意义……依精神而不是肉体而有的新母性，就是圣母对人类的美切，她支持他们的种种意愿和需要。在加里肋亚的加纳，只是举出了人类需求的具体一面，表面上看是小事不甚重要（“他们没有酒了”）。但是有象征性的价值：帮助人类的需要是表示，同时在基督教主使命和救恩的德能范围内，带来援助。其中有一种中保：玛利亚置身于她圣子和实际有需要和痛苦的人类之间。她作“中介”，就是她以中保而不是以外人身份行动，但是以母亲的地位。她知道这样的地位，她可以将人类的需要，指给她的圣子，事实上，她“有权”这样做。她的中介是转求性质：玛利亚为人类转求。此外，身为母亲，她也希望圣子的默西亚德能得以彰显，他救人的德能本为帮助人类的不幸的，要使人从重压着人生的不同形式和等级的罪恶中释放出来。</p>
+                        <p>玛利亚母亲任务的另一个主要因素，是在她向仆人们所说的“他无论吩咐你们什么，你们就做什么”这句话中。基督的母亲成了她圣子意愿的发言人，指出该做的那些事，为使默西亚的德能，得以彰显。在加纳，由于玛利亚的转求和仆人们的服从，耶稣开始他的“时刻”。在加纳，玛利亚显示出对耶稣的相信。她的信德引起了基督的第一个“奇迹”，并且帮助激发门徒的信德。</p>
+                    </blockquote>
+                    <p>加纳的插曲，为我们提供了圣母中保的第一手宣报，完全导向基督，并且趋向于他救世德能的启示。关于这一段默想，我想提醒重要的几点：</p>
+                    <p>1. 不是必须，而是天主拣选的。“上主的婢女”完美地承行了天父的旨意，作为母亲和中保，她“有权”向她的儿子指出人类的需求。当我们自己有需求和意向的时候，难道不应该依赖并向这位慈爱而有大能的母亲求援么？</p>
+                    <p>2. 玛利亚需要服从命令的仆人，“他无论吩咐你们什么，你们就作什么。”今天，为了耶稣“时刻”在今天的开始，我们准备好做她的仆人了吗？</p>
+                    <p>3. “他无论吩咐你们什么，你们就作什么。”这句话清楚地表明了玛利亚的角色就是“完全导向基督”，指向他救赎德能的启示。因此，玛利亚的中保，是救主耶稣基督中保的从属与结合。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，在需要的时候，提醒我去寻求玛利亚有力的转祷。</p>
+                </div>
+            </div>
+
+            <h2 id="day26">第二十六天：玛利亚的避静（下）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>昨天，在加纳婚宴上，我们看到玛利亚中保的一个极好的例子。在此之后，玛利亚无疑在心里深刻默想，并发现了许多关于她母性中保的事情。然而，对预备她来讲，加纳并不是最重要的。事实上，预备她的最“巅峰时刻”——完全实现——是在加尔瓦略山。</p>
+                    <p>在那里，玛利亚与基督一起受难。藉着信德，“玛利亚与自我空虚的基督，完美地结合。”藉着信德，“玛利亚分担此自我空虚而令人可怕的奥迹。”藉着信德，“圣母参与其圣子的死，他救赎的死。”在圣死之前，对跟随他来到十字架下、甘愿与他一起受难、他最完美的门徒，耶稣还有最后一课要上。看见他的母亲和他所爱的门徒，若望，站在十字架旁，耶稣说：“女人，看，你的儿子！”然后又对若望说：“看，你的母亲！”（若望福音19:26- 27）。通过这些话，耶稣交托给玛利亚去做“每个人和全人类”的母亲。</p>
+                    <p>根据若望保禄二世的说法，“玛利亚的新母性”，是“‘新爱的果实’，在十字架旁，由于她分享圣子救世之爱，而达到真正的成熟。”这份“新爱”，确实使玛利亚的母性本身得以改变，这使她对因基督受难和圣死的使命所指向的众人，越发有了炽热的爱。</p>
+                    <p>为了人的灵魂，十字架下的玛利亚接受了新的、炽热的爱，这情景令我们想起德肋撒姆姆关于玛利亚的真知灼见。德肋撒姆姆说，玛利亚是将耶稣的话“我渴”埋藏在心里最深的那一位，她同样也帮助其他人将这话藏在心中。若望保禄二世进一步反省玛利亚在爱内的改变：</p>
+                    <blockquote>在此走向十字架下的旅程中，……以她的行动和痛苦，用她母性的合作陪伴救主的整个使命。在这与她的圣子救主的事业合作的道路上，玛利亚的母性本身，也有了特殊的改变，越发感染到对基督的使命所指向的众人有“炽热的爱”。藉此炽爱，本想与基督合一达成“人灵的超性生命”的重建者，玛利亚以她的方式，介入“天人之间”的唯一中保，就是基督耶稣人的中保。</blockquote>
+                    <p>在加尔瓦略山，玛利亚完成了她的预备。她领受了作为普世属灵的母亲和中保的完全恩宠，这恩宠是在基督教赎工程内的独特的合作，是耶稣中保使命的共享。</p>
+                    <p>耶稣被钉死在十字架上之后，我们再没有听到玛利亚行使他的新母亲职分。直到五旬节的前一天，门徒们“同一些妇女及耶稣的母亲玛利亚并他的兄弟”（宗1:14），都在房间同心合意地专务祈祷。若望保禄二世解释说：“玛利亚也以她的祈祷，求赐在天使报喜时庇荫她的圣神恩宠”。他进一步指出，玛利亚是“知趣而重要的临在”，她表明了“从圣神诞生”的道路，第一次是天使来报，这一次是教会的诞生。</p>
+                    <p>玛利亚新的属灵的母性与教会有深刻的联系，“以母爱她帮助慈母教会子女的诞生和成长”。这“诞生与成长”在教会的神圣生命中有其根源，即：玛利亚的母性中保在教会特别的临在。例如，当接受洗礼，圣神将我们改变，成为基督肢体的一员时，玛利亚无疑一直在转求并参与她的净配——圣神的活动。还有，她也同样在弥撒圣宴中与她的净配——圣神合作，因为正是在这圣宴中，基督的身体——由圣母所生——临在，因为圣体在基督徒信仰和生命中处于中心位置，玛利亚一直努力忠实于他。</p>
+                    <p>我们结束今天的默想时，三天的“玛利亚属灵母性的避静”也将结束。我们应该记住重要的一点：玛利亚的新母性并不是模糊和抽象的事情，而是具体的、个人的。尽管属于普世，也是非常特别的。玛利亚是你的母亲，也是我的母亲。就此而论，若望保禄二世认为很重要的是，玛利亚的新母性在加尔瓦略山上是以单数来表示的：“看，你的儿子。”而不是“看，你数以亿计的属灵的儿子们。”这位教宗直达问题的核心，他说：“即使一个妇女是很多子女的母亲，她个人与每一个子女的关系，是母性的要素。”简短来说，圣母玛利亚是唯一的、独特的、个人的，是你的母亲和我的母亲，她不会在人群中失去我们。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，感谢你赐给我们一位可爱的母亲——圣母玛利亚。</p>
+                </div>
+            </div>
+
+            <h2 id="day27">第二十七天：向玛利亚的托付（上）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>与圣母玛利亚一起所做的三天迷你避静结束了，我们对她的母性中保应该有了一个清晰地认识。这一母性中保是揭开整个玛利亚奉献神学的钥匙。我们现在有了这把钥匙，也已准备好去学习若望保禄二世所说的玛利亚奉献，或者说如他常常指的“玛利亚的托付”。开始之前，我们需要先回到十字架下。</p>
+                    <p>“女人，看，你的儿子。”用这句话，耶稣将所有人类托付给玛利亚慈母照料，使她成为所有人灵性的母亲。正如昨天所了解到的，玛利亚用她“炽热的爱”全然接受了这份恩赐。</p>
+                    <p>接下来，耶稣向他所爱的门徒，若望——他代表我们所有人，说：“看，你的母亲。”这时，耶稣将这份恩赐给了我们，一份伟大的恩赐，让他的母亲做我们灵性的母亲。我们愿意接受这份恩赐吗？当然愿意。至少我们愿意去接受（否则的话，我们就不会参加这个避静了）。但是我们怎样接受？这是个重要的问题。</p>
+                    <p>先教宗若望保禄二世说，下面的福音章节会告诉我们如何接受玛利亚做我们灵性的母亲。“就从那时起，那门徒把她接到自己家里。”教宗用一个词来描述这一行为：“托付”（entrusting）。我们在若望身上看到一个托付的例子，他将自己托付给圣母玛利亚，而圣母自己也由耶稣托付给了若望，“看，你的母亲。”若望的托付是对十字架上耶稣的命令的回应，但还不止这些，也回应了圣母对我们“炽热的爱”，“这种托付是对一个人爱的回答，特别是对一个母亲的爱。”若望保禄二世继续这样解释将自己托付给圣母：</p>
+                    <blockquote>基督徒像若望宗徒一样，以儿女之情将自己托付给圣母，接基督之母到自己的家中，把圣母导入他内心生活的一切，就是他人性的和基督徒的自我：他接她到自己的家。这样基督徒设法深入那母爱，因此母爱，救主的母亲藉基督的圣神的德能，接适合於每个人的恩宠照顾她圣子的弟兄们，就如同在基督徒生和成长上，圣母尽了合作之职。也就是如此，玛利亚在圣神内善尽了母职，就如在十字架下和在晚餐厅内一样。</blockquote>
+                    <p>将自己托付给圣母，教宗描述为她将“接到自己家里”，可以理解为我们将耶稣作为榜样——他在天使报喜时第一个将自己托付给玛利亚，然后在三十年的隐居生活中——就如他对门徒的遗言。毕竟，这种托付是从他开始的，“看，你的母亲。”耶稣为什么要这样做？是他自己要疏远我们吗？不是。他是要通过和他最亲近的那一位，那位为他管理一切事物的人，使我们与他更近，“他无论吩咐你们什么，你们就作什么。”</p>
+                    <p>玛利亚像对待孩子一样对待所有托付给她的人。“众所周知”，教宗说：“她的儿女愈保持这种态度，圣母愈接近他们，引他们到‘基督不可测量的富藏’（弗3:8）”。再次重申，这么说的原因有两个：第一、因为玛利亚与耶稣有着独一无二的亲密关系；第二、因为她肩负将他人引向基督亲密关系的特殊角色。</p>
+                    <p>明天，我们将看看玛利亚与耶稣的亲密关系，是如何帮助我们将自己奉献给基督的，特别是其中耶稣为了我们而做的自我奉献。我们托付给圣母玛利亚，其背后的整个目的是：这样，通过她有力的祈祷和母性的爱，引领我们更加接近耶稣基督。</p>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，帮助我将自己完全托付给圣母玛利亚，让她带我更加接近耶稣。</p>
+                </div>
+            </div>
+
+            <h2 id="day28">第二十八天：向玛利亚的托付（下）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>今天，我们再一次返回本周开始的地方——法蒂玛，但这一次我们是与圣若望保禄二世一起去。</p>
+                    <p>在圣伯多禄广场遇刺整整一年之后，“为感谢仁慈的天主和基督之母的保护”拯救了他的生命，若望保禄二世去了法蒂玛。在那里，他由衷地发表了一篇讲道，成为玛利亚奉献和托付神学理论的丰富源泉。全部讲道和托付诵篇幅较长，这里不便全部收录，因此，这里只介绍概要，特别选出有关玛利亚奉献、救主慈悲和基督的救赎奉献三部分内容。我们先从玛利亚奉献和救主慈悲开始。</p>
+                    <p>开始前，有关救主慈悲先了解以下几点：1）若望保禄二世指出，救主慈悲是天主克胜邪恶、天主的爱面对邪恶的极致；2）救主慈悲象征着基督教被刺透的肋旁和由那里涌出的血水；3）现在救主慈悲敬礼的核心部分是慈悲串经，为我们提供了赔补我们及普世的罪过的慈爱。在下文中，请留意教宗关于玛利亚奉献的讲道，是如何以救主慈悲这二个方面为中心展开的。</p>
+                    <p>讲道内容涉及面广泛，可称为对这邪恶时代的“末日启示”，这邪恶给我们带来“威胁”、“不断扩张”、集结并“像乌云一样笼罩着人类”。教宗承认，这邪恶使他的内心感到“恐惧”。尽管如此，他在“远胜于邪恶的大爱”中找到了希望，这份爱“世上的罪恶永不会战胜”。他将这爱称为“仁慈之爱”。</p>
+                    <p>这“仁慈之爱”是怎样的？与玛利亚奉献有什么关系？很有关系。因为玛利亚是将我们领到仁慈之爱源头的那一位，是将我们领到远胜过邪恶的爱那里的那一位。事实上，正如若望保禄二世在讲道中所说的，奉献给玛利亚无玷圣心，就是“藉着圣母的转祷，走近从哥耳哥达流出的生命之泉”。教宗称之为“慈悲之泉”。血水从基督教被刺透的肋旁涌出，那就是恩宠和慈爱的源泉。也正是透过基督圣心的创伤，“普世的罪过不断得到赔补”。另外，从“慈悲之泉”，我们找到了“从不间断的新生命和圣德的泉源”。</p>
+                    <p>奉献给玛利亚无玷圣心，教宗继续解释说，就是“回到耶稣的十字架上”，也就是说，将这世界及其所有的问题和苦难，都带给“救主被刺透的心”，“回到救赎的根源”，意味着经过圣母玛利亚，将世界带给救主的慈悲！救赎的大能，慈爱的大能，“永远大过世人及普世的罪过”，并能“无限地超越人类及普世的罪恶”。</p>
+                    <p>圣母玛利亚清楚救赎的德能、仁慈之爱的德能，远超一切。实际上，若望保禄二世说，她“比普天之下所有无论有形无形的心，都要清楚。”因此，她才要求我们，“不仅要改变，还要接受她母性的帮助，回到救赎的根源。”重申一下：玛利亚的使命就是将我们带到“慈悲之泉”，带到基督被刺透的助旁，带到他的慈爱圣心。</p>
+                    <p>本质上，将我们奉献给玛利亚，意思是接受她的帮助，将我们和全人类都献给无限圣洁的天主：意为将我们托付给她——与耶稣自己的奉献结合最为紧密的玛利亚：“万福，与圣子救赎的奉献完全合一者”；意为将我们奉献给圣母玛利亚的祈祷，她将“帮助我们生活在全部真理之中——基督为了当今世界整个人类家庭所做的奉献”。换句话说，将我们奉献给圣母玛利亚，意为信赖她慈母的代祷，更彻底地将我们自己献给基督为了我们而做的自我奉献中。</p>
+                    <p>将我们和世界交给圣母的双手和圣心之后，教宗将自己也交给了与耶稣的奉献最为完全合一的玛利亚，他从内心献上了他的托付诵（Act of Entrustment）。让我们在内心深处默想托付诵作为结束。</p>
+                    <blockquote>
+                        <p>“天主竟这样爱了世界，甚至赐下了自己的独生子，使凡信他的人不至丧亡，反而获得永生。”（若3:16）</p>
+                        <p>正是因着这爱，天主于为全人类奉献了自己：“我为他们祝圣我自己，为叫他们也因真理而被祝圣。”（若17:19）</p>
+                        <p>因为这奉献，万世的门徒都被召叫为救赎世界贡献自己，为了基督的身体——教会，补充基督的苦难。（参看格林多后书12:15；哥罗森书1:24）。</p>
+                        <p>基督之母，今天，我在你面前，在你的无玷圣心面前，把我自己与整个教会，在基督为了世界和人类所做的奉献内，与他结合为一，因为只有在他的圣心内，才能获得宽恕并得到赔补。</p>
+                    </blockquote>
+                    <p><strong>【今日祈祷】</strong>生活在圣母玛利亚内的天主圣神，求你降临，让我藉着圣母，偕同圣母，在圣母内到达仁慈和爱的源泉。</p>
+                </div>
+            </div>
+
+            <h2 id="week5-title">最后五天：综述与回顾</h2>
+            <div class="intro-text">
+                <p>四周以来，我们一直在思考玛利亚奉献的事，涉及的内容极为广泛。虽然每天的默想材料都能帮助我们有所收获，但我们可以再深入一些。为了做到这一点，我们需要圣母的“智慧的能力”——教宗若望保禄二世所称的：“在信德的目光中凝视、牢记、并欣然接受的智慧的能力”。</p>
+                <p>如果能继续并始终坚持前面所做的，也就是，在心中不断默想（参考路2:19），我们也能开发出这种“智慧的能力”，现在先看几点精炼的重点：我从每周的避静中，选出概括所学内容的三个词来做为精炼的重点。后面的四天我们每天反省三个词，默想它们在玛利亚奉献中的含义。我相信，如果我们致力于此更精炼的默想祈祷，我们一定会有能力欣然接受玛利亚奉献的真理。四天的回顾结束后，我们将把所学的不同的奉献方法加以整合，从而找到玛利亚奉献的精髓。</p>
+            </div>
+
+            <h2 id="day29">第二十九天：圣路易蒙福（回顾）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>我们从圣路易学到的可以概括为三个词：1、激情，2、圣洗，3、恩赐。让我们分别来默想。</p>
+                    <p><strong>激情</strong></p>
+                    <p>想到圣路易继承了他父亲的暴躁的脾气，这可能惹祸。但圣路易藉着玛利亚将自己奉献给了耶稣。他让玛利亚掌管自己的生命，与她一起，并顺服她的意愿。玛利亚和他一起做了什么？她点燃了他的热火，她与她的净配圣神合作，赋予圣路易为基督献身的激情与狂热；他用道成肉身的智慧——耶稣的爱使整个布列塔尼亚都燃烧起来，还不止布列塔尼亚，圣路易的启发式教导照耀贯穿了几个世纪以来点燃那些圣人、教宗甚至穷苦罪人心中对天主的爱火。</p>
+                    <p>我们可能没有圣路易天生的暴躁脾气，但我们每个人可以借用他的狂热的精神。我们每个人都用更多圣神的浇灌，激起灵魂的火焰，使之充满神圣的热火。我们如何邀请这热火？如何能使这热火降下来？通过学习圣路易找寻圣母、依靠圣母、偕同圣母的榜样。因为，如圣路易说的：当玛利亚的净配圣神在一人的灵魂上看到了玛利亚，便奋翼降临到这灵魂上，倾注于灵魂上，而倾注的尺度，完全照这人收纳玛利亚的尺度。</p>
+                    <p>在迈向奉献日的最后延伸部分，让我们以极大的热情将自己完全献给玛利亚，允许圣神降临于我们，以神圣的热火和激情充满我们。</p>
+                    <p><strong>圣洗</strong></p>
+                    <p>圣路易将他对玛利亚的奉献诚实地置于基督的奥迹中。最好的例子就是他奉献的方式是以重发领洗誓愿开始，圣洗就是关于基督的一切。圣洗圣事使我们成为基督的肢体，成了“另一个基督”。圣洗也与圣神有关，这么说是因为圣神首先形成基督，也是圣神形成其他的基督——他的肢体成员——在每次圣洗圣事中。好，圣神用谁来形成基督呢？他藉用玛利亚，尽管他不是绝对需要她，例如，他在天使报喜中藉用了玛利亚，导致了我们的救主耶稣的降生。他在五旬节前藉用玛利亚，导致了基督奥体——教会的诞生。他在每次的圣洗圣事中藉用玛利亚，使其他诸多“另一个基督——奥体的肢体”诞生。</p>
+                    <p>圣神总是藉用玛利亚来“诞生基督”！而且他发现，与玛利亚结合的人灵越多，“他在那个灵魂中创造耶稣基督就越活跃越有力”。</p>
+                    <p>因此，我们将自己奉献给玛利亚时重发领洗誓愿是适宜的，与圣神一起满全圣洗的恩典是她的工作。领洗不是结局，而是奇妙的开始，是荣耀的新的晨曦。是的，圣洗改变我们，使我们成为基督奥体的肢体，但还有更多工作要做。圣洗是一个“已经开始——尚未完成”的事实。已经使我们成为肢体，但尚未在基督内形成。领洗后，还需要在基督内成长，圣母玛利亚的工作就是与圣神一起，监督和养育我们的成长。因此，圣路易奉献给玛利亚，不是要将我们带离“基督”，她的整个目的是将我们带向基督，带到我们同圣保禄一起说的那一点：“我生活已不是我生活，而是基督在我内生活”（迦2：20）。玛利亚奉献的整个目标是在圣洗之后继续在基督内的改变。</p>
+                    <p><strong>恩赐</strong></p>
+                    <p>只要我们有勇气将自己奉献给圣母玛利亚，就会体验到这奉献是一个不可思议的恩赐。更为甚者，我们奉献的越多，就越能感受到这份恩赐的神奇伟大。我们付出，她就无限多的送还。我们给她的是有罪的自己，她给我们的是她的无玷圣心。我们给的是微薄的功劳，她不仅用她的完美的爱使之更加纯洁和扩充，而且还将她无限的更伟大的善功和恩典给我们。给她全部之后，我们成了两手空空，她给我们的却是天主圣神！她关心我们的家庭、朋友、所爱的人比我们照顾的更好。她预知我们生活中的所需，并使一切生活的细枝末节更能光荣天主。与没有奉献给她的道路相比，跟随她的成圣之路是一条“铺满玫瑰和蜂蜜的道路”。事实上，她使我们的十字架和挑战变得更甜蜜。此外，她也保护我们免受邪恶势力的攻击和诱惑。</p>
+                    <p>完全属于圣母是走向耶稣的一条快捷、简便、稳妥的道路。如果我们能确切认识到藉着玛利亚奉献给耶稣是一份恩赐，那么就会因着拥有这份恩赐——再也不会停止微笑，并永远地赞美天主。</p>
+                    <p><strong>【今日祈祷】</strong>让我们用概括总结的三个词：激情、圣洗、恩赐，在一天中不断的默想圣路易的玛利亚奉献教导。</p>
+                </div>
+            </div>
+
+            <h2 id="day30">第三十天：圣马希连·国柏（回顾）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>我们用三个词来概括从圣马希连国柏所学到的：1）奥秘；2）勇士；3）爱；下面分别来默想。</p>
+                    <p><strong>奥秘</strong></p>
+                    <p>哦，始胎无原罪，你是谁？圣国柏给了我们揭开这奥秘的钥匙：天主圣神是非受造的始胎无原罪，玛利亚是受造的始胎无原罪，她与圣神完美的结合，因为她无罪而受孕，且从未沾染罪污，总是完美地承行天主的旨意。她允许圣神庇荫她，拥有她的灵魂，并通过她结出果实。圣神喜爱在她内并通过她去拯救那些照天主肖像而成的受造者，首先在她腹内道成肉身，而后使用她去化育所有受洗者，让他们肖似基督。当圣国柏给了我们这奥秘的钥匙，他并没有将它完全开启，他让我们更深入地默想圣母玛利亚与圣神的关系，一层更深入且胜过婚姻的关系。</p>
+                    <p><strong>勇士</strong></p>
+                    <p>马希连这个名字的意思是“最伟大的”。圣马希连国柏叫这个名字，是因为他的长辈在他身上发现了巨大的天生的和属灵的恩赐。他接受这个名字，是因为这名字所表达的与他的内心深处一致：“我不只是要将荣耀归于天主，而是要将最大的荣耀归于天主。”</p>
+                    <p>圣国柏认识到将最大的荣耀归于天主的方法，就是将自己与玛利亚无玷圣心结合，因为她最完美地荣耀了上主。他同时也认识到，这方法不是只要一个人去做，而是需要一支军队（勇士），这支勇士组成的队伍能极大地光荣上主。实际上，她要求这支军队（圣母勇士会Militia Immaculata）最终让全世界都能藉着她荣耀上主，越快越好！</p>
+                    <p>圣国柏的计划，其目标是改变全世界，但要从自己做起。一个人必须首先将自己完全交付给始胎无原罪者，为她所有，成为她的财产，与她结合在一起，全然信赖她。然后，再去激励他人也去将自己奉献给圣母并完全信赖她，这样圣母就可以用他们作为奉献的工具，将全世界带给仁慈的耶稣圣心。</p>
+                    <p>“藉着无站圣心，我们将达到（圣母勇士团的）终极目标，那就是，尽可能地将最大的荣耀归于天主！”</p>
+                    <p><strong>爱</strong></p>
+                    <p>对爱的依赖使圣国柏与玛利亚相结合，他说我们也应该去爱始胎无原罪。怎么去爱？依靠她有力的转祷，体验她温柔的关怀，从内心深处与她交谈，随她的引领，所有的事情都向她求援，完全信任她。记得他的话：“亲爱的弟兄们，我们亲爱的‘小’母亲，始胎无原罪的玛利亚，能为我们做一切。我们是她的孩子，去求助于她吧，她会克服一切。”</p>
+                    <p>当体验过圣母玛利亚温柔的呵护，我们会更加热爱她。但我必须向她表白，去向她求爱。然而，如果尽管有许多她爱与呵护的征兆，我们却还是感觉不到她发出的无染原罪的爱怎么办？圣国柏解释说：</p>
+                    <blockquote>永远不必担心你感觉不到这份爱。如果你有去爱的意向，就已经证明你爱了。重要的是你愿意去爱。外在的感觉虽也是恩宠的果实，但不总是伴随着意愿。有时候，亲爱的诸位，忧伤的憧憬、请求或抱怨的念头可能出现，“无染原罪者还会爱我吗？”最心爱的孩子们！我，以她的名义（记住：以她的名义），告诉你们和每一位，她爱你们每一位！每时每刻，没有例外，她是如此的爱着你们。以她的名义，我再一次重申。</blockquote>
+                    <p><strong>【今日祈祷】</strong>请花时间以这三个词，去默想圣国柏关于圣母玛利亚的教导：奥秘、勇士、爱。</p>
+                </div>
+            </div>
+
+            <h2 id="day31">第三十一天：圣德肋撒姆姆（回顾）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>我们用三个词来概括从德肋撒姆姆所学到的：1）我渴；2）圣心；3）盟约。下面分别来默想。</p>
+                    <p><strong>我渴</strong></p>
+                    <p>“圣母玛利亚是第一位听到耶稣说“我渴”的人，还有圣若望，当然还有玛达肋纳。因为圣母当时就在加尔瓦略山，她了解耶稣对你，对穷苦人那份真实而深刻的渴望。我们知道吗？像她一样感受到了吗？向她请教，她的职责就是带你与耶稣面对面，象若望和玛达肋纳一样，体验十字架上耶稣圣心的爱。之前是圣母玛利亚呼求我，现在我以她的名义呼求你们——‘倾听耶稣的渴求’。”</p>
+                    <p>让我们一起用特别的方法，尽可能是自己的血肉之心靠近耶稣圣心，并尝试了解耶稣所承受的可怕的痛苦。这痛苦源于我们的罪以及对我们爱的渴求。……感谢天主，圣母就在他身旁，所以完全明白耶稣对爱的渴求。她当时一定立刻回答说：“我以爱、以心里受着的苦，满足你的渴求。”</p>
+                    <p>让我们祈求圣母的帮助，好让我们明白。</p>
+                    <p><strong>圣心</strong></p>
+                    <p>了解德肋撒姆姆有关玛利亚奉献的关键就是“心”。特别是“圣母无玷圣心”。记住她的两句祈祷词：“赐我尔心”以及“铭记我于尔至洁净圣心。”同时也记着效法圣母默存在心的重要性。让我们就从这两句祈祷词开始，并回顾一下圣母玛利亚那颗默想的心。</p>
+                    <p>“赐我尔心”。这样的祈祷，德肋撒姆姆是在祈求圣母赐予她心中的爱。换言之，她是说：“圣母玛利亚，相帮我能用你那无玷圣心完美的爱去爱。”记住，德肋撒姆姆热切的期望是去满足耶稣对爱的渴求，她想要以尽可能最好的方法去做，还有什么能比母亲的那颗谦卑、完美的无玷圣心更好的爱耶稣的方法呢？</p>
+                    <p>“铭记我于尔至洁净圣心”。或者，更完整的一句祈祷：“玛利亚的无玷圣心，请铭记我于尔至洁净圣心，如此我便能通过你，在你内，偕同你悦乐主耶稣。”德肋撒姆姆敬礼玛利亚的这一部分意义最为深远。她不仅要求内心存有玛利亚的圣心，而且她自己也要居于玛利亚的圣心之中！因此，这是一个通过圣母，在圣母内并偕同圣母去爱耶稣的祈祷。这比简单地祈求圣母“赐我尔心”更进一步。想要理解并生活出来，需要对圣母玛利亚爱的信靠和与她完全的结合。这一点，下一节的“盟约”将会表达的更为全面。</p>
+                    <p>默想的心。圣母玛利亚总是将天主在她身上所行的“一切”“默存在心”。（参见路2:19,51）。德肋撒姆姆通过效法圣母的榜样，培养出了一种“感恩的态度”。特别是，她以此为榜样忠诚地查问自己的良知（省察）。换句话说，在一天结束的时候，她会在心里默想这一天当中天主为她所行的一切美善，再反省自己如何或是否完全回应了他的大爱。</p>
+                    <p><strong>盟约</strong></p>
+                    <p>为此生与你生活在最亲密的结合之中，从而能更完全、更稳妥地与你的爱子达到合一，被这种热切的渴望所感动，在这里我保证按照以下奉献盟约的精神和条款，尽我所能，忠实慷慨地去生活。</p>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr><th>圣母玛利亚的责任</th><th>我的责任</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1.献出她的心与灵</td><td>1.我之所有尽做献礼</td></tr>
+                                <tr><td>2.看守、保护、改变我</td><td>2.全然信靠她</td></tr>
+                                <tr><td>3.激励、引导、启发我</td><td>3.响应她的神魂</td></tr>
+                                <tr><td>4.分享她祈祷与赞美的经验</td><td>4.忠诚地祈祷</td></tr>
+                                <tr><td>5.对我的成圣负责</td><td>5.信靠她的转祷</td></tr>
+                                <tr><td>6.对临于我的一切负责</td><td>6.接受来自她的一切</td></tr>
+                                <tr><td>7.与我分享她的美德</td><td>7.效法她的精神</td></tr>
+                                <tr><td>8.为我提供物质和灵性方面的需求</td><td>8.恒常求助于她</td></tr>
+                                <tr><td>9.与她的圣心结合</td><td>9.牢记她的临在</td></tr>
+                                <tr><td>10.洁净我及我之行为</td><td>10.意向纯正，舍弃自我</td></tr>
+                                <tr><td>11.处置我，以及我的祈祷、转祷和恩宠的权利</td><td>11.为天国的缘故，运用她及她的能力的权利</td></tr>
+                                <tr><td>12.我之内外完全自由，凡事随她喜欢</td><td>12.进入她的圣心、并分享她内在生命的权利</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p><strong>【今日祈祷】</strong>请花时间以这三个词，去默想德肋撒姆姆关于圣母玛利亚的教导：我渴、圣心、盟约。</p>
+                </div>
+            </div>
+
+            <h2 id="day32">第三十二天：圣若望保禄二世（回顾）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>我们用三个词来概括从圣若望保禄二世所学到的：1）母亲；2）托付；3）慈悲；下面分别默想。</p>
+                    <p><strong>母亲</strong></p>
+                    <p>若望保禄二世关于玛利亚奉献的教导，不仅因着他的教宗身份具有权威性，更因为大公会议的重要性，因为教宗重复和加深了梵二大公会议的教导。因此，他的教导构成了今日教会的思想和灵魂，我们也应该特别的加以留意。那么，教会的思想和灵魂要告诉我们玛利亚什么？它指的是玛利亚的母性中保。它说圣母玛利亚是我们恩宠的母亲。它宣告了一个好消息，那就是天主给了我们一位灵性的母亲，她虔诚地、亲切地致力于我们在恩宠中成长和成圣。我们提到玛利亚奉献，在教会生活中，在我们每一个人的生命当中，圣母玛利亚的新母性，就是一道不变的、令人安慰的、美丽的背景——或者是若望保禄二世常常所说的：“托付”。</p>
+                    <p><strong>托付</strong></p>
+                    <p>看见圣母玛利亚和他所爱的门徒，若望，站在十字架旁，耶稣说：“女人，看，你的儿子！”然后又对若望说：“看，你的母亲！”（若望福音19:26- 27）。这些话概括了我们前一部分涉及到的内容，圣母玛利亚是我们灵性的母亲。但后来我们又读到下一句：“就从那时起，那门徒把她接到自己家里。”耶稣将我们托付给玛利亚做我们的母亲，这是我们回应的核心：我们要将她“接到自己家里”来把自己托付给圣母。换言之，我们要接她进入我们的内在生命，进入我们所有的关切当中，让她进入我们的喜乐和悲伤，希望和担忧，计划和行动当中。</p>
+                    <p>当我们允许玛利亚进入我们的生命，当我们将自己托付给她看顾，她便为我们转求，安慰我们，鼓励我们，给我们力量，去和耶稣为世界而做的自我奉献相结合，她激励我们去为拯救世界而献上自己，去承担救赎工程中自己的那一份。当我们背起自己的十字架，当我们生活在基督的自我奉献当中，我们可能会感到灵性的渴求、荒芜和疲倦，这正是圣母带领我们到达“慈悲的源泉”——耶稣被刺透的肋旁的时刻，在那里，我们会找到源源不断的力量和圣洁的源泉。</p>
+                    <p>这样，圣若望保禄二世认为，我们托付给圣母，就是托付给耶稣基督。</p>
+                    <p><strong>慈悲</strong></p>
+                    <p>最终，玛利亚奉献将我们引向救主慈悲，从玛利亚无站圣心奉献诵到慈悲耶稣圣心托付诵。这一点，我们从法蒂玛和教宗若望保禄二世的故事中，特别是从教宗1982年法蒂玛朝圣的讲道中，可以看到。这次朝圣是为“感谢仁慈的天主和基督之母的保护”拯救了他的生命。</p>
+                    <p>在那次讲道中，若望保禄二世重复提到，玛利亚奉献是如何将我们引到慈悲之泉——被刺透的耶稣圣心前。这个联系到耶稣自己的意愿，耶稣曾对路济亚修女说(Sr.Lucia)，他愿意对玛利亚圣心的奉献，“因为我要整个教会都感谢这奉献（我的母亲在法蒂玛的请求），这是玛利亚无站圣心的胜利，之后要扩大对她的崇敬，对无站圣心的敬礼要和对我的圣心敬礼一并进行。”耶稣这样要求，是因为玛利亚以最完美的方式，引领并帮助我们去接受耶稣圣心的无限慈悲。</p>
+                    <p><strong>【今日祈祷】</strong>请花时间以这三个词，去默想圣若望保禄二世关于圣母玛利亚的教导：母亲、托付、慈悲。</p>
+                </div>
+            </div>
+
+            <h2 id="day33">第三十三天：综述</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>过去四天，我们回顾了过去前四周的避静。这几天，不仅重温了每一天的学习材料，也已经开始将它们汇总起来，融会贯通。这里说开始汇总，是因为我们仅通过这么“匆匆的一瞥”，像若望保禄二世所说的，还没能达到真正抓住玛利亚奉献中所蕴含的丰富的真理的程度。要达到这一点，或许用一个统一的声明会有所帮助，有点像圣依纳爵所总结的“首要原则和基础”一样，有了它，就能清晰地聚焦于奉献的精神。</p>
+                    <p>实际上，我认为我们需要的不仅仅是一份声明，我们需要的是一段祈祷，一段可以经常使用，甚至每天重复的祈祷，不但可时刻提醒我们玛利亚奉献的意义，还可以呈现我们藉着玛利亚奉献给耶稣的一份礼物。</p>
+                    <p>过去几周，我们了解到几位圣人都曾撰写过关于玛利亚奉献的优美的祈祷词或祈祷方式。这里不再赘述。这里给大家提供本次避静中，由他们的主要真知灼见综合而成的奉献祈祷诵。尽管我还远不是圣人，但是我有信心，因为这祈祷都是出自避静中四位圣人的实际的话语和思想。使我有信心去撰写这样一份奉献祈祷的另一个理由，是前教宗庇护十二世在圣路易蒙福封圣时的一段致辞：</p>
+                    <blockquote>真正的奉献……其本质目标是藉着玛利亚的引领与耶稣相融合，奉献的形式与实践可能随着时间、地点或个人倾向的不同而有所不同。有健全、可靠的教义，以及正统和敬拜的尊严，在此前提下，圣教会给他的子民一定的自由，教会意识到，对圣母玛利亚真正的、完美的奉献，不会被拘泥于某种特定的模式，不会有某一种方式可以独占垄断地位。</blockquote>
+                    <p>受此鼓舞，并得到教宗所赐的自由，再次提供以下更新的奉献祈祷，旨在抓住我们在避静中所学到的精华。如果它不太符合你的偏好，也不必担心。你完全可以写出你自己的祈祷，或者使用圣人们的祈祷。不管怎样，这里提供的是对我们所学的一份总结声明，也是一份发自内心的祈祷：</p>
+                    <blockquote>
+                        <p>我，（），一个不忠心的罪人，我今天在你手中，哦，无站圣母，重申我领洗的誓愿。我愿弃绝魔鬼，决心比以往更紧密地跟随耶稣基督。</p>
+                        <p>圣母玛利亚，我愿将心奉献给你，愿你用爱和耶稣来点燃我心，使我总能细心体会耶稣对爱和人民的渴求。求你将我的心，铭记在你最纯净的圣心内，使我能用你完美的爱，去爱耶稣和他的肢体。</p>
+                        <p>圣母玛利亚，我将自己完全托付于你，我的身体，我的灵魂，我的内外所有，乃至我所行的所有善功。请让我的所是所有，凡是一切皆能乐尔圣意。让我成为你无玷而仁慈的手中一件合手的工具，好能最大程度地光荣天主。如果我跌倒，请带我回到耶稣身边，用他被刺透的肋旁所流的血水洗净我，帮助我，永远不要对这爱和慈悲的源泉失去信任。</p>
+                        <p>哦，无原罪圣母玛利亚，你总是完美的承行了天主的旨意，我愿和你一起，使自己与完美奉献了自己的耶稣相融合，一如他为着世界，在圣神内将自己奉献给了天主父。阿门。</p>
+                    </blockquote>
+                    <p>明天，你将要藉着圣母玛利亚，将自己奉献（或者再奉献）给耶稣。那真是太好了！这样做，你当然首先需要奉献的祈祷，你可以用以上的祈祷词，也可以运用某位圣人的祈祷，或者你自己的祈祷，我鼓励你们去深思今日祈祷的意义，因为这样的深思，对奉献日会是一个完美的预备。</p>
+                </div>
+            </div>
+
+            <h2 id="consecration-day">奉献日：荣耀的新晨曦</h2>
+            
+            <div class="msg-block">
+                <div class="msg-title">奉献之前</div>
+                <div class="msg-text">
+                    <p>恭喜你！你已经坚持到奉献日，请准备迎接你灵性生命中一个荣耀的新晨曦吧。当然，你已经准备好了，你已经忠实地为此刻准备了33天。这里我推荐三件事情来做最后的准备：</p>
+                    <p>1、办一个妥当告解。在奉献前如果你的确没有时间，那么你至少要在内心深处对自己的过犯向天主忏悔，而且要下决心，一旦时间允许，马上补办告解。</p>
+                    <p>2、写出（或打印）奉献祈祷。这样你就可以在诵念之后签署。</p>
+                    <p>3、佩戴显灵圣牌作为奉献的标记。如果你不愿意佩戴在脖子上，至少要放在钱包里或者口袋中。</p>
+                    <p>再次强调，这三件事情只是推荐，不是奉献所必需的。</p>
+                </div>
+            </div>
+
+            <div class="msg-block">
+                <div class="msg-title">奉献祈祷</div>
+                <div class="msg-text">
+                    <p>你现在已经准备好奉献了，还需要恰当的祈祷，你可以选用下面的祈祷，圣人的祈祷，也可选用你自己的祈祷。不论你选用哪一个，建议你在参与弥撒或领圣体后诵念。如果不能参与弥撒，你仍可以奉献，弥撒只是强烈推荐，并不是必须。无论参与弥撒与否，诵念完奉献祈祷之后，建议你记录日期、地点、并签署姓名，保存在妥当的地方。（实际上，我每年都更新我自己的奉献，每次都在诵念之后签署日期等。）</p>
+                    <p>无论如何，下面是33天迈向晨曦的荣耀奉献祈祷，它概括了四位圣人的主要思想：</p>
+                    <blockquote>
+                        <p>我，（），一个不忠心的罪人，我今天在你手中，哦，无站圣母，重申我领洗的誓愿。我愿弃绝魔鬼，决心比以往更紧密地跟随耶稣基督。</p>
+                        <p>圣母玛利亚，我愿将心奉献给你，愿你用爱和耶稣来点燃我心，使我总能细心体会耶稣对爱和人灵的渴求。求你将我的心，铭记在你最纯净的圣心内，使我能用你完美的爱，去爱耶稣和他的肢体。</p>
+                        <p>圣母玛利亚，我将自己完全托付于你，我的身体，我的灵魂，我的内外所有，乃至我所行的所有善功。请让我的所是所有，凡是一切皆能乐尔圣意。让我成为你无玷而仁慈的手中一件合手的工具，好能最大程度地光荣天主。如果我跌倒，请带我回到耶稣身边，用他被刺透的肋旁所流的血水洗净我，帮助我，永远不要对这爱和慈悲的源泉失去信任。</p>
+                        <p>哦，无原罪圣母玛利亚，你总是完美的承行了天主的旨意，我愿和你一起，使自己与完美奉献了自己的耶稣相融合，一如他为着世界，在圣神内将自己奉献给了天主父。阿门。</p>
+                    </blockquote>
+                </div>
+            </div>
+
+            <div class="msg-block">
+                <div class="msg-title">奉献之后</div>
+                <div class="msg-text">
+                    <p>奉献之后做什么？丰富的恩典和荣耀新晨曦！可是当晨曦渐去，新的一天开始，我们会想知道如何活出我们的奉献。我们是不是做上一次奉献，然后将它抛到脑后？不是！下面三点将帮助我们充分地活出这奉献：更新、态度、敬礼。</p>
+                    <p><strong>更新</strong><br>
+                    圣路易蒙福建议我们，至少每年的同一天，要更新一次对圣母玛利亚的奉献，他还鼓励我们更加频繁地更新。若望保禄二世则每天都更新对玛利亚的奉献。如果每天更新，我们既可以使用与奉献日诵念相同的方式，也可以采用以下简短的方式：</p>
+                    <blockquote>圣母玛利亚，我将自己完全奉献给你，为你所有，为你所用。请让我的所是所有，凡是一切皆能乐尔圣意。让我成为你无玷而仁慈的手中一件合手的工具，好能最大程度地光荣天主。</blockquote>
+                    <p>另外一个更新和深入玛利亚奉献的途径，就是这33天的个人避静。可以夫妻一起，也可家庭组成小组，或者堂区教友组成小组一起做，相互陪伴，共同成长。</p>
+                    
+                    <p><strong>态度</strong><br>
+                    如何活出我们的奉献？我们应该持有什么样的“态度”？这个很难全面解释，而且因人而异，就是前面的四位圣人，表达的也不尽相同，但基本上是一样的。</p>
+                    <p>圣路易蒙福说过，如果我们仅仅一次将自己奉献给圣母，然后又回到原来的样子，这是远远不够的。他认为我们应该进入奉献的灵性深处，这需要对圣母玛利亚内在的依靠。换句话说，我们做任何事都要“藉着圣母、偕同圣母、在圣母内，且为了圣母”，这样为的是能更完美地偕同耶稣、在耶稣内、通过耶稣，并为了耶稣。圣路易特别专注于“偕同圣母”的思想，并做了如下的描述，这一段后来被圣马希连国相所采纳：</p>
+                    <blockquote>这个敬礼的主要特征，在乎偕同圣母做一切事情，就是说，将圣母作为模范，来做一切应做的。<br>为此，在有所行动之前，先该放弃自我以及自己最好的观点。必须在天主前消灭自我，认为自己是没有能力获得任何超性的功德，也不能做出任何有益于得救的行为。必须投靠至圣童贞圣母，与她结合，与她的意愿连结起来，即使我们未知此意愿。必须经由圣母，与耶稣基督的意愿相连结，把我们自己放在童贞圣母手中作为一个工具，让她在我们身上行动，让她按照她的意思支配我们，愈显她圣子的光荣，且藉着她的圣子耶稣基督愈显父的光荣，致使我们只靠着她才能享有内在的生命，才能实行灵修活动。</blockquote>
+                    <p>尽管圣国柏对玛利亚奉献的描述与上述引用相类似，他仍认为要活出这奉献，并没有“固定的模式”，圣母玛利亚会亲自教导我们：“对于如何服务于无染原罪者，我什么也不知道，无论理论还是实践，……，只有圣母自己，她必亲自时刻指导、引领我们……要接受圣母的指导，我们需要通过谦卑的祈祷来转向她，并反思“爱的体验”——每天圣母在我们日常生活中的转祷。概括而言，圣国相关于奉献的态度就是：去依赖她强而有力的转祷，去经验她温柔的关爱，用心与她交流，随她的引领，所有的事情都向她求援，完全的相信她。同时，圣国相还要求我们的奉献要具有宗徒精神，去激励他人也去参加奉献。正如前面所学的，对你，对我，对所有人，玛利亚奉献是一条最简单、最快捷、最稳妥的成圣之路，因此，这也是将全世界引向基督的最有效的途径。</p>
+                    <p>对于德肋撒姆姆而言，活出玛利亚奉献的根本就是心的态度，特别是与玛利亚无玷圣心一起生活的态度。这态度在之前她的“奉献盟约”中有详细的描述。还有，她全部的奉献还体现出某种同情，对耶稣渴求爱和人灵的共鸣。因此，德肋撒姆姆活出玛利亚奉献的态度就是：允许圣母将我们带到耶稣的十字架下，她会让我们安静下来，从而能听到耶稣痛苦的渴求，并请求圣母教导我们，用她至洁净的爱去安慰耶稣。</p>
+                    <p>圣若望保禄二世则是从若望福音中找到了我们活出玛利亚奉献的真谛，“就从那时起，那门徒把她接到自己家里。”（若19:27）或者说，他明白托付的态度，就是将圣母玛利亚置入我们全部的内在生命中。作为“受难的”教宗，他还强调“合作救赎”为玛利亚托付神学的一部分。他指出，圣母最完美地与十字架上自我奉献的基督教赎相结合，这有助于我们做出相同的奉献。换句话说，圣母玛利亚帮助我们献上自己的十字架，她提醒我们不要白白浪费了我们的苦难，鼓励我们成为基督教赎的“合作者”，当然，是从属的且与基督结合。（如今我在为你们受苦，反觉高兴，因为这样我可在我的肉身上，为基督的身体——教会，补充基督的苦难所欠缺的。哥罗森书1:24）。</p>
+                    <p>无论我们从这几位圣人身上学到什么，都表达一个意思，那就是，我们要靠近圣母，亲切地依赖她，从心里与她交流，充分相信她的转祷，与她分享我们的喜乐、忧愁和痛苦。奉献给玛利亚不是基于感觉，或者常常想着她，陷入美丽的想象。圣马希连国柏认为，正确的态度应该是，奉献给玛利亚，不是出于很多的理由和情感，而是出自意愿。</p>
+                    <blockquote>并没有必要想着无染原罪者应该出现在我们的脑海里……我们与她结合的根本，并不存在于思想、记忆、情感内，而是存在我们的意愿内。<br>我要继续说：即便我们没有重复这具体的奉献（特别的为她而做的），我们仍属于她，因为我们一旦将自己奉献与她，就永远不会收回。<br>尽管我们没有想过，圣母玛利亚仍会知道我们的行为，为我们预先安排所有情况，修复我们跌倒的损伤，亲切地引领我们奔赴天国，她乐于通过我们，到处去播撒善念、良好的情绪，并成为榜样，为了灵魂的得救，为了将众人引向好耶稣。</blockquote>
+                    <p>圣路易蒙福说：“除非经由玛利亚，我们不能到达主。”圣国柏也教导我们，经由玛利亚并不总是有意识的行为。明确转向圣母确是好事，但并不意味着我们每次转向耶稣的时候都必须先转向圣母。他认为，一旦我们将自己奉献给圣母，并习惯于依赖她，即使我们自己没有意识到这一点，我们转向耶稣的时候也一定是与她在一起。这好比一位深爱自己妻子的丈夫，要离开她到很远的地方做生意。当他在外旅行、约见客户、修改合同时，尽管他没有明确想过，但他的妻子总是与他在一起，在他心里。圣母在我们心里也是如此。</p>
+                    <p>当我们完全奉献给圣母的时候，当我们与她建立起孩子信赖母亲般的关系的时候，我们祈祷时，她就会与我们在一起。就如无论我们何时向天父祈祷，耶稣就会和我们在一起一样。的确如此，例如，当我们祈祷“我们的天父……”时，尽管并没有明确转向耶稣，但他仍和我们在一起。这里圣国柏的主要观点是：天父、圣子、圣母——总是与圣神结合为一体，并不总在平行线上。确切说，耶稣、玛利亚和圣神总是结合在一起，共同向上朝着天父，无论我们转向哪一位，我们就和他们在一起朝向天父。换一种说法，他们之间没有竞争，他们不互相排斥。而更好说，他们结合在一起，成为一个团队，虽然角色不同，但都是将众人引向天父。</p>
+                    <p>在结束之前再强调一点，尽管我们说奉献给圣母玛利亚并不总是有意识的行为，但要活出奉献的确需要付出努力。说到底，良好而深入的人际关系需要不断交流和努力，当然这同样适合与圣母的关系。这里“交流”部分指的就是，在祈祷中与圣母发展亲切的依赖关系，前面已经了解了很多。“努力”部分是指避免犯罪，犯罪会伤透耶稣和圣母的圣心。更清楚点说，完全奉献给圣母，并不意味着我们就不会再犯罪了。不过，却的确意味着我们应该真诚的下定决心至少不再犯大罪，应该真正努力在美德和圣洁中成长。这部分在玛利亚奉献中是如此重要，还记得圣路易的奉献祈祷中，一开始就是重发领洗誓愿，承诺弃绝魔鬼（也就是弃绝罪恶），更加紧密地跟随耶稣基督。</p>
+                    <p>结论：如果我们完全奉献给圣母，她就会在我们内工作，使我们的善功增值，照顾我们及我们所爱的人，甚至那些我们还没有向她求援的人。而且，不管我们是否想到她，她都会与圣神一起将我们引向基督。这就是她母性的力量！这就是玛利亚奉献的力量！因着这丰厚的礼物，我们更应该加倍努力使自己与圣母相结合，藉着圣母、偕同圣母并在圣母内去做任何事情。至少出于感恩，我们也应该抱着这样一个态度，为自己设立目标，去更多地想着她并依靠她。除了感恩圣母，还要加倍努力。我们越是属于她，她就越能使用我们去完成天主最完美的旨意。实际上，我们与圣母的结合越是紧密，她就越有可能带领我们与耶稣建立更为亲密的关系。这就是圣母亲自传授的秘诀，也是我们从她慈母般关爱中体验并学到的重要一课，这远比本书的知识重要。</p>
+                    
+                    <p><strong>敬礼</strong><br>
+                    为帮助我们坚固信赖圣母的态度，一个好的方法就是实践对玛利亚的敬礼，其中居首位的就是诵念玫瑰经。玫瑰经能培养我们的态度，诵念时，我们所关注的是耶稣生命的奥迹，随后的“万福玛利亚”则贯穿整个奥迹，使我们养成一个习惯性的态度，尽管是奔向耶稣，但我们是与圣母玛利亚一起。或者说，“万福玛利亚”的经文帮助我们默想耶稣。</p>
+                    <p>其它对圣母玛利亚的敬礼包括会衣、显灵圣牌、玫瑰经、七苦经、三钟经、九日敬礼、朝圣、圣母瞻礼以及阅读其它灵修读物等。这里不再一一赘述。</p>
+                </div>
+            </div>
+
+            <h2 id="appendix">附录：参考书目及尾注</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>《圣经》，思高圣经学会译释，1968</p>
+                    <p>《天主教教理》，中国河北信德社，2012.8</p>
+                    <p>《天主教英汉词典》，上智编译室，2009.9</p>
+                    <p>《来，做我的光》布莱恩，中信出版社，2012.9</p>
+                    <p>《付天娜修女神圣慈悲日记》：中国河北信德社，1992</p>
+                    <p>《孝爱真谛》</p>
+                    <p>《玛利亚的秘密》</p>
+                    <p>《教会宪章》</p>
+                    <p>《救主慈悲》</p>
+                    <p>若望保禄二世《救主之母》通谕</p>
+                </div>
+            </div>
+            <h2 id="im-thirst">教宗若望保禄二世 1993 年四旬期文告《我渴》</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p><strong>“我渴”——若 19: 28</strong></p>
+                    <p>亲爱的兄弟姐妹：</p>
+                    <p><strong>一、</strong>在这神圣的四旬期里，教会再度踏上迈向复活节的道路。以耶稣为引导，踏着他的足迹，教会邀请我们穿越沙漠。</p>
+                    <p>救恩已经给予沙漠深奥的宗教意义。在梅瑟的领导之下，以及日后受到其他先知们的启发，天主选民才能在贫困与痛苦中，体验到忠信的天主临在及他的仁慈。天降食粮养育他们，由岩石涌出的泉水为他们解渴。天主子民对那位将要拯救他们的默西亚来临的那份信仰与希望越来越增强。</p>
+                    <p>若翰洗者亦是在沙漠中宣传，群众来到他面前，为的是要在约旦河中领受悔改洗礼。人在准备征服罪恶的代价——痛苦与死亡时，沙漠是他们去悔改的地方。耶稣，这位以美好之物饱饮穷人的默西亚，使自己先成为沙漠中的饥渴者，以此开始他的使命。</p>
+                    <p>亲爱的兄弟姐妹，基督为启迪在旅途上的成员，给教会留下他的生命之言，我邀请你们在今年的四旬期内多默想它。辨认耶稣向你说话的声音，尤其是在此四旬期里，在福音中，在礼仪庆典中，在你们堂区司铎的讲道中。聆听疲劳口渴的耶稣向雅各井边的撒玛黎雅妇人说：“请给点水喝吧。”（若 4: 7）看看被钉在十字架上垂死的耶稣，聆听他那微弱的声音说：“我渴。”（若 19: 28）。今天基督徒在我们最穷困的兄弟姐妹身上再度受苦难的酷刑，并重覆这个“我渴”的哀求。</p>
+                    <p>教会要求我们以四旬期的自我克制，走上基督为我开导的爱与希望的道路，藉此使我们了解基督徒生活包含远离贪恋过盛的物质，并接受贫穷。这个贫穷能使我们心灵获得自由，使我们发觉天主的临在，以更主动的团结及宽广的友谊迎接我们的兄弟姐妹。</p>
+                    <p>想想主基督的话：“谁若只给这些小子中的一个，一杯凉水喝。因为他是门徒。我实在告诉你们，他决失不了他的偿报。”（玛10:42）。将以下的话默存于心，并在其中找到希望：“我父所祝福的，你们来吧：因为我渴了，你们给了我喝的。”（玛25:34- 35）。</p>
+                    <p><strong>二、</strong>在一九九三年的四旬期里，为具体实行与这个特别季节的神修探讨有密切的关连的团结及兄弟姐妹之爱，我请求教会成员，以特殊方式记忆那些因他们的土地沙漠化而受苦的男男女女，以及那些在世界许多地区缺乏生命基本所需的水的人。</p>
+                    <p>今天，我们满心关切地看到沙漠已扩大到昨日还是肥沃及植物繁生的地区了。我们不能忘记，在许多情况里，是人使土地荒凉，变成沙漠的原因，正如人使原本清澈的水受到污染一样。当人不尊敬大地的物质时，当他们滥用这些物质时，他们的行为是不正义的，甚至有罪的，因为他们这些行为造成许多的兄弟姐妹贫穷与死亡的伤害。</p>
+                    <p>看到整个民族，无数的人类已经濒临贫乏，并因缺乏饮水而受饥饿及疾病侵袭之苦，我们深感忧虑。事实上，饥饿与许多的疾病都与干旱及水污染有关。在雨水稀少及水源枯竭的地方，生命是非常脆弱的，甚至逐渐消失。广大的非洲地区正经验到这种灾难，但是这种情形也出现在拉丁美洲及澳洲的某些地区。</p>
+                    <p>再者，无限制的工业发展及使用破坏生态平衡的技术，已造成对环境严重的破坏和极深的痛苦，这是人人心知肚明的。我们正在冒险将饥渴的悲剧，以及世界许多地区的沙漠化，留给后代子孙。</p>
+                    <p>我诚挚的邀请你们慷慨支援那些设法帮助因贫乏或干旱而受苦，及因不断扩大的沙漠化而经验到困难的人的机构、组织及社会工作。我同样鼓励你们与以科学方法研究沙漠化的原因，并探讨解救之道的机构合作。</p>
+                    <p>愿教会子女的慷慨，及善心男女，使依撒意亚先知的预言早日实现：“旷野里将流出大水，沙漠中将涌出江河，白热的沙地将变成池沼，干旱的地带将变成水源。”（依35：6- 7）。</p>
+                    <p>因父及子及圣神之名，我衷心的祝福你们。阿们！</p>
+                    <p style="text-align: right;">若望保禄二世<br>一九九二年九月十八日，于梵蒂冈</p>
+                </div>
+            </div>
+            <h2 id="examination">附录：省察的方法（BAKER）</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>人们通常在晚上睡觉之前省察自己在一天当中的思言行为。我们省察首先应该到天主跟前，换言之，省察要以一个祈祷的态度开始，而不能仅仅是一次脑力锻炼。虔诚地划个十字圣号就足以达到这一点。接下来，我们只需要记住一个英文词：BAKER，B- A- K- E- R，“面包师”。实际上，还需要知道每一个字母背后所代表的含义。我们就从字母B开始。</p>
+                    <p><strong>B代表“Blessing”，“降福、祝福”的意思。</strong>圣依纳爵指出，这是五点中最重要的一点。我们应回顾一天当中天主所赐给我们的许多祝福，并因此而赞美感谢天主。比如，我们在午餐时和某人有一次愉快的交谈，省察中，我们就要反思这份恩赐，并感谢赞美天主。当然，我们并不是要仔细检查一天中的每一个祝福，那样会占用太多的时间。关键是要让我们的心徜徉并停留在因这一天的祝福而带来的喜悦顶峰中，依纳爵称之为“慰藉”。还有一点，我们也不要忘记一天当中的十字架，那同样也是祝福。</p>
+                    <p>如果在每天的省察中养成这种赞美和感谢的习惯，我们将会更好地从每天所发生的事情当中认识到天主的祝福。如此，将培养我们不断感恩的态度。换言之，赞美和感谢将不只是在省察的时候才有，而是一整天都处在赞美和感谢中。此外，天主看到我们这样努力地去赞美和感谢他，他赐予的恩赐将会越来越多。</p>
+                    <p><strong>A代表“Ask”，“祈求”的意思。</strong>尽管省察的时候都会到天主的跟前，我们还需要祈求天主圣神的恩宠，认识已罪的恩宠。没有圣神的帮助，我们对自己的罪过就会视而不见。因此，这第二步，我们要祈求圣神帮助我们认识已罪，将我们带入下一步。</p>
+                    <p><strong>K代表“Kill”，“扼杀、致死”的意思。</strong>为什么要“扼杀”？因为是我们的罪致死耶稣并钉他于十字架上。在第三步让我们看看自己的罪过（还有我们的软弱及由此带来的后果）。那么，让我们看看一天中清醒的时候。而这一次，不是看高峰，而看低谷，也就是依纳爵所称的“荒芜”。换句话说，我们将注意力集中在一天当中烦心的时刻，为什么烦心？或许是因为他人的罪，或许他人对我们说了不友好的话语。好了，我们原谅他们了么？如果原谅了，那很好。如果还没有，也不错，省察的时候正好是处理这件事的时候。</p>
+                    <p>我们接着再看。这里有一个烦心的时刻，那是下午的工作中，在饮水机旁，为什么心烦？嗯，是的（感谢圣神），我们的言语伤害了鲍勃。看看还有没有？哎呀，又一个：回家的路上交通拥堵，而我们没有将它当作十字架苦难的一小部分来分担，我们本应该平静地对待，并为他人献上祈祷。</p>
+                    <p>好啦，回忆了这些心烦的时刻，可能会感到很沮丧，这感觉会有点让我们想逃离耶稣，别这样，当罪恶感拖我们向下的时候，正是转向耶稣的最佳时刻，罪恶感及一切，会将我们带向下一步。</p>
+                    <p><strong>E代表“Embrace”，“拥抱、欣然接受”的意思。</strong>这是说作为罪人，允许耶稣用他充满怜悯的爱拥抱我们。这里祈祷时，想一想救主慈悲耶稣的圣像可能会有所帮助。我经常想那一道道光芒，都是耶稣在用宽恕拥抱着我们。当带着已罪转向耶稣的时候，他会因为我们让他成为自己的救主而感到喜悦。我相信在这省察中，因着让他用怜悯的爱拥抱我们，这极大地安慰了耶稣。当然，我们也同样受到了安慰。建议这里（在他的拥抱中）多逗留一点时间，再进入下一步。</p>
+                    <p><strong>R代表“Reconcilement”，“决心”的意思。</strong>在省察的最后一步，让我们应用前几步的所学展望明天，准备好下定决心。比如，第三步中认识到今天在办公室用言语伤害了鲍勃，我们就下决心明天早上与他和好，走到他跟前，轻拍他的后背，祝贺他所在的球队昨晚取得好的成绩。还有，记得我们在今天堵车时候的焦躁和没有耐心吗，我们可以下决心，明天再遇到前方一片刹车灯亮起的时候，管住我们的口舌。最后，在第一步中，天主借着和某人愉快的交谈，给我们指明解决某个问题的光明道路，我们可以下决心采取行动。</p>
+                </div>
+            </div>
+            <h2 id="postscript">后记</h2>
+            <div class="msg-block">
+                <div class="msg-text">
+                    <p>2013年夏天，几位美国的大学生来中国做义工，随行的有一位美国“大高个”神父。在太原工作的一位外籍教师朋友介绍我与他们相识。交谈中，偶尔谈到自己信仰中关于敬礼玛利亚的一些困惑，神父告诉我说：“我一个人自己祈祷的时候，圣母总是与我在一起。”当时不以为然，很平常的一次谈话。</p>
+                    <p>2014年6月，朋友工作期满回国，临行前，她送我一本书，《33 Days to Morning Glory》，并说可能会对解除我心中的困惑有所帮助（她竟然还记着那次谈话，还买了相关的书！），当时只当是礼节性的告别礼物而已。回来就搁在那里，因为封面上的书名我压根儿就没看懂！</p>
+                    <p>2014年10月10日，CFC团体领导人转来一封邮件，要求全体成员学习一本书，做一次奉献给圣母玛利亚的自我避静，附件中的书稿封面好像与我那本礼物书是一样的。于是赶紧找了出来，没错，是同一本书！翻开看看前言和第一天，居然被深深地吸引！</p>
+                    <p>10月18日会议期间，当Israel弟兄问谁有时间翻译时，我怀着试试看的心理，勉强答应下来，因为他说翻译出大概意思就行，其实心里一点底都没有。一是因为时间太紧张了，团体要求全体成员11月5日开始学习，那么厚的一本书，生平第一次书面翻译，实在感觉没有可能。二是自知自己水平有限，口头翻译大概意思还行，反正没有记录，错了也没有人知道，很快就过去了，但是书面翻译，白纸黑字留在那里，贻笑大方不说，贻害他人就是罪过了。但是，自从读了第一天的故事后，仿佛是圣路易的激情，又或许是身负的责任使然，总觉得有一股力量，催追着我去做，又仿佛有一个声音告诉我说，别想那么多，去试试看。</p>
+                    <p>很快，第一周材料的就翻译完了。原来如此！在教会的历史上有如此伟大的先驱，早已在几百年前就已解答了我内心的困惑，原来的疑问只是自己无知而已！妻子在校对过程中，也不断感慨天主做工的奇妙与伟大。于是下定决心将此事进行到底！</p>
+                    <p>由于要查阅很多的资料，每翻译一天的材料，都要伏案近四个小时才能完成，而且只有业余时间可用。于是买了所有能买到的原著引用的书籍（中译版）和资料，买不到的就上网查阅，有的资料实在找不到，查字典又查不到，那些专有名词看似都认识，但不知所云，只好硬着头皮根据自己的理解和有限的知识去译，实在不行就向懂英文的神父求救，有时候一句话能琢磨一天。</p>
+                    <p>开弓没有回头箭。当进入第四周的时候，翻译工作面临很大的挑战。一是教宗若望保禄二世深奥的神学理论，让我如坠云雾。二是工作、服务及日常生活琐事接踵而至，时间冲突，无法静心。妻子很为我担心，团体的姊妹建议为此禁食祈祷，还特别邀请到圣母山朝圣的弟兄代祷。神奇的是，一天过后，所有问题尽数解决。</p>
+                    <p>妻子成了本书的第一位读者。翻译完每天的内容，她帮着校对初稿，之后还要按时发给全国各地的团体。感谢天主！终于提前翻译完了。</p>
+                    <p>恩宠！是恩宠！天主的恩宠！</p>
+                    <p>再回首，突然这种感受特别强烈，其实每一步都是天主奇妙的安排，都有圣神的引领，不但藉此工作除去了我心中的疑问，还让我了解到那么多教会的历史，学习了信仰的真理，给了我很大的鼓舞和信心，并告诉我一个真理，那就是：“将你的作为委托于上主，这样你的计划必会成功。”（箴16:3）我们所要做的，不过是服从与承行天主的旨意罢了！</p>
+                    <p>本书承蒙各方协助与支持，得以付梓，唯谬误错漏在所难免，敬请主内弟兄姊妹见谅，并提出宝贵意见。</p>
+                    <p>愿主祝福你！</p>
+                    <p style="text-align: right;">译者：Joseph CHEN<br>校对：Maria TAN</p>
+                    <p style="text-align: right;">2014年12月8日，圣母无染原罪瞻礼</p>
+                    <hr style="border:0; border-top: 1px dashed #d6cbbc; margin: 1.5rem 0;">
+                    <p>“通过圣母，走向基督”是教会古老的格言。在本书的后期编辑校对中，编者深深感受到圣母对天主的忠诚与热爱，对世人的呵护与怜悯，她真是我们的好母亲。同时，也感受到译者夫妇的辛苦劳作及对原文原意的忠诚，这确实是上主恩宠扶持的果实，更是慈母代祷的结晶。愿这书籍的出版有益人的得救，“通过圣母，走向基督”，更愿天主的教会得以“重建”（基督于San Damiano教堂启示圣方济各亚西西语）！</p>
+                    <p style="text-align: right;">达敏团契</p>
+                    <p style="text-align: right;">2017年7月3日，圣多默宗徒瞻礼</p>
+                </div>
+            </div>
+            <div style="text-align:center; margin-top:2rem; color:#9a8a7a; font-size:0.85rem; border-top:1px solid #e6ddd1; padding-top:1rem;">
+                33天迈向晨曦的荣耀 · 玛利亚奉献个人避静
+            </div>
+        </main>
+    </div>
+
+    <!-- 字号面板 -->
+    <div class="font-panel-overlay" id="fontOverlay" onclick="closeFontPanel()"></div>
+    <div class="font-panel" id="fontPanel">
+        <div class="drag-handle" id="dragHandle"></div>
+        <div class="panel-header">
+            <span class="panel-title">调整文字大小</span>
+            <button class="panel-reset" onclick="resetFontSize()">恢复默认</button>
+        </div>
+        <div class="slider-row">
+            <span class="slider-label-small">A</span>
+            <input type="range" class="font-slider" id="fontSlider" min="12" max="28" step="1" value="16" oninput="onSliderChange(this.value)">
+            <span class="slider-label-large">A</span>
+        </div>
+        <div class="font-value" id="fontValue">当前字号：16px</div>
+    </div>
+
+    <script>
+        /* ================= 字号面板 ================= */
+        const MIN_FONT = 12, MAX_FONT = 28, DEFAULT_FONT = 16;
+        const STORAGE_KEY = 'prayerFontSize_33days';
+        const fontPanel = document.getElementById('fontPanel');
+        const fontOverlay = document.getElementById('fontOverlay');
+        const fontSlider = document.getElementById('fontSlider');
+        const fontValue = document.getElementById('fontValue');
+        const pageContent = document.getElementById('pageContent');
+
+        function openFontPanel() {
+            if (!fontPanel || !fontOverlay) return;
+            fontPanel.classList.add('show');
+            fontOverlay.classList.add('show');
+        }
+        function closeFontPanel() {
+            if (!fontPanel || !fontOverlay) return;
+            fontPanel.classList.remove('show');
+            fontOverlay.classList.remove('show');
+        }
+        function applyFontSize(size) {
+            if (!pageContent) return;
+            pageContent.style.zoom = size / DEFAULT_FONT;
+        }
+        function onSliderChange(value) {
+            const size = parseInt(value, 10);
+            applyFontSize(size);
+            if (fontValue) fontValue.textContent = '当前字号：' + size + 'px';
+            try { localStorage.setItem(STORAGE_KEY, size); } catch (e) {}
+        }
+        function resetFontSize() {
+            if (fontSlider) fontSlider.value = DEFAULT_FONT;
+            onSliderChange(DEFAULT_FONT);
+        }
+        (function initFont() {
+            let saved = DEFAULT_FONT;
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const num = parseInt(stored, 10);
+                    if (!isNaN(num) && num >= MIN_FONT && num <= MAX_FONT) saved = num;
+                }
+            } catch (e) {}
+            if (fontSlider) fontSlider.value = saved;
+            applyFontSize(saved);
+            if (fontValue) fontValue.textContent = '当前字号：' + saved + 'px';
+        })();
+
+        (function setupDragClose() {
+            const handle = document.getElementById('dragHandle');
+            if (!handle || !fontPanel) return;
+            let startY = 0, currentY = 0, isDragging = false;
+            function onStart(e) {
+                isDragging = true;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                currentY = startY; fontPanel.style.transition = 'none';
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', onEnd);
+            }
+            function onMove(e) {
+                if (!isDragging) return;
+                currentY = e.touches ? e.touches[0].clientY : e.clientY;
+                const delta = currentY - startY;
+                if (delta > 0) fontPanel.style.transform = 'translateY(' + delta + 'px)';
+                if (e.cancelable) e.preventDefault();
+            }
+            function onEnd() {
+                if (!isDragging) return;
+                isDragging = false; fontPanel.style.transition = '';
+                const delta = currentY - startY;
+                if (delta > 80) closeFontPanel();
+                fontPanel.style.transform = '';
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('touchend', onEnd);
+            }
+            handle.addEventListener('mousedown', onStart);
+            handle.addEventListener('touchstart', onStart, { passive: false });
+        })();
+
+        /* ================= 移动端汉堡菜单 ================= */
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const links = document.querySelectorAll('.msg-link');
+
+        if (menuBtn && sidebar) {
+            menuBtn.addEventListener('click', () => sidebar.classList.toggle('active'));
+        }
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 900 && sidebar) sidebar.classList.remove('active');
+            });
+        });
+
+        /* ================= plusready ================= */
+        document.addEventListener('plusready', function() {
+            try {
+                if (window.plus && plus.key) {
+                    plus.key.addEventListener('backbutton', function() {
+                        window.location.href = 'index.html';
+                    }, false);
+                }
+            } catch (e) {
+                console.warn('plusready error:', e);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>朝拜耶稣圣心一小时</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "SimSun", "Songti SC", "Times New Roman", "Georgia", serif;
+            font-size: 16px; background-color: #faf8f5; color: #2a241e;
+            padding-top: 56px; padding-bottom: 40px; overflow-x: hidden;
+        }
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; height: 56px;
+            background-color: #ffffff; border-bottom: 1px solid #e6e0d8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 12px; z-index: 1000;
+        }
+        .back-btn, .font-btn {
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; border-radius: 50%;
+            transition: background-color 0.2s; color: #4a3729;
+            font-family: inherit; flex-shrink: 0;
+        }
+        .back-btn { font-size: 1rem; }
+        .font-btn { font-size: 1.15rem; font-weight: 700; font-family: Georgia, serif; }
+        .back-btn:hover, .font-btn:hover { background-color: #f5efe8; }
+        .back-btn:active, .font-btn:active { background-color: #e6ddd2; }
+        .top-title {
+            flex: 1; text-align: center; font-size: 1.05rem; font-weight: 600;
+            color: #2c241b; letter-spacing: 2px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            padding: 0 8px;
+        }
+        .page-wrapper { display: flex; justify-content: center; padding: 36px 28px 0; }
+        .container {
+            background-color: #ffffff; padding: 42px 48px;
+            border-radius: 6px; box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+            border: 1px solid #e8e0d6; max-width: 900px; width: 100%;
+            transform-origin: top center;
+        }
+        h1 {
+            font-size: 26px; font-weight: 700; text-align: center;
+            margin-bottom: 8px; letter-spacing: 3px; color: #3b2f24;
+            border-bottom: 2px solid #d9cfc2; padding-bottom: 16px;
+        }
+        .subtitle {
+            text-align: center; font-size: 1rem; color: #8a7a68;
+            margin-bottom: 28px; letter-spacing: 1px;
+        }
+        h2 {
+            font-size: 1.35rem; font-weight: 700; margin: 36px 0 16px;
+            color: #3b2f24; border-left: 5px solid #b7a48b; padding-left: 12px;
+        }
+        h3 {
+            font-size: 1.15rem; font-weight: 700; margin: 28px 0 12px;
+            color: #a52a2a; border-bottom: 1px dashed #d9cfc2; padding-bottom: 8px;
+        }
+        p { margin: 10px 0; text-indent: 2em; text-align: justify; }
+        .noindent { text-indent: 0 !important; }
+        .numbered { font-weight: 600; color: #a52a2a; margin-right: 4px; }
+        .prayer-block {
+            background-color: #fdfcfb; padding: 16px 22px;
+            border-radius: 8px; border: 1px solid #efe9e1; margin: 16px 0;
+        }
+        .prayer-block p { margin: 8px 0; text-indent: 2em; }
+        .jesus-speaks {
+            background-color: #f9f6f2; padding: 18px 24px;
+            border-radius: 8px; border-left: 5px solid #a52a2a;
+            margin: 18px 0; font-style: normal;
+        }
+        .jesus-speaks p { text-indent: 2em; margin: 8px 0; }
+        .soul-reply {
+            background-color: #fdfcfb; padding: 16px 22px;
+            border-radius: 8px; border-left: 5px solid #b7a48b;
+            margin: 18px 0;
+        }
+        .soul-reply p { text-indent: 2em; margin: 8px 0; }
+        .action-note {
+            display: inline-block; background-color: #fff6b0;
+            padding: 0.15rem 0.5rem; border-radius: 3px;
+            font-weight: 600; color: #a52a2a; margin-right: 4px;
+        }
+        .promise-list {
+            list-style: none; padding-left: 0; margin: 20px 0;
+            counter-reset: promise-counter;
+        }
+        .promise-list li {
+            counter-increment: promise-counter;
+            position: relative; padding: 10px 16px 10px 50px;
+            margin-bottom: 8px; background-color: #fdfcfb;
+            border-radius: 6px; border: 1px solid #efe9e1;
+            text-indent: 0; line-height: 1.7;
+        }
+        .promise-list li::before {
+            content: counter(promise-counter);
+            position: absolute; left: 14px; top: 50%;
+            transform: translateY(-50%);
+            width: 26px; height: 26px;
+            background-color: #a52a2a; color: #ffffff;
+            border-radius: 50%; text-align: center;
+            line-height: 26px; font-weight: 700; font-size: 0.9rem;
+        }
+        .prayer-title {
+            font-size: 1.15rem; font-weight: 700; color: #a52a2a;
+            margin: 32px 0 12px; text-align: center;
+            letter-spacing: 2px; border-bottom: 1px dashed #d9cfc2;
+            padding-bottom: 8px;
+        }
+        .litany {
+            background-color: #fdfcfb; padding: 16px 22px;
+            border-radius: 8px; border: 1px solid #efe9e1; margin: 16px 0;
+        }
+        .litany p { text-indent: 0; margin: 6px 0; }
+        .litany .leader { color: #a52a2a; font-weight: 600; }
+        .litany .respond { padding-left: 2em; color: #2f2a24; }
+        .amen {
+            text-align: center; font-weight: 600; color: #a52a2a;
+            margin: 24px 0; font-size: 1.1rem;
+            text-indent: 0; letter-spacing: 2px;
+        }
+        .note {
+            margin-top: 28px; padding: 14px 20px;
+            background-color: #f5efe8; border-left: 5px solid #b7a48b;
+            border-radius: 0 6px 6px 0; color: #4a3729;
+            font-size: 0.95rem; text-indent: 0;
+        }
+        .image-placeholder {
+            text-align: center; margin: 20px 0; padding: 30px 20px;
+            background-color: #f9f6f2; border: 2px dashed #d9cfc2;
+            border-radius: 8px; color: #8a7a68;
+            font-style: italic; font-size: 0.95rem; text-indent: 0;
+        }
+
+        /* 字号面板 */
+        .font-panel-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.35);
+            z-index: 1998; opacity: 0; visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .font-panel-overlay.show { opacity: 1; visibility: visible; }
+        .font-panel {
+            position: fixed; left: 0; right: 0; bottom: 0;
+            background-color: #ffffff; border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+            z-index: 1999; padding: 8px 24px 32px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+            max-width: 900px; margin: 0 auto;
+        }
+        .font-panel.show { transform: translateY(0); }
+        .drag-handle {
+            width: 40px; height: 4px; background-color: #d9cfc2;
+            border-radius: 2px; margin: 0 auto 18px;
+            cursor: grab; touch-action: none;
+        }
+        .drag-handle:active { cursor: grabbing; }
+        .panel-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .panel-title { font-size: 1rem; font-weight: 600; color: #2c241b; letter-spacing: 1px; }
+        .panel-reset {
+            background: none; border: 1px solid #d9cfc2; color: #4a3729;
+            font-size: 0.85rem; padding: 5px 14px; border-radius: 20px;
+            cursor: pointer; font-family: inherit; transition: background-color 0.2s;
+        }
+        .panel-reset:hover { background-color: #f5efe8; }
+        .slider-row { display: flex; align-items: center; gap: 14px; }
+        .slider-label-small {
+            font-size: 0.85rem; color: #8a7a68; font-weight: 600;
+            flex-shrink: 0; width: 20px; text-align: center;
+        }
+        .slider-label-large {
+            font-size: 1.35rem; color: #8a7a68; font-weight: 700;
+            flex-shrink: 0; width: 24px; text-align: center;
+            font-family: Georgia, serif;
+        }
+        .font-slider {
+            -webkit-appearance: none; appearance: none; flex: 1; height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px; outline: none; cursor: pointer;
+        }
+        .font-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: border-color 0.2s, transform 0.1s;
+        }
+        .font-slider::-webkit-slider-thumb:hover { border-color: #a52a2a; }
+        .font-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+        .font-slider::-moz-range-thumb {
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .font-slider::-moz-range-track {
+            height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px;
+        }
+        .font-value {
+            text-align: center; margin-top: 14px;
+            font-size: 0.85rem; color: #8a7a68; letter-spacing: 1px;
+        }
+
+        @media (max-width: 700px) {
+            .page-wrapper { padding: 24px 14px 0; }
+            .container { padding: 24px 18px; }
+            h1 { font-size: 22px; letter-spacing: 2px; }
+            h2 { font-size: 1.2rem; }
+            h3 { font-size: 1.05rem; }
+            .prayer-block, .jesus-speaks, .soul-reply, .litany { padding: 12px 14px; }
+            .promise-list li { padding: 10px 12px 10px 44px; }
+            .promise-list li::before {
+                left: 10px; width: 24px; height: 24px;
+                line-height: 24px; font-size: 0.85rem;
+            }
+            .top-title { font-size: 0.98rem; letter-spacing: 1px; }
+        }
+        @media print {
+            body { padding-top: 0; }
+            .top-bar, .font-panel-overlay, .font-panel { display: none !important; }
+            .page-wrapper { padding: 0; }
+            .container { box-shadow: none; border: none; }
+            .image-placeholder { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <button class="back-btn" onclick="goBack()" title="返回">返回</button>
+        <div class="top-title">朝拜耶稣圣心一小时</div>
+        <button class="font-btn" onclick="openFontPanel()" title="调整字号">Aa</button>
+    </div>
+
+    <div class="page-wrapper">
+        <div class="container" id="pageContent">
+
+            <h1>朝拜耶稣圣心一小时</h1>
+            <p class="subtitle">★ 敬礼耶稣圣心 · 赔补与安慰 ★</p>
+
+            <div class="image-placeholder">
+               <img src="Sacred Heart Image.png" alt="耶稣圣心" style="max-width:100%; border-radius:8px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+            </div>
+
+            <p>亲爱的参加敬拜耶稣圣心的兄弟姐妹们：</p>
+
+            <p><span class="numbered">（1）</span><span class="action-note">（跪）</span>我们首先诚恳地祈求天主圣神，洁净我们的心灵，驱除一切无益的、邪恶的和杂乱的思想，求他光照我们的理智，灼热我们的情感，使我们专一地、虔敬地和清醒地参与今天朝拜圣心的敬礼。<strong>（恭念△伏求圣神降临诵△）</strong></p>
+
+            <p><span class="numbered">（2）</span>伏求圣神降临，从天射光，充满我的心，你是贫乏人的恩主，孤独人的慈父，灵性的光辉，忧患人的安乐，痛苦人的安慰，劳苦人的安息，涕泣人的欢乐，我心灵的嘉宾。</p>
+
+            <p><span class="numbered">（3）</span>伏求圣神降临，求你清洁我的心污，灌溉我的心，医治我的心病，和顺我的心硬，温暖我的心寒，指引我的道路。</p>
+
+            <p><span class="numbered">（4）</span>请大家祈祷：天主，你以圣神充满信徒的心，赐给我们以圣神的光辉，增长智慧，常享安乐，因我们的主基督。阿们！</p>
+
+            <p><span class="numbered">（5）</span><span class="action-note">（立）</span>现在我们来举行一次午间朝拜耶稣圣心的敬礼。这敬礼很符合耶稣圣心的心意，也是吾主耶稣亲自提倡的，通过圣女玛加利大，现在已推广到整个世界。我们回忆耶稣受难这幕悲痛历史的序幕，是在最后晚餐和山园祈祷中揭开的。耶稣在山园祈祷时心痛欲碎，肝肠寸断，满身流汗流血，圣心忧闷至死。迫切期望有人去安慰他，但是没有人去安慰他，连他最亲信的三位宗徒伯多禄、雅格伯和若望也在旁边呼呼大睡，没有为耶稣分担忧愁。耶稣曾借先知耶肋米亚的口说："我寻找安慰我的人，可是一个也找不到。"</p>
+
+            <p><span class="numbered">（6）</span><span class="action-note">（跪）</span>我们现在跪在圣心前，向耶稣说："吾主耶稣，你看！我来了。我朝拜你，我跪在你身边，安慰你。你因爱惜人类，承担人类的一切罪恶，甘心忍受内心的极大痛苦，通体出流血汗，叩拜天主圣父，乞救人罪。我表示以爱还爱，愿分担你的痛苦，弥补你在山园祈祷时，被人孤立遗弃的罪过。"</p>
+
+            <p><span class="numbered">（7）</span><span class="action-note">（立）</span>十八世纪的圣心忠婢——圣女玛加利大，有一天早晨，正在祈祷的时候，听到一种悲伤的声音，凄惨极了。圣女仔细一听，便听出是耶稣的声音。耶稣向圣女说：</p>
+
+            <div class="jesus-speaks">
+                <p><span class="numbered">（8）</span>"亲爱的女儿！你看我受世人的侮辱，已经不是一天、两天了，现在真心爱我的人，真是稀少得很。叫我圣心难受至极。现在我从天上看见，你对我很知恩，我很愿意居住在你心中，好得到你的安慰啊！"圣女喜喜欢欢地答应了吾主耶稣的要求，领了圣体以后，觉得耶稣已降临到自己心中，有说不出的愉快。</p>
+            </div>
+
+            <p><span class="numbered">（9）</span>我们应当向圣女学习，热烈欢迎耶稣降临到我们心中。</p>
+
+            <p><span class="numbered">（10）</span><span class="action-note">（跪：进行神领圣体）</span>求耶稣临到我们心中。作我们永生的神粮，使我们的心同耶稣的心合成一个。</p>
+
+            <p><span class="numbered">（11）</span>众念：耶稣，我信你；耶稣，我望你；耶稣，我爱你。耶稣仁慈的天主，求你快来我心中，与我同住在一起！</p>
+
+            <p><span class="numbered">（12）</span>今天朝拜圣心的兄弟姐妹们！现在耶稣在你四周徘徊。希望你收留他在你心中居住，他正如一个饥寒交迫，衣不蔽体，眼泪汪汪，左肋受了重伤的人。人们不但不可怜他，而且轻视他，欺侮他。他正处在无家可归的时候，远远地看见你心诚意切，特地来投奔你，向你要求几件事情。什么事情呢？就是世人犯罪得罪他、不爱他，你应当加倍地爱他，为赔补世人的负心之罪。本来照着天主的公义，很可以降罚这些人们，如同从前洪水灭世，火烧淫城等等……以灾害来处罚这些亵渎圣事的恶人。但吾主圣心始终慈悲为怀，可怜世人，不忍这样对付世人。虽然他们不悔改，只要你肯代行补赎，吾主便宽恕了他们。亲爱的兄弟姐妹们！今天我们朝拜圣心是多么的荣幸！因你的牺牲、祈祷和补赎，世人能重新感受加尔瓦略山上，和弥撒大祭中的神恩。因着这一小时的牺牲，使那些快要遭受永罚的人们都会获得救恩。你为爱耶稣、救人灵魂，就如同把这些灵魂当作花冠献给耶稣一样，这是多么的光荣！换句话说：耶稣的光荣也就是你的光荣，你的灵魂可以与圣女玛加利大结为神亲姐妹。</p>
+
+            <p>接下去是耶稣圣心给我们灵魂的对话：</p>
+
+            <p><span class="numbered">（13）</span><span class="action-note">（立）</span>耶稣圣心对我们灵魂说：</p>
+            <div class="jesus-speaks">
+                <p>"我亲爱的子女，你能牺牲一小时的睡眠，为爱我行补赎、祈祷，我很快乐。本来我心中受了不少痛苦，现在你来，使我轻松了许多。至于你将来的赏报，那是要看你现在的热心程度来决定。这里我告诉你吧！我是天主，我是救世主，是玛利亚的独生子耶稣，我现在告诉你的，你仔细听吧！你今天来的目的，是代替那些凌辱我的人作补赎。他们忘恩负义，罪大恶极，他们明知犯了大罪，明知道我是爱他们的，可是他们偏偏离开我。为此，我希望你为他们做补赎吧！同时，你要先为那些无依无靠的罪人祈求，我一定听允你的祈祷。我还要很详细地告诉你——我所受的苦难！"</p>
+            </div>
+
+            <p><span class="numbered">（14）</span><span class="action-note">（跪）</span>我的灵魂向耶稣圣心答说：</p>
+            <div class="soul-reply">
+                <p>"吁！耶稣圣心，仁慈的国王，我是无功无德的人，怎敢受此宏恩，顶此名衔？我怎么配得起来安慰你，解你的苦闷，减轻你的伤痛呢？"</p>
+            </div>
+
+            <p><span class="numbered">（15）</span>可是为了爱你，我虽然不配受此极大的委托，我也要尽我的能力而行，为感谢你赏赐我这么多的恩惠。现在我恳求你，因你流血的功劳，以及圣母为了你的痛苦而流的眼泪，请俯允我的祈祷，使我能用实际的行动，拯救那些至今还在亵渎你的人们，补赎他们反对你圣心的罪过。</p>
+
+            <p><span class="numbered">（16）</span>吁！耶稣圣心，从前你在山园中，受恶徒茹达斯的负卖。现在我恳求你，可怜现在世界上这些新的茹达斯吧！他们有些是为了一点虚荣，就不承认你；他们又有些是为了贪图世福，狠心地离开你；他们不知道除了你的仁慈和圣母的爱情以外，人类就没有了救星。主啊！求你赏赐神恩给他们，使之及早觉悟回头吧！</p>
+
+            <p><span class="numbered">（17）</span>吁！耶稣圣心，从前，你在黑落德恶王面前所受的羞辱，比受死还厉害。可是现在一些自认为聪明的人，著书立说，污辱你的圣名，毁谤你的神圣，比起黑落德更凶恶，他们已濒临于永罚的边缘还不知道。因此我恳求你，因你无限的仁慈和圣母的爱情变化他们的铁石心肠，使他们及早回头归正吧！</p>
+
+            <p><span class="numbered">（18）</span>吁！耶稣圣心，以前你在加尔瓦略山上被钉死于十字架上，那时好人都避开你，恶人乘机凌辱你。当时你是怎样的伤痛啊！现在有许多大罪人，为了一点点世界上的名誉、快乐，狠心地丢去了道德仁义，立下许多恶表，危害将来的人们，把你流尽圣血的功劳抛弃无余。这些人执迷不悟，可怜极了，为此我今天特地求你，为了你那特殊的慈悲和圣母玛利亚的仁慈拯救他们，使他们早日觉悟回头归正吧！</p>
+
+            <p><span class="numbered">（19）</span>吁！耶稣，仁慈的天主，我今求你，因了你的圣体圣事，可怜那些不认识你的人们，以及那些略微认识你的人们和那些终于狠心丢弃你的罪人，使他们都能得到你的光照，早日回头归正吧！</p>
+
+            <p><span class="numbered">（20）</span>吁！耶稣，仁慈的天主，求你可怜那些信仰誓反教国家的领袖们，他们因为不明真理，错误地一心想毁灭我们的圣而公教会，污辱你的圣体，求你可怜他们吧！使他们早日回头归正，共归一栈，同属一牧，成为一个统一的教会。</p>
+
+            <p><span class="numbered">（21）</span>吁！耶稣，仁慈的天主，求你可怜那些自私自利、野心勃勃的人们，他们对于你的苦架，你的规诫，你的圣事，都居心要拆毁取消。可怜得很！他们只是徒劳无益，将来还是不免永罚。主啊，求你变化他们的硬心，使他们早日认识错误，回头归正吧！</p>
+
+            <p><span class="numbered">（22）</span>吁！耶稣，仁慈的天主，从前你在加尔瓦略山上，曾求过圣父可怜恶人们，因为他们不知道你是救世主。现在我再恳求你，因着你当时的慈悲，再次可怜现在世界上这些因不认识你、而盲目反对你的罪人，恩赐他们早日真心悔过，回头归正，来认识你、朝拜你。</p>
+
+            <p><span class="numbered">（23）</span>吁！耶稣，仁慈的天主，求你因着你的大爱情，降福我的家庭，我的亲友和你命我爱的人。我知道你很明白他们的处境，现在我把这卑微的祈祷全奉献给你，为补赎我的罪过，并为我所爱的人祈求。</p>
+
+            <p><span class="numbered">（24）</span>吁！耶稣圣心，我知道你生养我们，也对我们非常慈爱，求你原谅我们的软弱！</p>
+
+            <p><span class="numbered">（25）</span>亲爱的耶稣圣心，现在我真心诚意将我全家的人，并我的亲友恩人都奉献给你，求你光照他们降福他们！今天我荣幸地来朝拜你，也希望别人同样来朝拜你！</p>
+
+            <p><span class="numbered">（26）</span><span class="action-note">（这时，朝拜圣心的人，应将自己的家庭，奉献给耶稣圣心，并为那些尚未信主奉献的家人和亲友，求赐他们获得领洗的恩惠，或为家中冷淡的人祈求，使全家的人都虔心敬主……）</span>各人家中各有不同的情况。有的家庭中，不是同一信仰，妻子为了信主，受尽丈夫的限制和阻挠；有的家庭中，不信主的婆婆，百般虐待信主的媳妇，事事找她的麻烦，处处寻她的不是，还说：到我家来就该跟我信；有的家庭中，虽然全家都是领洗教友，但只有父母过宗教生活，子女却与外教人一样，终年不进堂，不告解、不领圣体，也不听父母的善意劝告；有的家庭中，上人都是勤俭节约的劳动人民，而所出的子孙，却游手好闲，不务正业，自己不会赚钱，倒一味挥霍上人的汗血，吃喝总希望高人一等，衣着定要出人头地，使上人沉入痛苦的深渊中；也有个别的家庭中，做父母长辈的没有尽到自己的责任，反而在子女面前立下坏表样，引起下辈的反感。今天我们朝拜耶稣圣心，我们可向我主倾吐自己的心曲，求他怜悯我们的家庭，免除家中这样那样的艰难困苦。</p>
+
+            <p><span class="numbered">（27）</span>热切地念五遍：<strong>△天主经△、△圣母经△、△圣三光荣诵△</strong>为家中人做补赎，求圣心降福全家的人，使他们能得到圣心的十二特恩。</p>
+
+            <h3>天主经</h3>
+            <div class="litany">
+                <p><span class="leader">（领）</span>我们的天父，愿你的名受显扬，愿你的国来临，愿你的旨意奉行在人间，如同在天上。</p>
+                <p><span class="respond">（答）</span>求你今天赏给我们日用的食粮，求你宽恕我们的罪过，如同我们宽恕别人一样，不要让我们陷于诱惑，但救我们免于凶恶，阿们。</p>
+            </div>
+
+            <h3>圣母经</h3>
+            <div class="litany">
+                <p><span class="leader">（领）</span>万福玛利亚，你充满圣宠，主与你同在，你在妇女中受赞颂，你的亲生子耶稣同受赞颂。</p>
+                <p><span class="respond">（答）</span>天主圣母玛利亚，求你现在和我们临终时，为我们罪人祈求天主。阿们。</p>
+            </div>
+
+            <h3>圣三光荣经</h3>
+            <div class="litany">
+                <p><span class="leader">（领）</span>愿光荣归于父，及子，及圣神。</p>
+                <p><span class="respond">（答）</span>起初如何，今日亦然，直到永远，阿们。</p>
+            </div>
+
+            <p><span class="numbered">（28）</span><span class="action-note">（立）</span>耶稣圣心紧接着对我们的灵魂说：</p>
+            <div class="jesus-speaks">
+                <p>"可爱的灵魂！你能把我可爱的人，在你祈祷的时候奉献给我，这是我最快乐的，你要知道在你的家庭里，虽然他们当中，有时有人对不起我、得罪我。我不能因着一、二人的罪而丢掉你的全家，我仍然照顾着他们，保护他们。今天你来朝拜我，使我非常高兴。为此，我要多多降福你的家庭，将有一天，你自然会看见，每次朝拜所得的恩赐，我要免去你家中一切患难。你在朝拜时，也不可忘记，把那些不爱我的家庭奉献给我，因为一切家庭都是我圣心的居住地，好像圣母圣心是我的圣祭台一样。唉，可怜！世人不了解家庭的高尚，不明白家庭的意义，因为他们受了异端邪说的毒害，所以他们对婚配圣事，不知犯了多少亵渎的罪。他们虽然也有世俗的婚姻礼节，不过这种礼节只是一种人为的形式而已，实际是毫无意义的。更有一些人，他们认为男青年讲德行，讲洁德是落后，女青年讲品行、讲端庄是不时髦。因此社会道德秩序搞得一团糟糕，以致不可收拾，越来越堕落于罪恶之中。要是没有爱我的人求我，没有他们作补赎、行祈祷，我真想严厉地处罚他们……所以你们应该多多呼求我的母亲玛利亚，她会时时刻刻以我苦难的功绩，使我平息义怒。因为家庭中的模范人物，谁能比得上在纳匝肋的圣母呢？"</p>
+            </div>
+
+            <p><span class="action-note">（跪）</span>我们的灵魂转向圣母圣心呼求说：</p>
+            <div class="soul-reply">
+                <p><span class="numbered">（29）</span>"吁！圣母玛利亚，你是沧海的明星！现在有很多的家庭失去了道德。求你可怜他们，指引他们，使他们能遵守耶稣的教训努力效法你。求你显露你慈母的心，保护和拯救那些快要到了灭亡边缘的家庭，因为家庭的基础必须建立在公教道德上，才能巩固。可是做了主妇的失去了对子女的教导，使家庭渐渐堕落，甚至那些快要负担家庭责任的男青年、女青年，对于道德——尤其是洁德的修养一点也没有了，这样的家庭怎么不堕落呢？不但如此，连那十一、二岁的孩子，也因现在社会上的恶劣风气与家庭中的坏榜样，使他们在幼年时，就已经失去了纯洁的天真，唉！可怜！可怜！"</p>
+            </div>
+
+            <p><span class="numbered">（30）</span>吁！痛苦之母，现在世界上这样危险，除了你和你的圣子以外，谁能去拯救它呢？因此，我恳求你，因你的苦难所立的功劳，快快来拯救这世界吧！慈母啊！求你保佑我的家庭，都能遵守公教道德、正轨前进吧！求你多多分赐圣宠给世人，使他们能尽力追随你无玷贞洁的芳表吧！圣母玛利亚求你看在圣子的面上，助佑所有的家庭吧！</p>
+
+            <p><span class="numbered">（31）</span>吁！吾主耶稣，求你因着圣母的功劳，拯救可怜的家庭吧！</p>
+
+            <p><strong>（恭念△奉献家庭于基督君王诵△一遍，可轮流念。）</strong></p>
+
+            <div class="prayer-block">
+                <p><span class="numbered">（32）</span>主，耶稣基督！我们团聚在你台前，求你做我们家庭的君王。从今以后，我们愿意依照你的旨意去处世待人。求你使你山中圣训的真福八端，像欣欣向荣的花朵，盛开在我们的家庭中；你责斥的世俗精神，远离我们；并使我们的生活，藉着活泼的信德，热切的爱德，而更加充实。</p>
+                <p><span class="numbered">（33）</span>主，耶稣基督！求你临于我们的团体中，降福我们的工作，驱除我们的烦恼，使我们在喜乐中事奉你，在忧患中蒙你抚慰。如果我们中有人陷于罪恶，对你不起的，求你恩赐他们念及你对罪人的慈爱，快速回头改过，重新做人。</p>
+                <p><span class="numbered">（34）</span>主，耶稣基督！我们把整个家庭奉献给你，求你保佑，不论在家的，在外做客的，不拘是生者、死者，都蒙你的慈爱。全家上下，对你忠贞不渝，将来有一天，在天欢聚，偕同所有圣人歌颂你的荣耀，至千万世无穷。阿们！</p>
+            </div>
+
+            <p><span class="numbered">（35）</span>耶稣圣心又对我们的灵魂吩咐说：</p>
+            <div class="jesus-speaks">
+                <p>"可爱的灵魂，我要告诉你，世俗人所不知道的事，你仔细听吧！现在你先热心地念圣母经一遍……求你的母亲帮助你好好接受我的圣训吧！"</p>
+            </div>
+
+            <p><span class="numbered">（36）</span>万福玛利亚，你充满圣宠，主与你同在，你在妇女中受赞颂，你的亲子耶稣同受赞颂。天主圣母玛利亚，求您现在和我们临终时，为我们罪人祈求天主。阿们。</p>
+
+            <p><span class="numbered">（37）</span><span class="action-note">（立）</span>可爱的灵魂，我告诉你吧！你尊敬我的现世代表——教宗吗？你是否知道，除了圣母以外，惟有教宗是我最爱的人，因为他所讲的道理，都是我启示的，他是我的心腹，是我任命的国王，我常常居住在他的心中，他是我教会的首领。以前我在最后晚餐中，我曾将我的教会托给我的母亲，以后我已转给伯铎及继他位的历代教宗，因此教宗具有我的精神，虽然我只隐藏在圣体内，可是教宗所说的道理，也就和我讲的一样。但是想起来可怜又可恼！有许多坏人反对他。他们不知道反对他就是反对我。还有些人胡说乱闹攻击教宗，伤我的圣心。我就不赏赐给他们圣宠，他们就没有力量自救。最后的结局还不是永远的丧亡吗？有好些人明知教宗是我的代表，偏偏不服从他，这就是明知天堂有门，他却不愿意进去一样。看！还有些公教中的男女青年，也跟着这些人跑，教宗的命令，他们装聋作哑不听。更有些男青年自以为自己了不起，犯了罪过却不悔改。再看！有些有信德的教友也常有私心杂念，合自己私意的就去做，不合私意的就不去做，不去克服。唉！对于这种情况，假如你晓得我的心是多么痛苦，我看你自己也必然会感觉到不知有多伤心呢！假如人们对教宗真有孝爱的心情，如同敬爱自己的父母一样，那么我心中将会是多么快乐啊！</p>
+
+            <p><span class="numbered">（38）</span><span class="action-note">（跪）</span>为了能遵从教宗的领导，我们的灵魂对耶稣圣心、圣母玛利亚及圣女小德肋撒求道：</p>
+
+            <p><span class="numbered">（39）</span>吁！耶稣圣心，我感谢你对我的训导。我从今以后要遵照你的命令，敬爱教宗。回忆我从前反对过教宗，伤你圣心。这种种过错，现在我心中万分难过，求你可怜我、宽恕我吧！从今以后，我要尽力遵守教宗的命令。至于伤你圣心的罪，今后我将尽力赔补。</p>
+
+            <p><span class="numbered">（40）</span>圣母玛利亚，圣教之后，现在我恳求你，因你仁慈的圣心，接受我的奉献吧！我把我灵魂上所受的困苦奉献给你，为补赎世界上，一切对教宗的命令不听从和反对他的罪，再求你光照他们，可怜他们吧！</p>
+
+            <p><span class="numbered">（41）</span>吁！耶稣圣心，求你赏赐我们的教宗作为你活的肖像，比你以前在苦路上赏给圣妇物洛尼加的圣容更鲜明。现在我坚决服从教宗。勇敢地跟随那些甘愿背负十字架致命的圣人、精修圣人以及你的宗徒们走，永远歌颂你的圣名吧。</p>
+
+            <p><span class="numbered">（42）</span>圣女小德肋撒！你曾将你的生命全献给圣教会，因为你特别爱戴教宗，又曾获得宗座特别隆福。我现在奉献卑微的祈祷，求你引导广羊归栈，并因你的祈祷，符合你在世的意愿，从天上降下玫瑰花朵给教宗吧！</p>
+
+            <p><span class="numbered">（43）</span><strong>（恭念△母后万福△一遍，求圣母转祈天主护佑我们的教宗，使他身体健康，工作顺利，领导天下万民走向正义和真理的太阳——耶稣基督。我们并许下，今后要好好地遵听教宗的命令，因为他的心就是基督的心。）</strong></p>
+
+            <div class="prayer-block">
+                <p><span class="numbered">（44）</span>母后万福！仁慈的母亲，我们的生命，我们的甘饴，我们的希望。厄娃子孙，在此尘世，向您哀呼，在这涕泣之谷，向您叹息哭求。我们的主保，求您回顾，怜悯我们。一旦流亡期满，使我们得见您的圣子，万民称颂的耶稣。童贞玛利亚，您是宽仁的、慈悲的、甘饴的。天主圣母，请为我们祈求，使我们堪当承受基督的恩许。</p>
+            </div>
+
+            <p class="noindent"><em>（下面应热心默想，设身处地，犹如亲见耶稣哭泣一样。）</em></p>
+
+            <p><span class="numbered">（45）</span>耶稣圣心开始对我们的灵魂说：</p>
+            <div class="jesus-speaks">
+                <p>"可爱的灵魂，你看世俗的人待我，比从前比辣多等恶人还厉害。无怪我再不愿为他们祈求圣父，实在我心中很可恶他们。假如你亲见我所爱的人也跟着世俗而伤我圣心，你必会流同情的泪。所以他们——也就是我所爱的人也凌辱我，实在比恶人更凶暴，因此你应当口亲我的五伤，代他们作补赎并念以下的经文。"</p>
+            </div>
+
+            <p><span class="numbered">（46）</span>众念：</p>
+            <div class="prayer-block">
+                <p>吁！耶稣圣心，求你可怜我吧！我现在为天下辜恩负义的人，恳求你因我这补赎赏赐他们谨守你的规诫。希望你的天国早日来临！</p>
+            </div>
+
+            <p><span class="numbered">（47）</span>吁！耶稣圣心，我要为可爱的祖国祈祷。圣心啊！你最了解我们伟大的祖国，他拥有一多亿人口，可是认识你的却是很少很少。我看到这么多的兄弟姐妹，在你的羊栈外面失散，不能得救。我们清楚看见，实在感到非常痛心。耶稣圣心！迷途亡羊急呼需要归栈。你曾因失了一只羊，宁愿丢下九十九只羊，去寻找他。我们祖国这么多亡羊，你一定非常痛惜，我要以我的祈祷，尽我微薄的心愿，为传教工作而努力，帮助你找回亡羊。</p>
+
+            <p><span class="numbered">（48）</span>接着耶稣圣心对我们灵魂说：</p>
+            <div class="jesus-speaks">
+                <p>"可爱的灵魂，你不见那些世俗人一天到晚，都沉醉在欺骗诡诈的生活里吗？你看他们情愿拿一刻钟的肉情快乐，去换取永远的地狱苦刑！你快为他们痛悔补赎吧！你口亲我的五伤并念以下经文。"</p>
+            </div>
+
+            <p><span class="numbered">（49）</span>众念：吁！耶稣圣心，求你可怜我吧！我现在为天下辜恩负义的人，恳求你因我这补赎赏赐他们谨守你的规诫。希望你的天国早日来临！</p>
+
+            <p><span class="numbered">（50）</span>可爱的灵魂，你看有多少挂着空名，而纯粹世俗化的教友，不但不领圣事，反而纵欲无度，丧尽廉耻，我为这些人，口亲你的五伤并念以下经文。</p>
+
+            <p><span class="numbered">（51）</span>众念：吁！耶稣圣心，求你可怜我吧！我现在为天下辜恩负义的人，恳求你因我这补赎赏赐他们谨守你的规诫。希望你的天国早日来临！</p>
+
+            <p><span class="numbered">（52）</span>"可爱的灵魂，从前，罗马士兵硬将酸醋苦胆给我解渴，已经使我很苦了，想不到世界上这些形形色色的淫乐场所更刺伤我的心。这些人以为现代的男女青年非进入这些场所不可。更可恼的，有些教友也和他们同流合污，伤我圣心。这些专供肉情快乐的场所，都是引人堕落于永罚的地方，都是伤风败俗的东西，为此，那些进入这些场所的人们，就如同加尔瓦略山上的会子手一样，使我全身创伤重新分裂，鲜血淋漓。唉！你应和我一齐痛哭他们的愚蠢走上犯罪的道路！你口亲我的五伤并念以下经文。"</p>
+
+            <p><span class="numbered">（53）</span>众念：吁！耶稣圣心，求你可怜我吧！我现在为天下辜恩负义的人，恳求你因我这补赎赏赐他们谨守你的规诫。希望你的天国早日来临！</p>
+
+            <p><span class="numbered">（54）</span>可爱的灵魂，你看圣母为叫妇女们效法她曾立了各种德行的表样，可是现在有很多很多的妇女藐视圣母的善表，样样讲时髦，处处谈摩登，尤其是穿了不三不四的奇装异服在街上无廉耻的终日游逛。非但如此，有许多人还这样穿着进圣堂里来，大犯表样，这使我圣心受到无可形容的痛苦。有些人只知道我从前受苦，却不知道现在这些无耻的妇女，在各种娱乐场所里和海滨、街道、公园、剧场、舞厅等地方引人犯罪，更使我圣心忧伤万倍。唉！可亲爱的小灵魂，你为他们做补赎吧！哭他们的愚蠢吧！唉！我的痛苦可向谁诉说呢？你口亲我的五伤并念以下经文。</p>
+
+            <p><span class="numbered">（55）</span>众念：吁！耶稣圣心，求你可怜我吧！我现在为天下辜恩负义的人，恳求你因我这补赎赏赐他们谨守你的规诫。希望你的天国早日来临！</p>
+
+            <p><span class="numbered">（56）</span>可爱的灵魂，你看现今社会上的种种罪恶，真使我圣心难受至极。许多人只知贪图肉情的快乐，醉生梦死，不顾灵魂的永远得救。你应当为这些人做补赎，安慰我的圣心。</p>
+
+            <p><span class="numbered">（57）</span>现在我们再手举圣架对耶稣说：</p>
+            <div class="prayer-block">
+                <p>吁！耶稣我的天主，我的救主，我的君王，我的万有，我现在为补赎天下那些妇女无廉耻的罪，口亲你的圣伤说："因你是耶稣基督，是我们的天主，我愿终身爱你。虽有人因我爱祢而讽刺我迷信落后，我也决不介意。"我现在为那些不停地犯罪的人作补赎，口亲你被钉的手足说："因你是耶稣基督，是我们的天主，我愿终身爱你。虽有人因我爱祢而讽刺讥笑我迷信落后，我也决不介意。"我现在恳切地口亲你的十字圣架，为纪念你从前被钉时看见那些不知羞耻的人，明明抛弃你；妇女们不守法规，做丈夫的怂恿她们作恶等等……我深知将来审判时，你将用这十字架为前导而下来判决，他们如果至死不悔改，将来一定会被你弃绝，要受到你的永罚。因为他们既不听你，又不爱你，将来所受的刑罚肯定不少。</p>
+                <p>吁！耶稣我的救主求你可怜他们吧！因你是耶稣基督，是我们的天主，我愿终身爱你。虽有人因我爱祢而讽刺讥笑我迷信落后，我也决不介意。</p>
+            </div>
+
+            <p><span class="numbered">（58）</span>众念：吁！耶稣圣心，求你可怜我吧！我现在为天下辜恩负义的人，恳求你因我这补赎赏赐他们谨守你的规诫。希望你的天国早日来临！</p>
+
+            <p><span class="numbered">（59）</span>可爱的灵魂，你看那些无廉耻的妇女，穿着妖冶的服装，招摇过市，引人犯罪，伤我圣心。你应当为她们做补赎，念以下经文。</p>
+
+            <p><span class="numbered">（60）</span>耶稣圣心最后嘱咐我们灵魂说：</p>
+            <div class="jesus-speaks">
+                <p>"可爱的灵魂，你从今以后当立志拿定一个'爱'字，应全心、全灵、全意、全力地爱我；总之，你应以全付精神来爱我。我渴望着人的爱情，可是人们却不理睬我。他们以为高尚的爱情就只是'爱国'、'爱亲友'、'爱恩人'，至于'爱造物主'，却像没有那回事一样。我现在已经尽了我的力量爱人，可是世人却一点也不懂。有些人还否认我，因此使我渴望人们的爱情越发难受。现在有许多教友，使我的苦难重演，他们做无耻的事，就如当初恶人鞭打我一样；他们贪虚荣，争高位，就如强迫我背十字架！在这困难重重的时刻，我不断地回顾四方，希望找寻着几个来安慰我的人，可是始终找不到。唉！真苦死我啊！又有些人，虽不大得罪我，可是他们心冷如冰，几乎想不起爱我。好吧！你现在口亲我受伤的肋旁，恳切地念五次下面的经文。"</p>
+            </div>
+
+            <div class="prayer-block">
+                <p><strong>（一、二麦交替念）：</strong>吁！耶稣，别人不爱你，我却全心爱你。希望你的心和我的心连成一个吧。</p>
+            </div>
+
+            <p><span class="numbered">（61）</span>可爱的灵魂，谢谢你。你能全心地爱我，我很快乐！现在我已不觉得渴了，希望你常常作这朝拜，以表示爱我的心！从前，我显现给圣女玛加利大时告诉她：爱我圣体可以补赎罪过，并能安慰我的圣心。可怜现在爱我的人太少了。连那些献身于我的人也不知爱我，他们忽略我的爱情的圣事，真伤我心。那参与弥撒不热心的就是轻视我；领圣体无准备的就是冷落我的爱情！因为圣体圣事就是我爱人的明证。谁爱圣体，灵魂必得宠光，而且增加我的光荣；那不爱圣体的，也就得不到这种神恩。唉！在公园和剧场里面、电影院与舞厅内，往往人山人海；在我圣体台前，却反而冷冷静静，这都是缺乏爱情的缘故，有些人爱我，却只重形式；又有些人爱我，只企图我爱他，这些人都不能中我意。更有许多人对交结朋友吃喝宴乐极为慷慨踊跃，对于救世真主却置之脑后；也有些人日夜牺牲，不惜挥霍大量金钱为获得他人爱情，但对我却一点也不理睬；更有些人爱我，是具有时间性的，有求于我就爱，不需要时就不爱我。唉！这些人是最伤我圣心的。因为他们的爱是片面的、外表的，心却在世俗事物上……所以，有些人只是唱歌称颂我，献花恭敬我，在我面前轰轰烈烈地作九日敬礼，内心却没有诚意，我都看不起他们。只有那些真诚地从内心对待我的人才能使我快乐！可爱的灵魂，你切勿忘了，用你的爱情给我解渴吧！从好久以来，我希望能在人们心中获得爱德的泉水；可是我得到的，只是点点滴滴的苦水而已！现在只希望你永远诚心地爱我，你应该勿叫我失望吧！</p>
+
+            <p class="noindent"><em>（以下经文应慢慢地轮流念，要使一语一句都从心底里发出）</em></p>
+
+            <div class="prayer-block">
+                <p><span class="numbered">（62）</span>吁！耶稣，至圣国王。因祢在加尔瓦略山上，忍受十字架的惨刑，和尝酸醋苦胆的痛苦。我虽是大罪人，愿意尽力安慰祢，求祢俯听我的祈祷吧！</p>
+                <p><span class="numbered">（63）</span>吁！耶稣，我愿全心爱你，为补赎那些不知道你爱人而降生的无情之罪。求你赏赐我，你那仁爱的神火，使我比任何人更爱你。吁！耶稣圣心，求祢将祢的圣心和祢的圣爱赐给我吧！使我异常渴慕祢的圣爱！</p>
+                <p><span class="numbered">（64）</span>吁！耶稣圣心，我愿全心爱你，为补赎那些不知你为爱我们而受苦受难救赎人类的罪。耶稣呀！我恭恭敬敬地叩拜祢的圣体，我为了爱祢，情愿牺牲一切。求祢赏赐我，祢那仁爱的神火，使我比任何人更爱祢。吁！耶稣，求祢将祢的圣爱赐给我吧！使我异常渴慕祢的圣爱！</p>
+                <p><span class="numbered">（65）</span>吾主耶稣，你的爱情虽然受别人轻视，我却相反，我要以我全付精神来爱你。我要和你结合，希望你的圣爱净化我的灵魂！</p>
+                <p><span class="numbered">（66）</span>吾主耶稣，你的爱情虽然受别人轻视，我却相反，我要以我全付精神来爱你，现在我为我的亲友和远离你的罪人，恳求可怜他们。我愿用宗徒的热爱加增祢的光荣，希望祢的圣爱净化我的灵魂。</p>
+                <p><span class="numbered">（67）</span>吾主耶稣，祢的爱情虽然受别人轻视，我却相反，我愿以我全付精神来爱祢。在我的能力范围内，我将尽我一切责任。祢赏赐我的十字架，我要甘心背负。希望祢的圣爱净化我的灵魂！</p>
+                <p><span class="numbered">（68）</span>吾主耶稣，祢的爱情虽然受别人轻视，我却相反，我愿以我全付精神来爱你。圣母玛利亚，求你因你无限美善慈爱的圣心，使我能追随你的诚朴、谦逊、洁净的芳表，并赐我能因耶稣的圣爱净化我的灵魂！</p>
+                <p><span class="numbered">（69）</span>吁！仁慈的圣心，我愿终身赞美祢被人轻视的爱情，永远为那些伤你圣心的人作补赎。我愿牺牲我的一切，为补赎那些凌辱祢，辜负祢圣意的可怜的人们的罪。因祢知道一切，你绝对知道我虽然卑贱微小，但我甘心情愿尽我的微力，证明我对祢的敬爱是忠诚的！</p>
+            </div>
+
+            <div class="prayer-title">《奉献圣时祷文》</div>
+            <div class="prayer-block">
+                <p><span class="numbered">（70）</span>伟大的救主，人类的牺牲。我们深信祢，在祭台上圣体圣事内。我们将这一小时，奉献给至尊的您，为我们自己和别人的罪过，做一点补赎，主耶稣我们跪在您的圣台前，敬拜您，陪伴您寂寞的圣心，感谢您的圣宠。更求你保佑我们居家和在外的亲友，都能得你救赎的恩泽；并赐炼狱众灵，早登天国。吾主耶稣您曾说过，不论我们在甚么地方，为敬礼你的圣心聚在一起，您就在我们中间，以爱怜的眼光垂顾我们。那么，请您来到我们中间吧！用您的祝福，充实我们贫乏的生命，用您的热爱，灼热我们孤寂的心灵。</p>
+            </div>
+
+            <div class="prayer-title">《耶稣圣心补辱经文》</div>
+            <div class="prayer-block">
+                <p><span class="numbered">（71）</span>耶稣圣心，您虽然如痴如狂的爱了世人，而从世人得来的，却只是忘恩负义。现在我们跪伏在您台前，愿以特别的敬礼，赔补世人的无良，安慰您被人遗弃的圣心，但是我们扪心自问，也曾不恭不敬，因此深切痛悔，先求您仁慈宽赦，许多人远离救灵正道，误入歧途，不认您是善牧，背弃领洗圣愿，逃避您诫命约束，轻亵您的圣体圣事，我们愿意代做补赎，一切可痛的罪恶，暴躁，发怒，嫉妒，愤恨，好色思淫，争权夺利，强横放肆，固执不听善劝，高傲好胜，不肯谦逊让人，教养身体，纵容欲情，破坏别人的贞操，亵渎别人的身体，喜欢享福光荣，畏怕吃苦受辱，服装妖冶不端，饮食只求美味，观看不道德的电影或戏剧，阅读不道德的书籍或杂志，贪求自己的成功，做盲目情感的奴隶甚至做出大恶，祸国殃民，侵犯教会的权利，更有人犯了罪过，不知痛悔，不肯定改，悠悠忽忽的辗转在罪污之中，凡此种种罪恶，我们愿意逐一补偿，现在为赔补您天主性所受的凌辱，我们特将您昔日在伽尔瓦略山上，今日在祭台上的祭献，联合童贞圣母与诸圣人信友所作的补赎，都奉献给您。并愿诚心誓许，以后要竭尽我们的心力，仰赖您的圣宠助佑，牢守我们的信德，清洁我们的身灵，尊从您的诫命，发爱德，行善工，为补赎我们和众人的罪过，若有人敢侮辱您的圣名，我们要尽力阻止，并愿引导多人来归向您，至仁慈的耶稣圣心，我们依靠玛利亚贞洁无玷圣心的转达，求您收受我们这一片诚心，赏赐我们奉恃您，忠信至死，死后上升天国，协同您与圣父圣神，享无穷的福乐。阿们！</p>
+            </div>
+
+            <div class="prayer-title">《圣女玛嘉利大的奉献经文》</div>
+            <div class="prayer-block">
+                <p><span class="numbered">（72）</span>耶稣圣心！我愿将我的灵魂肉身，整个的生命，一切工作和痛苦，都奉献给你。今天我的一切都是你的，只愿敬爱你的圣心显扬你的光荣！凡契合你圣意的事，我必勉励奉行。</p>
+                <p><span class="numbered">（73）</span>耶稣圣心！你是我生命的泉源，我爱情的归宿，我的灵魂孱弱无恒，罪过很多，请你伸出援手施惠救助，在天父台前，为我代行补赎，平息祂的义怒，免去我应受的重罚。</p>
+                <p><span class="numbered">（74）</span>极可爱的耶稣圣心！我柔弱无能，可怜不堪，但你的仁慈圣爱，是我的依恃与希望。过去曾辜负你的恩爱，违背你的训诲，求你不念既往，完全宽恕。</p>
+                <p><span class="numbered">（75）</span>而今后，愿你圣心的爱火，移植在我心里，发出高度的热，熔化我的心。并愿我的名字，刻在你的圣心上，永不除去。阿们！</p>
+            </div>
+
+            <h2>耶稣圣心的12个许诺</h2>
+            <ol class="promise-list">
+                <li>敬礼我圣心的人，我要赏赐他们生活上所需要的恩宠。</li>
+                <li>敬礼我圣心的人，我要使他家庭生活和乐美满。</li>
+                <li>敬礼我圣心的人，在忧苦时，我必安慰他。</li>
+                <li>敬礼我圣心的人，在他生活中我保护他，特别临死时我照顾他。</li>
+                <li>敬礼我圣心的人，在他所从事的工作中，我要降福他。</li>
+                <li>罪人敬礼我的圣心，我必赐他回头改过，重新作人。</li>
+                <li>冷淡的人敬礼我圣心的，将变为热心的。</li>
+                <li>热心的人敬礼我圣心的，将迅速进修到更齐全的境界。</li>
+                <li>凡在家中供奉我圣心像的，我要降福他的家庭。</li>
+                <li>司铎和传道人员敬礼我圣心的，我必赐他有能力感化顽固的罪人。</li>
+                <li>凡传扬圣心敬礼的人，他们的名字将铭刻在我心中，永不消除。</li>
+                <li>凡一连九个月，为敬礼我圣心，在首六弥撒中（前八天或后八天内妥当告解）善领圣体的人，必得善终。</li>
+            </ol>
+
+            <p class="amen">耶稣圣心，我信赖你！</p>
+
+        </div>
+    </div>
+
+    <!-- 字号面板 -->
+    <div class="font-panel-overlay" id="fontOverlay" onclick="closeFontPanel()"></div>
+    <div class="font-panel" id="fontPanel">
+        <div class="drag-handle" id="dragHandle"></div>
+        <div class="panel-header">
+            <span class="panel-title">调整文字大小</span>
+            <button class="panel-reset" onclick="resetFontSize()">恢复默认</button>
+        </div>
+        <div class="slider-row">
+            <span class="slider-label-small">A</span>
+            <input type="range" class="font-slider" id="fontSlider" min="12" max="28" step="1" value="16" oninput="onSliderChange(this.value)">
+            <span class="slider-label-large">A</span>
+        </div>
+        <div class="font-value" id="fontValue">当前字号：16px</div>
+    </div>
+
+    <script>
+        function goBack() {
+            if (window.history.length > 1) { window.history.back(); }
+            else { window.location.href = 'index.html'; }
+        }
+        const MIN_FONT = 12, MAX_FONT = 28, DEFAULT_FONT = 16;
+        const STORAGE_KEY = 'prayerFontSize';
+        const fontPanel = document.getElementById('fontPanel');
+        const fontOverlay = document.getElementById('fontOverlay');
+        const fontSlider = document.getElementById('fontSlider');
+        const fontValue = document.getElementById('fontValue');
+        const pageContent = document.getElementById('pageContent');
+        function openFontPanel() { fontPanel.classList.add('show'); fontOverlay.classList.add('show'); }
+        function closeFontPanel() { fontPanel.classList.remove('show'); fontOverlay.classList.remove('show'); }
+        function applyFontSize(size) { pageContent.style.zoom = size / DEFAULT_FONT; }
+        function onSliderChange(value) {
+            const size = parseInt(value, 10);
+            applyFontSize(size);
+            fontValue.textContent = '当前字号：' + size + 'px';
+            try { localStorage.setItem(STORAGE_KEY, size); } catch (e) {}
+        }
+        function resetFontSize() { fontSlider.value = DEFAULT_FONT; onSliderChange(DEFAULT_FONT); }
+        (function init() {
+            let saved = DEFAULT_FONT;
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const num = parseInt(stored, 10);
+                    if (!isNaN(num) && num >= MIN_FONT && num <= MAX_FONT) saved = num;
+                }
+            } catch (e) {}
+            fontSlider.value = saved; applyFontSize(saved);
+            fontValue.textContent = '当前字号：' + saved + 'px';
+        })();
+        (function setupDragClose() {
+            const handle = document.getElementById('dragHandle');
+            let startY = 0, currentY = 0, isDragging = false;
+            function onStart(e) {
+                isDragging = true;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                currentY = startY; fontPanel.style.transition = 'none';
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', onEnd);
+            }
+            function onMove(e) {
+                if (!isDragging) return;
+                currentY = e.touches ? e.touches[0].clientY : e.clientY;
+                const delta = currentY - startY;
+                if (delta > 0) fontPanel.style.transform = 'translateY(' + delta + 'px)';
+                if (e.cancelable) e.preventDefault();
+            }
+            function onEnd() {
+                if (!isDragging) return;
+                isDragging = false; fontPanel.style.transition = '';
+                const delta = currentY - startY;
+                if (delta > 80) closeFontPanel();
+                fontPanel.style.transform = '';
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('touchend', onEnd);
+            }
+            handle.addEventListener('mousedown', onStart);
+            handle.addEventListener('touchstart', onStart, { passive: false });
+        })();
+    </script>
+
+	<script>
+	document.addEventListener('plusready', function() {
+	    // 监听系统返回键
+	    plus.key.addEventListener('backbutton', function() {
+	        // 直接跳回首页
+	        window.location.href = 'index.html'; 
+	        // 注意：如果经文在子文件夹里，要改成 '../index.html'
+	    }, false);
+	});
+	</script>
+</body>
+</html>

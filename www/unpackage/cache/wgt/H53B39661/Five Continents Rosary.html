@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五大洲玫瑰经</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "SimSun", "Songti SC", "Times New Roman", "Georgia", serif;
+            font-size: 16px;
+            background-color: #faf8f5;
+            color: #2a241e;
+            padding-top: 56px;
+            padding-bottom: 40px;
+            overflow-x: hidden;
+        }
+
+        /* ===== 顶部固定栏 ===== */
+        .top-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 56px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e6e0d8;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            z-index: 1000;
+        }
+        .back-btn, .font-btn {
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+            color: #4a3729;
+            font-family: inherit;
+            flex-shrink: 0;
+        }
+        .back-btn { font-size: 1rem; }
+        .font-btn { font-size: 1.15rem; font-weight: 700; font-family: Georgia, serif; }
+        .back-btn:hover, .font-btn:hover { background-color: #f5efe8; }
+        .back-btn:active, .font-btn:active { background-color: #e6ddd2; }
+        .top-title {
+            flex: 1;
+            text-align: center;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #2c241b;
+            letter-spacing: 2px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 8px;
+        }
+
+        /* ===== 页面主体 ===== */
+        .page-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 36px 28px 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 42px 48px;
+            border-radius: 6px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e8e0d6;
+            max-width: 920px;
+            width: 100%;
+            transform-origin: top center;
+        }
+
+        h1 {
+            font-size: 26px; font-weight: 700; text-align: center;
+            margin-bottom: 28px; letter-spacing: 3px; color: #3b2f24;
+            border-bottom: 2px solid #d9cfc2; padding-bottom: 16px;
+        }
+        h2 {
+            font-size: 1.4rem; font-weight: 700; margin: 38px 0 18px;
+            color: #3b2f24; border-left: 5px solid #b7a48b; padding-left: 12px;
+        }
+        h3 {
+            font-size: 1.15rem; font-weight: 700; margin: 28px 0 12px;
+            color: #a52a2a; border-bottom: 1px dashed #d9cfc2; padding-bottom: 8px;
+        }
+        p { margin: 10px 0; text-indent: 2em; text-align: justify; }
+        .noindent { text-indent: 0 !important; }
+        .noindent1 { text-indent: 0 !important; color: #a52a2a; }
+        .noindent-bc {
+            text-indent: 0 !important; color: #a52a2a;
+            background-color: #fff6b0; padding: 0.1rem 0.35rem;
+            border-radius: 3px; font-weight: 500;
+        }
+        .noindent-bc1 {
+            text-indent: 0 !important; background-color: #d4f0d4;
+            padding: 0.1rem 0.35rem; border-radius: 3px; font-weight: 500;
+        }
+        .block-item {
+            background-color: #fdfcfb; padding: 16px 22px;
+            border-radius: 8px; border: 1px solid #efe9e1; margin: 16px 0;
+        }
+        .block-item p { text-indent: 0; margin: 6px 0; }
+        .africa { color: #008000; background-color: #f5faf5; padding: 16px 22px; border-radius: 8px; border-left: 5px solid #008000; margin: 16px 0; }
+        .africa1 { color: #008000; background-color: #f5faf5; padding: 16px 22px; border-radius: 8px; }
+        .america { color: #a52a2a; background-color: #fdf6f5; padding: 16px 22px; border-radius: 8px; border-left: 5px solid #a52a2a; margin: 16px 0; }
+        .america1 { color: #a52a2a; background-color: #fdf6f5; padding: 16px 22px; border-radius: 8px; }
+        .europe { color: #ffffff; background-color: #2a241e; padding: 16px 22px; border-radius: 8px; margin: 16px 0; }
+        .oceania { color: #0077a8; background-color: #f0f8fc; padding: 16px 22px; border-radius: 8px; border-left: 5px solid #0077a8; margin: 16px 0; }
+		.oceania1 { color: #0077a8; background-color: #f0f8fc; padding: 16px 22px; border-radius: 8px; }
+        .asia { color: #b8860b; background-color: #fdf8ef; padding: 16px 22px; border-radius: 8px; border-left: 5px solid #b8860b; margin: 16px 0; }
+		.asia1 { color: #b8860b; background-color: #fdf8ef; padding: 16px 22px; border-radius: 8px; }
+        .africa p, .america p, .europe p, .oceania p, .asia p { text-indent: 2em; }
+        .prayer-block {
+            background-color: #f9f6f2; padding: 16px 22px;
+            border-radius: 8px; border: 1px solid #e6ddd2; margin: 18px 0;
+        }
+        .prayer-block p { text-indent: 2em; margin: 6px 0; }
+        .conclusion {
+            margin-top: 40px; padding: 24px 28px;
+            background-color: #f5efe8; border-radius: 8px;
+            border-left: 6px solid #b7a48b; text-indent: 0;
+        }
+        .conclusion p { text-indent: 2em; color: #2f2a24; line-height: 1.9; }
+
+        /* ===== 字号面板 ===== */
+        .font-panel-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.35);
+            z-index: 1998; opacity: 0; visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .font-panel-overlay.show { opacity: 1; visibility: visible; }
+        .font-panel {
+            position: fixed; left: 0; right: 0; bottom: 0;
+            background-color: #ffffff;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
+            z-index: 1999; padding: 8px 24px 32px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+            max-width: 920px; margin: 0 auto;
+        }
+        .font-panel.show { transform: translateY(0); }
+        .drag-handle {
+            width: 40px; height: 4px; background-color: #d9cfc2;
+            border-radius: 2px; margin: 0 auto 18px;
+            cursor: grab; touch-action: none;
+        }
+        .drag-handle:active { cursor: grabbing; }
+        .panel-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .panel-title { font-size: 1rem; font-weight: 600; color: #2c241b; letter-spacing: 1px; }
+        .panel-reset {
+            background: none; border: 1px solid #d9cfc2; color: #4a3729;
+            font-size: 0.85rem; padding: 5px 14px; border-radius: 20px;
+            cursor: pointer; font-family: inherit; transition: background-color 0.2s;
+        }
+        .panel-reset:hover { background-color: #f5efe8; }
+        .slider-row { display: flex; align-items: center; gap: 14px; }
+        .slider-label-small {
+            font-size: 0.85rem; color: #8a7a68; font-weight: 600;
+            flex-shrink: 0; width: 20px; text-align: center;
+        }
+        .slider-label-large {
+            font-size: 1.35rem; color: #8a7a68; font-weight: 700;
+            flex-shrink: 0; width: 24px; text-align: center;
+            font-family: Georgia, serif;
+        }
+        .font-slider {
+            -webkit-appearance: none; appearance: none; flex: 1;
+            height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px; outline: none; cursor: pointer;
+        }
+        .font-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: border-color 0.2s, transform 0.1s;
+        }
+        .font-slider::-webkit-slider-thumb:hover { border-color: #a52a2a; }
+        .font-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+        .font-slider::-moz-range-thumb {
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .font-slider::-moz-range-track {
+            height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px;
+        }
+        .font-value {
+            text-align: center; margin-top: 14px;
+            font-size: 0.85rem; color: #8a7a68; letter-spacing: 1px;
+        }
+
+        @media (max-width: 700px) {
+            .page-wrapper { padding: 24px 14px 0; }
+            .container { padding: 24px 18px; }
+            h1 { font-size: 22px; letter-spacing: 2px; }
+            h2 { font-size: 1.2rem; }
+            h3 { font-size: 1.05rem; }
+            .block-item { padding: 12px 14px; }
+            .africa, .america, .europe, .oceania, .asia { padding: 12px 14px; }
+            .top-title { font-size: 0.98rem; letter-spacing: 1px; }
+        }
+
+        @media print {
+            body { padding-top: 0; }
+            .top-bar, .font-panel-overlay, .font-panel { display: none !important; }
+            .page-wrapper { padding: 0; }
+            .container { box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <button class="back-btn" onclick="goBack()" title="返回">返回</button>
+        <div class="top-title">五大洲玫瑰经</div>
+        <button class="font-btn" onclick="openFontPanel()" title="调整字号">Aa</button>
+    </div>
+
+    <div class="page-wrapper">
+        <div class="container" id="pageContent">
+            <h1>五大洲玫瑰经</h1>
+
+            <h2>五大洲玫瑰经的程序如下：</h2>
+            <div class="block-item">
+                <p class="noindent">1. 放一尊苦像，点燃两支蜡烛，圣经一本。</p>
+                <p class="noindent">2. 做圣神九日敬礼（连续做九日）</p>
+                <p class="noindent">3. 念耶稣接待心串经（一串）</p>
+                <p class="noindent">4. 念五大洲玫瑰经</p>
+                <p class="noindent">5. 传教祷文</p>
+                <p class="noindent">6. 圣母综合祷文</p>
+            </div>
+
+            <h2>圣神神恩九日敬礼</h2>
+            <h3>求造物主圣神降临：</h3>
+            <div class="prayer-block">
+                <p>求造物主圣神降临，眷顾你的信众之心，使你所造的众灵魂，充满上天圣宠甘霖。你被尊为安慰之神，至高天主特殊宠恩，你是活泉神火圣爱，众善灵的圣德馥芬。你是七神恩的施主，全能圣父坚强右臂，你是圣父慨然许诺，作我喉舌导我言语。求光照我三司五官，以你圣爱充我心灵，更以你的超人力量，坚我积弱补我诸短。驱逐敌仇悉使远遁，惠赐我们诸事平顺，俾能避免诸般危害，赖你领导安稳前进。使能藉你获识圣父，与其唯一所生圣子，你是父子共发之神，我虔信你毕生不渝。但愿至尊天主圣父，死而复活天主圣子，偕同施慰天主圣神，获享光荣万事无己。阿们。</p>
+            </div>
+
+            <h3>第一天　我灵魂的甘饴主人</h3>
+            <p>吁，天主圣神！你是天主赐我灵魂的大礼。一想及你，我就感到兴奋，对你产生无限敬佩和爱慕。我真不知如何才能够表达我所感到的快慰。你是我极甘饴的主人，你是我的天主，你住在我心里。我的灵魂在欣悦的默观中，一想到你，就充满了平安和爱情。</p>
+            <p>在你迂尊降贵的态度前，我受宠若惊。你的美丽，你那超越我能以言语形容和想象感受的美丽；我想起你那无穷无尽的圣宠、恩赐、德能、成就和天福；我想起你那肯来住在我心内的亲切善意。你拥有一切，你创造一切，你愿意赐我一切。尽管我的贫乏使我成为世界上最微贱的人，我仍然在兴奋的仰慕中，赞美你、钦崇你、感谢你。求你赐我一切。</p>
+            <p>吁，天主圣神，请恩赐我一切</p>
+
+            <h3>第二天　求赐圣神的恩典</h3>
+            <p>上主之神，颁赐天恩的圣神！我现在极谦恭地，全心热烈渴望，求你赐我你的恩典，特别是上智和孝爱之恩。请在我心内增添这些恩典，达致圆满的地步，使我的灵魂对你……我内心的主人，温顺及听命：使我习惯藉你的神恩而生活，亲密地、愉快地默思你和圣三。</p>
+
+            <h3>第三天　求圣德</h3>
+            <p>吁，圣神！内心的主宰和圣化者！我秉着一份永不言倦的坚持，求你启迪我的智力、了解一切真理；求你对我心说话，圣化我、照顾我的灵魂，如同你照顾圣母、殉道者、和列为圣者的灵魂一样。</p>
+            <p>我渴望圣德，不是为我自己，而是为光荣你，众主之主：为光荣天主圣三；为增加教会的光辉；为众灵魂立好榜样。任何人要成为真正的宗徒，没有比具备圣德有更好的方法，因为没有圣德，人很难有所成就。啊，圣神！请俯听我的祈祷，完成我的切愿。</p>
+
+            <h3>第四天　为我对圣神之忽略而作补偿</h3>
+            <p>吁，圣神！你是真理和极可爱的光芒。我心深处感到极度的悲伤。我承认你几乎不为我们大部分人所认识，甚至完全忘记。我们为很多忧虑而分心，忘形于世俗的风气，忽略你的呵护和无微不至的照顾。我们很少想念你。我们的确忘恩负义！吁圣神！请宽恕我们的过失，因为我们不想念你，没有向其他灵魂谈论你。</p>
+            <p>吁，圣神！请俯纳我的悔意，以这悔意来补赎我的那应受责备的“健忘”过错，并以此作为使我求丰盛光照的祷告，为神职人员，为一般信友。</p>
+
+            <h3>第五天　求圣神改造我</h3>
+            <p>吁，圣神！你是圣父和圣子的圣爱与喜乐，天主圣德的花卉和芬芳，在我心里燃着的神火；请完全更新我心，拿去一切污玷与灰暗；请焚去一切污垢，使我肖似你的圣子的形象。</p>
+            <p>圣神的火啊！你既肯屈就我，并且亲身居于我内以圣化我，求你在我心内燃起这爱火，进占我的灵魂，并以你的火焰把它全部烧透，炼净一切不规则的情操。求你赐我有宗徒一样的征战热诚，予以圣宠，使我成为火焰，把纯洁的、永无休止的圣爱燃烧下去。</p>
+
+            <h3>第六天　求勇德</h3>
+            <p>吁，勇德的圣神！你曾赐予殉道者勇气，为主基督的缘故欢乐地舍生。请将这勇德尽行灌输我心。求你除去我的呆钝和懒惰。求你使我坚强，去承担上主要我做的一切，为你的光荣、为一切兄弟的精神和物质的利益，不计较劳苦和牺牲。</p>
+            <p>请赐我力量，继续以热诚，不辞劳苦地，而且恒心地，去尽自己的责任。求你赐我勇气和活力，以大无畏的精神，去维护教会，在一切人面前完整地表明我的信仰。请赐我真心服从教宗和主教。请赐超凡的神火，从事宗徒工作。请恩赐我恒心到底，乐于杀身成仁。</p>
+            <p>吁，圣神！请以你万能神力笼罩我，以你的活力支持我，以你战无不胜的神力庇佑我。</p>
+
+            <h3>第七天　求赐真理</h3>
+            <p>吁，真理和光明之神！你是神圣的火焰和热力。神圣的真光啊！请驱除我灵魂内的错误和疑虑的阴影。请以无比的光芒灼热及光照我灵魂深处。请恩赐我常常在你的光照下行走，逐退一切错误，忠心坚持于教会的真理。求你以神圣的真光庇荫我，使我常常在你的真理和纯然明亮中生活。</p>
+
+            <h3>第八天　求赐耶稣的精神</h3>
+            <p>吁，净化灵魂的圣神！求你净化我一切污垢。请圣化我，并赐我耶稣的德行、赐我和他有同一的意念，及同一的内在动机。赐我心内有和耶稣一样的圣神。请向我的灵魂嘘气：如同向耶稣嘘气一样，嘘进同样的爱情，如同圣父嘘进爱情到他的天主圣子一样；请赐我以同样的吸引力，如同圣父倾心于他深爱的圣子耶稣一样。</p>
+
+            <h3>第九天　求赐全然的圣德</h3>
+            <p>吁，圣神！求你赐我明光，照亮我灵，足以扶持我和求我帮助的人。请以爱德和勇毅的圣宠，支援我软弱的意志。吁，圣化人灵的天主！请领导我，使我锲而不舍地、忍耐地顺从你的指引，而达到圣德的高峰。你就是圣德，我应该让你在我内生活，协助你完成在我内的工作。吁，神圣的更新者！求你更新一切，清除一切邪恶，一切危险，一切歹念；请在我内重建一切，使一切全新，全洁，全圣。</p>
+            <p>吁，赋予声气的天主圣神！我灵魂的灵魂！请赐我力量，去为天主圣子作证，在你陪伴下，常常光荣他。愿我为他的荣耀而生活，为他的爱情而终。</p>
+            <p>吁，施恩者天主！请施予我你的恩典，使我在你的奥迹内默观天主，明瞭生命和物质的真价值，并以肖似在天堂一般的纯爱，怀抱一切。谢谢你！阿们。</p>
+
+            <h3>向圣母玛利亚求获圣神诵</h3>
+            <div class="block-item">
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>至洁童贞玛利亚，无玷始胎；圣神拣选你成为天主的结约之柜，请为我们祈祷！</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>恳求师保圣神快来，更新大地的面貌！</p>
+                <p class="noindent">(圣母经一遍)</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>至洁童贞玛利亚，藉着圣神，圣言降孕你的母胎，你真是天主之母。请为我们祈祷！</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>恳求师保圣神快来，更新大地的面貌！</p>
+                <p class="noindent">(圣母经一遍)</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>至洁童贞玛利亚，当你和宗徒们在晚餐厅祈祷时，你充满了圣神，请为我们祈祷！</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>恳求师保圣神快来，更新大地的面貌！</p>
+                <p class="noindent">(圣母经一遍)</p>
+                <p class="noindent">众：天主圣神，请你降临，充满你信众的心，并在他们心中，燃起你的爱火。阿们。</p>
+            </div>
+
+            <h3>※每天诵念※</h3>
+            <h3>圣神祷文</h3>
+            <div class="block-item">
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主矜怜我等。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>基督矜怜我等。天主矜怜我等。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>全能天主圣父，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>矜怜我等。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>永远圣父之子耶稣，赎世者。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>拯救我等。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>与圣父圣子生命共融之圣神，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>圣化我等。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>三位一体天主者，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>垂允我等。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>自无始发于圣父圣子之圣神，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>降临我等之心。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>与圣父圣子同体之圣神，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>降临我等之心。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣父之许诺，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>降临我等之心。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天庭之真光，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>降临我等之心。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>美善之施主，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>降临我等之心。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>活水之泉源，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>降临我等之心。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>常燃圣火，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>降临我等之心。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>神圣共融，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>降临我等之心。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>爱与真理之神，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>矜怜我等。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>上智与明达之神，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>同上</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>超见与刚毅之神，</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>聪敏与孝爱之神， <span class="noindent-bc1"><strong>应：</strong></span>矜怜我等。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>恩宠与祈祷之神，(同上)</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>和平与良善之神，</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>谦逊与纯洁之神，</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>护慰之神，</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>成圣之神，</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>治理教会之神，</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>至高者天主之恩赐，</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>充满宇宙之神，</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主义子之神， <span class="noindent-bc1"><strong>应：</strong></span>矜怜我等。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣神， <span class="noindent-bc1"><strong>应：</strong></span>求赐我等畏罪之恩。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣神， <span class="noindent-bc1"><strong>应：</strong></span>求尔降临并使地面更新。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣神， <span class="noindent-bc1"><strong>应：</strong></span>求以真光恩照我等之灵魂。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣神， <span class="noindent-bc1"><strong>应：</strong></span>求铭刻主律于我等之心。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣神， <span class="noindent-bc1"><strong>应：</strong></span>求以爱火灼热我等。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣神， <span class="noindent-bc1"><strong>应：</strong></span>求赐我等神恩之宝库。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣神， <span class="noindent-bc1"><strong>应：</strong></span>教我等善祷。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣神， <span class="noindent-bc1"><strong>应：</strong></span>以上智之光照我等。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣神， <span class="noindent-bc1"><strong>应：</strong></span>引导我等走救恩之路。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣神， <span class="noindent-bc1"><strong>应：</strong></span>求赐我等获悉唯一所需之事。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣神， <span class="noindent-bc1"><strong>应：</strong></span>启发我等修德。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣神， <span class="noindent-bc1"><strong>应：</strong></span>求赐我等获修诸德之功。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣神， <span class="noindent-bc1"><strong>应：</strong></span>助我等恒于正义。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣神， <span class="noindent-bc1"><strong>应：</strong></span>为我等永生之赏报。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>除免世罪天主羔羊者，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>求尔派遣圣神。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>除免世罪天主羔羊者，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>求以神恩充满我等之心。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>除免世罪天主羔羊者，</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>求赐我等上智与孝爱之神。</p>
+            </div>
+
+            <p class="noindent">伏求圣神降临，充满信众之心，并以爱火灼热我等冰心。</p>
+            <p>请众同祷：吁！仁慈圣父，求赐圣神宠照我等，加我热爱，并能净心，充满天上甘霖知识正直之事。为尔子耶稣之功，其偕尔偕圣神，为天主，永生永王，阿们。</p>
+
+            <h3>默想：</h3>
+            <p>圣神居住在我们内。他赋予我们圣洁的恩宠：主的生命，及信、望、爱三德。他亦赏赐我们其他恩典，启迪我们的智慧，坚强我们的意志，助我们行善。</p>
+            <p>圣神用各种方法善导世人。他赐给我们他的七恩，十二神果和各类神赐的能力。</p>
+            <p>圣神七恩就是：上智、聪敏、超见、刚毅、明达、孝爱、和敬畏上主。这七恩助我们度完美的基督徒生活。人性的生活，需要身体、感官灵魂、智慧、毅力和记忆：而基督徒的灵性生活。则需三种超性的德行(信、望、爱)及四枢德(智、义、勇、节）来圣化我们的灵魂。藉圣神的改造、唤醒和圣化后，基督徒总算做好准备，能开始他们的灵性生活，踏上那认识基督，愿意爱他和追随圣三的途径。</p>
+            <p>圣神的各种恩赐，使我们更顺从基督，更愿接受他的意见和指引，更服从他的召唤。使我们乐意接受一切神恩，与圣神合作。</p>
+
+            <h3>圣神降临祷文</h3>
+            <div class="prayer-block">
+                <p class="noindent">基督的圣神，请激励我；<br>
+                基督的圣神，请推动我；<br>
+                基督的圣神，请充满我；<br>
+                基督的圣神，请烙印我。</p>
+                <p>啊！天上的慈父，请把你的心灵和旨意赏赐给我，并在我内创造出一个德行的泉源。把你的神印，烙在我的灵魂上，确保它是属于你的，使你在我内的反射，能成为众人都看见的光。阿们。</p>
+            </div>
+
+            <p class="noindent">吁，玛利亚无原罪之始胎，我等奔尔台前为我等祈。</p>
+            <p>我主耶稣，请宽恕我们的罪过，救我们于永火之中。求你把众人的灵魂，特别是那些需要你怜悯的灵魂，领到天国里去。吁！耶稣。这是为爱你为使罪人悔改，又为赔补玛利亚无玷圣心所受的侮辱。</p>
+            <p>伏求圣神降临，求你藉你至爱净配玛利亚无玷圣心的大能转求，早日降到我们心中。因圣母玛利亚无玷圣心圣爱火焰之动力，使全人类淹沉于主的圣宠内，此时此刻及至死后。圣母救灵万分火急、救灵至上刻不容缓。耶稣圣心我全是你的，圣母无玷圣心我全是你的。圣母无玷圣心，求你为我们现在及临终时祈求主恩。永恒的天主圣父，我把你至爱之子，耶稣基督的至圣宝血，连同今天全世界在祭台上所举行的感恩圣祭，一起奉献给你，求救众炼灵，求教众罪人回头。</p>
+
+            <h2>耶稣接待的心串经</h2>
+            <p class="noindent">用玫瑰经念珠诵念：</p>
+            <p class="noindent">开始时诵念：</p>
+            <p>我信全能的天主父，天地万物的创造者。我信父的唯一子，我们的主耶稣基督。我信他因圣神降孕，由童贞玛利亚诞生。我信他在比拉多执政时蒙难，被钉在十字架上死而安葬。我信他下降阴府，第三日从死者中复活。我信他升了天，坐在全能天主父的右边。我信他要从天降来，审判生者死者。我信圣神。我信圣而公教会，诸圣的相通。我信罪过的赦免。我信肉身的复活。我信永恒的生命。阿们。</p>
+
+            <div class="block-item">
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>永生之父，我把您至爱之子接待的心，圣体、圣血、灵魂及天主性结合着全世界举行的弥撒圣祭全奉献给您。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>为了我们及普世的罪过。（一次）</p>
+                <p class="noindent">众：主耶稣，请来！带同您接待的心，从我内承受一切。（三次）</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>至圣天主，至圣全能者，我们的主天父。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>请垂怜我们及普世。（一次）</p>
+            </div>
+
+            <h3>第一端：</h3>
+            <div class="block-item">
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>永生之父，我把您至爱之子接待的心，圣体、圣血、灵魂及天主性结合全世界弥撒圣祭全奉献给您。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>为了我们及普世的罪过。（一次）</p>
+                <p class="noindent">众：天父，因您至爱之子接待的心……请遣临人间您伟大全能的光驱除所有的黑暗。（十次）</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>至圣天主，至圣全能者，我们的主天父。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>请垂怜我们及普世。（一次）</p>
+            </div>
+
+            <h3>第二端：</h3>
+            <div class="block-item">
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>永生之父，我把您至爱之子接待的心，圣体、圣血、灵魂及天主性结合着全世界举行的弥撒圣祭全奉献给您。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>为了我们及普世的罪过。（一次）</p>
+                <p class="noindent">众：天父，因您至爱之子接待的心……请遣临人间您伟大全能的释放。（十次）</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>至圣天主，至圣全能者，我们的主天父。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>请垂怜我们及普世。（一次）</p>
+            </div>
+
+            <h3>第三端：</h3>
+            <div class="block-item">
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>永生之父，我把您至爱之子接待的心，圣体、圣血、灵魂及天主性结合着全世界举行的弥撒圣祭全奉献给您。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>为了我们及普世的罪过。（一次）</p>
+                <p class="noindent">众：天父，因您至爱之子接待的心……请遣临人间您伟大全能的拯救（十次）</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>至圣天主，至圣全能者，我们的主天父。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>请垂怜我们及普世。（一次）</p>
+            </div>
+
+            <h3>第四端：</h3>
+            <div class="block-item">
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>永生之父，我把您至爱之子接待的心，圣体、圣血、灵魂及天主性结合着全世界举行的弥撒圣祭全奉献给您。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>为了我们及普世的罪过。（一次）</p>
+                <p class="noindent">众：天父，因您至爱之子接待的心……请遣临人间您伟大全能的圣神（十次）</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>至圣天主，至圣全能者，我们的主天父。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>请垂怜我们及普世。（一次）</p>
+            </div>
+
+            <h3>第五端：</h3>
+            <div class="block-item">
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>永生之父，我把您至爱之子接待的心，圣体、圣血、灵魂及天主性结合着全世界举行的弥撒圣祭全奉献给您。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>为了我们及普世的罪过。（一次）</p>
+                <p class="noindent">众：天父，因您至爱之子接待的心……请遣临人间您伟大全能的治愈和奇迹（十次）</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>至圣天主，至圣全能者，我们的主天父。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>请垂怜我们及普世。（一次）</p>
+            </div>
+
+            <p class="noindent">诵念五端后用以下祷文结束：<br>（刚好在玫瑰经念珠末处的又圣母经位置）</p>
+            <p>吁，玛利亚，你是至洁无玷的，请助佑我们成为你爱子耶稣接待的心的生活见证。阿们！</p>
+
+            <p>以下是1998年12月30日Micheline Broivent接到至圣童贞圣母玛利亚给予的讯息</p>
+            <p>我至亲爱的子女们，请接受我圣子耶稣接待的心的图像，我特别首先向那些在信德上有很大困难相信的子女们，和那些只恃自信和不相信天主存在的子女们发出这讯息。我请你们把这图像保存在心内，常注视这图像。你们将会发现你们生命和内心要出现的极大改变。你们要敬礼这图像，因为它拥有天父王国的大能。请向我圣子耶稣接待的心祈求治愈和恩典，要常怀着这颗心的情怀至少每日一次诵念这祷文。我，你的母亲可以向你保证：你的心将如日发光，成为新受造物，充满希望，爱与和平的新人，请把这图像供奉在家庭，在教堂间传递，赠送给你所爱的人。我圣子耶稣接待的心图像为普世人类是一个保护。</p>
+            <p>所有向我圣子耶稣接待的心图像祈祷的人们，将会目睹很多见证，因为将有很多人获得治愈，不仅重获身体上的健康，也能获得灵性和内心的治愈，当你们获得治愈后，内心必充满愿意我圣子耶稣接待的心，广传普世让世人认识他的热忱。</p>
+            <p>14. B.要勉力为能从耶稣接待的心获得恩宠的恩典作活见证，协助主耶稣，圣母玛利亚拯救人灵，常怀感谢天主的心，并坚固其他兄弟姐妹的信德，那么我们的见证将会如同黑暗中的光明。</p>
+
+            <p>以下是主耶稣邀请我们每天多念的充满天父恩宠的耶稣圣心祷文：</p>
+            <p>啊！亲爱的耶稣圣心！使人类拥吻您的圣爱，我因至圣童贞天主圣母玛利亚无玷圣心，圣爱火焰之动力，使人类淹沉于主之圣宠内！</p>
+
+            <h2>引言</h2>
+            <p>传教玫瑰经是一个具有普遍性和充满活力的祈祷，将整个教会的祈祷都包含在内。我们要深切的明白我们的祈祷应是世界性的，走出自我的圈子，不要只顾及个人和家庭的忧虑，更要开放自己去面对世界混乱不安的事实。</p>
+            <p>传教玫瑰经是一个眼界广阔的祈祷，帮助我们从利己主义中解放出来，以正直无私的态度为普世人类着想。传教玫瑰经的祈祷使我们去分担各地人民和各个种族的困难，痛苦和期望，和圣母玛利亚一起将这一切带到天主台前。</p>
+            <p>传教玫瑰经所用的念珠，用五种不同颜色的珠子串成，每种颜色代表一个大洲，提示我们祈祷意向的对象。</p>
+            <p style="color:#008000;">绿色的一端是为非洲祈祷，我们会想到非洲的森林和代表回教的神圣颜色。</p>
+            <p style="color:#a52a2a;">红色的一端是为美洲祈祷，美洲的原居民是红色人种的印第安人。</p>
+            <p style="color:#ffffff; background-color:#2a241e; padding: 4px 8px; border-radius: 4px;">白色的一端是为欧洲祈祷，也为基督的代表——教宗祈祷，使他坚定不移地指示世界的终向。</p>
+            <p style="color:#02a5e3;">蓝色的一端是为大洋洲祈祷，我们会联想到散布在太平洋清澈海水中的无数岛屿。</p>
+            <p style="color:#b8860b;">黄色的一端是为亚洲祈祷，这个黄种人居住的地域是许多文化的摇篮。</p>
+
+            <h3>传教的责任</h3>
+            <p>基督降来世界，籍着分取我们的人性来受苦受难，赐给我们救赎的恩典，已经有二千年了。但直至今天，世上五十亿人口中仍然有三十五亿人尚未接受得救的福音。</p>
+            <p>我们这些已经认识了救赎喜讯的人，有责任把这个喜讯和那些尚在期待救赎的人分享。</p>
+            <p>重要的是，教会内每一个成员都应意识到传扬福音的共同责任，因为耶稣将救赎全人类的计划托付在我们手中。在梵二文宪[教会传教工作法令]的第六章第36段，有以下的教训：“作为生活的基督肢体，籍着圣洗，又籍着坚振与圣体，连结同化与基督的全体信友，有责任为基督奥体的扩展而共同效力，以期尽早使基督奥体达到全满程度(弗一四，13)”。</p>
+            <p>“因此，教会的全体子女要确实感觉到自己对世界的责任，在自己身上培养真正大公的精神，把自己的力量应用在传播福音的工作上。”我们人人都要尽心尽力负起福传的责任，在自己的岗位上为福音做见证。</p>
+            <p>诵念传教玫瑰经为普世祈祷，是为福传尽力的一种方法。有些人甚至献出自己的生命来负起传教的责任。</p>
+
+            <h3>偕同圣母去朝圣</h3>
+            <p>母亲，在你身旁，在这个宁静的祈祷时刻里，让我们携手在世上漫游，在全人类的身边走过，偕同你，我们一起做朝圣之行吧！我们在静默中出发，我们的玫瑰经带领我们去和那些我们不认识的近人面对面会晤，我们要做的是爱情的朝圣。</p>
+            <p>为什么我们不带着教世主和回教的朝圣队伍一直走到麦加？为什么我们不进入有许多亚洲人在参拜的佛教寺庙？不，我们要去更广大的地方朝圣。和你一起，我们下到炎热的非洲，在绿色的丛林中，探访这个神秘之地，希望之洲。我们一起走到遥远的美洲，沿着漫长的海岸，和人分享信德之恩。</p>
+            <p>我们停步在富有基督化传统的欧洲，那里的人民却需要重新发现信德的价值。</p>
+            <p>然后我们去到蓝色的太平洋，感受大洋洲各岛国人民的渴求。</p>
+            <p>最后我们来到伟大的亚洲，在黄种人中歇下一会，这是你的土地啊！圣母玛利亚。这样我们才可以一起谈论圣教会，谈论他传教的地域。谈论救世主所关心的事情。</p>
+            <p>我们的玫瑰经，即使在疲倦，分心的时候所念的卑微的玫瑰经，由于关念到全世界的人类，便有了崇高的价值。籍着诵念玫瑰经，我们的圣母一同默想救赎的奥绩，把世上所有渴望救赎的人民都包含在我们的祈祷之内了。</p>
+
+            <h2><span style="color:#008000;"><strong>第一端：让我们为《非洲》祈祷</strong></span></h2>
+            <div class="africa">
+                <p>当我们诵念这首十遍圣母经时，我们想及广大的非洲大陆，那里有极众多的兄弟姊妹，在今天仍未听到过耶稣基督的名字。不过传教士的努力和牺牲，在本世纪已经结出了许多果实，福音已经在许多非洲地区宣讲，很多基督徒团体已经诞生。但我们决不可妄想就此停步休息，因为在非洲仍有许多事情要做，那里仍然需求大量的传教士和平信徒，前往这个时常被战争，冲突，贫穷所蹂躏的地域传扬福音。</p>
+            </div>
+            <p class="africa1">星期一——星期四：圣母领报</p>
+            <p>天主降生成人之前，先征求童贞玛利亚的同意。他也征求我们的合作，致使全人类都能认识默西亚，并接受他救世的喜讯。</p>
+            <p class="africa1">星期二——星期五：耶稣山园祈祷</p>
+            <p>临终的耶稣，预见世世代代人类的罪恶和他们的忘恩负义，他的救赎工程明显地收不到效果，耶稣直至世界末日都身处在苦楚之中。让我们将自己的痛苦联合耶稣的苦难，好使福音能传给所有的人民，并获得他们的聆听和接受。</p>
+            <p class="africa1">星期三—星期六—主日：耶稣复活</p>
+            <p>每个人在领洗时，都被召分享耶稣的复活和光荣，我们想想千百万兄弟姊妹仍然未能分享这个伟大的思典，我们可以无动于衷吗？如果不是全人类一同诵唱阿来路亚，我们的复活节不可能怀着圆满的喜乐来庆祝。</p>
+
+            <p class="africa1"><strong>祈求</strong></p>
+            <p>吁！耶稣，世界的救主，请救援非洲，救援我们的非洲，将它由愚味、罪恶及仇恨中解救出来；将它由无神主义，利己主义和种族灭绝的危机中拯救出来，请赐给非洲，我们的非洲——你圣爱和智慧之神，你明达和刚毅之神，你忠告和聪敏之神。</p>
+            <p>主耶稣，请打发圣神赐给我们关怀他人的精神，将我们和他人联系一起，让圣神在我们内运作，使我们每个人都能圣化自己。吁！玛利亚，非洲的母亲，我们非洲的母亲，请保护非洲，请帮助非洲，赏赐我们和平——真正的和平；赏赐我们的传教事业结出果实，让非洲人和普世教会的每一个成员共融，彼此结合为一。</p>
+
+            <h2><span class="noindent1"><strong>第二端：让我们为《美洲》祈祷</strong></span></h2>
+            <div class="america">
+                <p>当我们诵念这首玫瑰经时，我们的注意力集中在美洲，特别是拉丁美洲：一个具有鲜明对比的大洲：庞大的财富和极度的贫穷，先进的工业和原始的生活，丰富的物产和温饱不足的贫民。许多世纪之前，传教士的脚已经踏上这片土地，但仍然有众多的人尚未接触过福音，他们仍然等候传教士的作证来认识救赎的喜讯。</p>
+                <p>而且，在福音已经宣讲的地方，继续福传的工作还是必须的；这工作要使信德的恩宠日复一日更为深入我们弟兄的心中，成为他们生活的指南，并将他们由为奴的状态中解救出来。</p>
+            </div>
+            <p class="america1">星期一——星期四：圣母往见圣妇依撒伯尔</p>
+            <p>在神妙的领报之后，玛利亚怀着耶稣，辛苦地步行到山区去，帮助老年怀孕的表姐。对近人的爱德，证明我们对天主的爱。最好的爱德是将信德和恩宠带给我们的兄弟姊妹，将耶稣送到他们心中。当我们为信德作证和行善时，都是向世界传福音。</p>
+            <p class="america1">星期二——星期五　耶稣受鞭笞之刑</p>
+            <p>耶稣面对苦刑，并不退缩：他坚忍地接受侮辱，对鞭打逆来顺受，我们的克已苦身若结合耶稣的苦，可以为许多人带来丰盛的恩宠。</p>
+            <p class="america1">星期三——星期六—主日：耶稣升天</p>
+            <p>耶稣升天后，在他父亲家里，为每一个人预备地方，但可惜不是人人都知道这件事，为此他在升天前对门徒说：“你们往普天下去宣讲福音。”这是对每个基督徒发出的命令。</p>
+
+            <p class="america1"><strong>祈求</strong></p>
+            主耶稣，我们为生活在贫困中的兄弟姊妹恳求你，他们缺乏食物和居所，请赏赐他们有一天能在圣洗圣事中，领受信德的伟大恩赐，成为天主的儿女。</p>
+            <p>主耶稣，求你使他们即使物质方面有所欠缺，依然怀着活泼的信德，使到那些信赖你、仰望你的人，以他们的作证，在他们的兄弟姊妹中也成为福传者。如此按照你的愿望，大家组成一个唯一的羊群，在和平、正义、仁爱的国内，隶属于你慈爱的照顾之下。</p>
+
+            <h2><span style="color:#ffffff; background-color:#2a241e; padding: 4px 10px; border-radius: 4px;"><strong>第三端：让我们为《欧洲》祈祷</strong></span></h2>
+            <div class="europe">
+                <p>当我们重复诵念对圣母的致候词，默想着这第三端玫瑰奥绩时，把我们的欧洲安置放在我们的眼前。它在五大洲中是信仰基督的元老，但这并不是说它不需要我们的祈祷。</p>
+                <p>相反，它很多地方需要我们更努力宣讲福音，因为欧洲存在这很多不属于天国的事情：例如工业发达的国家，利用贫穷的国家谋利，提倡人工节育，忽视穷人的福利。</p>
+                <p>在这端玫瑰经里，让我们首先祈求欧洲共同体，能重新找到完整纯正的信仰，在生活中为基督作证，并祈求圣神在它内激发更多传教的圣召。</p>
+            </div>
+            <p class="europe">星期一——星期四：耶稣圣诞</p>
+            <p>圣言来到我们中间，为表示他对人类无限的爱，并把我们由各种为奴的状态中解放出来，使我们生活在天主子女的自由之中。耶稣为全人类诞生，但仍有千千万万的人不知道救主已经来临。让我们祈祷，祈愿人人都认识救主耶稣。</p>
+            <p class="europe">星期二——星期五：耶稣受茨冠的苦辱</p>
+            <p>人们对耶稣的凌辱和嘲弄达到高峰，包括假意向犹太人的君王高呼万岁时，却不了解人子是怎样为王於世的。耶稣君王的特色是服事人，而非受人服侍，他将整个自己交付给人类的愚行，只因为他爱人爱到极点，而且一直爱到底也不改变。</p>
+            <p class="noindent">我们也要毫无保留地将自己交付出来，去为弟兄们服务，只有无私的爱情可以更新世界。</p>
+            <p class="europe">星期三——星期六—主日：圣神降临</p>
+            <p>圣神是耶稣赐给教会最大的恩典。圣神是传教活动的最先策动者。他使人有力量为主作证，并宣扬他的名直至地极。让我们祈祷，籍着圣神的德能，我们能够成为福传的工具。</p>
+
+            <p class="europe"><strong>祈求</strong></p>
+            <p>主，我们的欧洲是古老的。它的老化不由于年龄，而由于自大，由于精神的消沉，心灵的干枯，由于沉溺于世俗的逸乐，由于拒绝改过重生，由于愚蠢的自负，甚至妄想排除你而生活。</p>
+            <p>主，欧洲实在老了，它的信德日渐衰弱，它的家庭制度慢慢崩溃，而人们却没有好好关心它。但是主啊！你却可以使它复兴起来，请派遣你的圣神来居住在已趋麻木的心灵内，让圣神使人们深恶痛绝自己的罪行而获得净化。求圣神赏赐每个欧洲人谦逊和爱德，让他们籍着祈祷、贞洁、神品和牺牲的精神，准备迎接信德伟大的春天。我们要看到古老的欧洲回复青春，天主要回到他们中间，回到他们的家庭中，街道上，广场内，谈话中。在学校里，在议会内，天主要成为熟悉的一员，他们教会也要重振传教的精神。</p>
+
+            <h2><span style="color:#02a5e3;"><strong>第四端：让我们为《大洋洲》祈祷</strong></span></h2>
+            <div class="oceania">
+                <p>我们诵念这蓝色的一端玫瑰经时，想及大洋洲的无数岛屿，它们分布在太平洋中，形成地球上最小及最年轻的一洲。这一洲也有许多人民未曾接触到基督，因为他们从未听到有人讲及他。虽然环境的因素造成传教上的困难，但如果我们确认每个人有权认识福音，我们就应该向耶稣一样，就算遇到任何困难，也勇往直前，决不退缩，将福音传到天涯海角。</p>
+            </div>
+            <p class="oceania1">星期一——星期四：圣母献耶稣于圣殿</p>
+            <p>耶稣在圣殿中被义人西墨盎和女先知亚纳认出他，讲出是人们所期待的默西亚，就是天主指定要来完成救赎工程的一位。</p>
+            <p class="noindent">我们应该像基督一样成为世界之光，并且勇敢为福音作证。我们生活中每一个行为都可以将主显示给人，只要我们按照耶稣教训我们的诫命生活，就是去爱我们的近人。</p>
+            <p class="oceania1">星期二—星期五：耶稣负十字架上山受死</p>
+            <p>在我们遭受试探的时期，被负十字架的耶稣是我们希望的所在。</p>
+            <p class="noindent">但对于那些尚未认识基督的人来说，他们还停留在苦难时期，他们的人生道路直趋加尔瓦略山，而没有出路。</p>
+            <p class="noindent">让我们祈祷，希望有许多合格的传教士去指示人民信德的道路。</p>
+            <p class="oceania1">星期三—星期六—主日：圣母蒙召升天</p>
+            <p>圣母在世上的生活和耶稣契合在一起，现在她获得天堂的赏报。每个基督徒只要想到在主的身旁有一位大能而慈爱的母亲，就有了依靠信赖的理由。她吸引我们、归化我们、带领我们到耶稣那里去。</p>
+
+            <p class="oceania1"><strong>祈求</strong></p>
+            <p>主耶稣，这一洲有很多蓝色，无数散布在其中的岛屿好像散布在一块蓝色天幕上的珍珠。</p>
+            <p>居住在那里的原居民，现在已从荒野不毛之地走到外面的世界来，但外面的文明人并不常常视他们像兄弟般亲近。你的福音已经传达到这里，而且日复一日发扬光大。</p>
+            <p>信德之光由一个岛点燃到另一个岛，好像教会头上闪烁的星星。世界的黑夜渐渐显露曙光，急步走向黎明——是羔羊和他净配摆设婚宴那天的黎明，新娘用各地的珍宝(热心的基督徒)装饰打扮起来。</p>
+            <p>主耶稣，请偕同你的传教士，探访大洋洲的每一个岛屿，由最小的一个到最大的一个，赏赐每个岛丰盛的恩宠，使每一个岛联结另一个岛，连串成圣母玛利亚的念珠，并因圣神的风吹，成为你圣父的王国。阿们。</p>
+
+            <h2><span style="color:#b8860b;"><strong>第五端：让我们为《亚洲》祈祷</strong></span></h2>
+            <div class="asia">
+                <p>在这端玫瑰奥绩中，我们想及亚洲。亚洲是五大洲中幅员最大及人口最多的一洲。</p>
+                <p>它有许多不认同的宗教和哲学思想影响它的居民：印度教、佛教、神道教和儒家思想等等……各种教义和思想都是要帮助人和天主相遇，它们呈现出一些美丽而普遍的价值，就是天主的伟大和美善，人人在面对生命时，都应勉力吸取上天的力量和智慧。这是东方人一般的人生哲学。</p>
+                <p>我们祈求亚洲人都能认识基督，他是天主和人之间最好的中保，他来到世上寻找我们，表现出天主极大的善和极大的爱！</p>
+            </div>
+            <p class="asia1">星期一——星期四：耶稣十二龄讲道</p>
+             <p>耶稣唯一关心的事就是中悦圣父，实行他救赎世界的计划，不断寻求他的圣意。</p>
+            <p class="noindent">如果我们在欢喜或痛苦的事情上，慷慨地承行天主的圣意，可以拯救许多兄弟的灵魂。</p>
+            <p class="asia1">星期二—星期五：耶稣被钉在十字架上死</p>
+             <p>耶稣为救赎全人类而死，他在十字架上伸开双臂，要把众人都拥抱在怀中。</p>
+            <p class="noindent">十字架提醒我们，单称自己为基督徒是不够的，我们还必须生活出十字架的奥绩。</p>
+            <p class="asia1">星期三——星期六—主日：天主立圣母为天地之母</p>
+             <p>耶稣召唤圣母玛利亚到自己身边，立她为天地的元后，世人的主保，给她一个任务，就是帮助他做教会的监护人。圣母只有一个愿望，就是扩展她圣子的王国。</p>
+            <p class="noindent">我们祈求圣母玛利亚，赏赐我们一颗慷慨的心，为把天国扩展到全世界而不惜耗尽自己。</p>
+
+            <p class="asia1"><strong>祈求</strong></p>
+            <p>主耶稣，亚洲是你的大洲，你生于亚洲，死于亚洲，又在它内复活，它需要你和你的圣父。它的人民在肉体上和灵魂上都饱受煎熬，在现时代，亚洲的殉道者又是最多的。</p>
+            <p>这个洲没有很多人认识你，但奇妙地，这个洲的人最渴望你。亚洲是祈祷的洲，是信神的洲，所有伟大的宗教都源出于此，你在这里传布福音并撒下你的宝血。</p>
+            <p>主耶稣，太阳由东方升起。你现在也当在东方的百姓中升起，为天主的啟示，五旬节的火及圣公教会开路。</p>
+            <p>主耶稣，如果缺少了亚洲，你的净配教会就会缺少了许多珍宝。我们为伟大的亚洲恳求你，请将亚洲每个男女的期望提升到高处，将他们的祈祷转变为对永生的饥渴，对圣父的追求。</p>
+            <p>让亚洲人共融于一个充满圣神和真理的礼仪中。阿们。</p>
+
+            <h2>圣母德叙祷文</h2>
+            <div class="block-item">
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主垂怜我们。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>基督垂怜我们。天主垂怜我们。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>基督俯听我们。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>基督垂怜我们。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主圣父。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>垂怜我们。</p>
+                <p class="noindent">天主圣子。 <span class="noindent-bc1"><strong>应：</strong></span>垂怜我们。</p>
+                <p class="noindent">天主圣神。（同上）</p>
+                <p class="noindent">三位一体的天主</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>圣玛利亚。 <span class="noindent-bc1"><strong>应：</strong></span>为我们祈求。</p>
+                <p class="noindent">天主圣母。（同上）</p>
+                <p class="noindent">童贞中的圣童贞。</p>
+                <p class="noindent">基督之母。</p>
+                <p class="noindent">天主宠爱之母。</p>
+                <p class="noindent">至洁之母。</p>
+                <p class="noindent">至贞之母。</p>
+                <p class="noindent">无损之母。</p>
+                <p class="noindent">无玷之母。 <span class="noindent-bc1"><strong>应：</strong></span>为我们祈求。</p>
+                <p class="noindent">可爱之母。</p>
+                <p class="noindent">可奇之母。</p>
+                <p class="noindent">善导之母。</p>
+                <p class="noindent">造物之母。</p>
+                <p class="noindent">救世之母。</p>
+                <p class="noindent">极智之贞女。</p>
+                <p class="noindent">可敬之贞女。</p>
+                <p class="noindent">可颂之贞女。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>大能之贞女。 <span class="noindent-bc1"><strong>应：</strong></span>为我们所求。</p>
+                <p class="noindent">宽仁之贞女。 大忠之贞女。</p>
+                <p class="noindent">义德之境。 上智之座。</p>
+                <p class="noindent">吾乐之缘。 妙神之器。</p>
+                <p class="noindent">可崇之器。 圣情大器。</p>
+                <p class="noindent">玄义玫瑰。 达味敌楼。</p>
+                <p class="noindent">象牙宝塔。 黄金之殿。</p>
+                <p class="noindent">结约之柜。 上天之门。</p>
+                <p class="noindent">晓明之星。 病人之痊。</p>
+                <p class="noindent">罪人之托。 忧苦之慰。</p>
+                <p class="noindent">进教之佑。 诸天使之后。</p>
+                <p class="noindent">诸圣祖之后。 诸先知之后。</p>
+                <p class="noindent">诸宗徒之后。 诸为义致命之后。</p>
+                <p class="noindent">诸精修之后。 诸童贞之后。</p>
+                <p class="noindent">诸圣人之后。 无原罪始胎之后。</p>
+                <p class="noindent">蒙召升天之后。 至圣玫瑰之后。</p>
+                <p class="noindent">和平之后。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>除免世罪天主的羔羊。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>主赦我们。</p>
+                <p class="noindent">除免世罪天主的羔羊。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>主允我们。</p>
+                <p class="noindent">除免世罪天主的羔羊。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>主怜我们。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>主的天使向玛利亚报喜。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>她因圣神受孕。</p>
+            </div>
+            <p>请众同祷：天主，求你赋给我们灵魂圣宠，使我们因天使的报告，得知你的圣子耶稣降生成人，又因他的苦难和苦架，使我们获享复活的光荣，因我们的主基督。阿们。</p>
+
+            <h2>传教祷文</h2>
+            <p>诵念这篇传教祷文，将地球上五大洲奉献给圣母玛利亚，我们可以学会以一种更普世化的心态祈祷。这篇祷文可以这样念：领经员念圣母德叙名号的部分，信众念第二部分来回应，将每一洲的国家交托给圣母。</p>
+            <div class="block-item">
+                <p class="noindent">领：圣玛利亚。 众：救主之母。</p>
+                <p class="noindent">天主圣母。 请记得非洲。</p>
+                <p class="noindent">童贞中的圣童贞。 请记得扎伊尔</p>
+                <p class="noindent">基督之母。 请记得乌干达。</p>
+                <p class="noindent">天主宠爱之母。 请记得埃塞俄比亚。</p>
+                <p class="noindent">至洁之母。 请记得莫桑比克。</p>
+                <p class="noindent">至贞之母。 请记得卢旺达。</p>
+                <p class="noindent">无损之母。 请记得南非。</p>
+                <p class="noindent">无玷之母。 请记得多哥。</p>
+                <p class="noindent">可爱之母。 使各国成为一个子民。</p>
+                <p class="noindent">可奇之母。 使各国成为天主的圣子民.</p>
+                <p class="noindent">善导之母。 众：救主之母。</p>
+                <p class="noindent">造物之母。 请记得美洲。</p>
+                <p class="noindent">救世之母。 请记得古巴。</p>
+                <p class="noindent">极智之贞女。 请记得墨西哥。</p>
+                <p class="noindent">可敬之贞女。 请记得美国。</p>
+                <p class="noindent">可颂之贞女。 请记得哥伦比亚。</p>
+                <p class="noindent">大能之贞女。 请记得智利。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>宽仁之贞女 众：请记得哥斯达黎加。</p>
+                <p class="noindent">大忠之贞女。 使各国成为一个子民。</p>
+                <p class="noindent">义德之境。 使各国成为天主的圣子民。</p>
+                <p class="noindent">上智之座。 众：救主之母。</p>
+                <p class="noindent">吾乐之缘。 请记得欧洲。</p>
+                <p class="noindent">秒神之器。 请记得俄罗斯。</p>
+                <p class="noindent">可崇之器。 请记得波兰。</p>
+                <p class="noindent">圣情大器。 请记得法国。</p>
+                <p class="noindent">玄义玫瑰。 请记得意大利。</p>
+                <p class="noindent">达味敌楼。 请记得立陶宛。</p>
+                <p class="noindent">象牙宝塔。 请记得波斯尼亚。</p>
+                <p class="noindent">黄金之殿。 使各国成为一个子民。</p>
+                <p class="noindent">结约之柜。 使各国成为天主的圣子民。</p>
+                <p class="noindent">上天之门。 救主之母。</p>
+                <p class="noindent">晓明之星。 请记得大洋洲。</p>
+                <p class="noindent">病人之痊。 请记得太平洋大小岛屿。</p>
+                <p class="noindent">罪人之托。 请记得澳大利亚。</p>
+                <p class="noindent">忧苦之慰。 请记得新西兰。</p>
+                <p class="noindent">进教之佑。 使各国成为一个子民。</p>
+                <p class="noindent">诸天使之后。 使各国成为天主的圣子民。</p>
+                <p class="noindent">诸圣祖之后。 救主之母。</p>
+                <p class="noindent">诸先知之后。 请记得亚洲。</p>
+                <p class="noindent">诸宗徒之后。 请记得中国。</p>
+                <p class="noindent">诸为义致命之后。 请记得印度。</p>
+                <p class="noindent">诸精修之后。 请记得中东各国。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>诸童贞之后。 众：请记得柬埔寨。</p>
+                <p class="noindent">诸圣人之后。 请记得韩国。</p>
+                <p class="noindent">无原罪始胎之后。 请记得越南。</p>
+                <p class="noindent">蒙召升天之后。 请记得印尼。</p>
+                <p class="noindent">至圣玫瑰之后。 使各国成为一个子民。</p>
+                <p class="noindent">和平之后。 使各国成为天主的圣子民。</p>
+                <p class="noindent">领：玛利亚，传教之母。</p>
+                <p class="noindent">众：俯听来自地上的呼声。请为我们祈求。(两次)</p>
+                <p class="noindent">领：天主的羔羊，玛利亚之子。</p>
+                <p class="noindent">众：请赏赐我们复活和新生。(两次)</p>
+                <p class="noindent">领：天主的羔羊，玛利亚之子。</p>
+                <p class="noindent">众：请赏赐我们你的平安。(两次)</p>
+            </div>
+            <p>请众同祷：天主，你愿意众人得救，并且认识你的真理，我们恳求你打发更多的工人来收割你的庄稼，使他们满怀信心地宣讲你的圣言，在各地传扬你的圣训，让万民认识你：唯一的真天主，曾经派遣了你的圣子耶稣基督来救赎世界。他永生永王。阿们。</p>
+            <p>天主，你建立了圣而公教会来拯救世人，继续基督的工作直至世终，请唤醒信友的心灵，叫他们感受到传教的迫切需要，并使地上万民组成一个唯一的大家庭，一个在基督内的新人类。阿们。</p>
+
+            <h2>圣母综合祷文</h2>
+            <div class="block-item">
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>天主垂怜我们。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>基督垂怜我们。天主垂怜我们。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>基督俯听我们。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>基督垂允我们。</p>
+                <p class="noindent">在天天主圣父。 垂怜我们。</p>
+                <p class="noindent">赎世天主圣子。 垂怜我们。</p>
+                <p class="noindent">天主圣神。 垂怜我们。</p>
+                <p class="noindent">三位一体的天主。 垂怜我们。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>玛利亚，圣父偏爱之女。</p>
+                <p class="noindent"><span class="noindent-bc1"><strong>应：</strong></span>为我们祈求。</p>
+                <p class="noindent">玛利亚，圣子永恒的居所。 为我们祈求。</p>
+                <p class="noindent">玛利亚，圣神钟爱的净配。 （同上）</p>
+                <p class="noindent">玛利亚，天主之母。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>教会之母。</p>
+                <p class="noindent">全能者的奇迹。</p>
+                <p class="noindent">天主圣宠的妙工。</p>
+                <p class="noindent">无原罪的贞女。</p>
+                <p class="noindent">人类的再生者。</p>
+                <p class="noindent">协调天主的贞女。</p>
+                <p class="noindent">仁恕救援的贞女。</p>
+                <p class="noindent">耶稣圣心的母后。</p>
+                <p class="noindent">耶稣圣心恩宠的分施者。</p>
+                <p class="noindent">靠近耶稣圣心的中保。</p>
+                <p class="noindent">开启耶稣圣心的钥匙。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>五大洲的母亲。 <span class="noindent-bc1"><strong>应：</strong></span>为我们祈求。</p>
+                <p class="noindent">我们的好母亲。 （同上）</p>
+                <p class="noindent">我们的好导师。</p>
+                <p class="noindent">我们的好向导。</p>
+                <p class="noindent">黑暗中的光明。</p>
+                <p class="noindent">传教士甘饴的安慰。</p>
+                <p class="noindent">穷人的庇荫所。</p>
+                <p class="noindent">失意者的希望。</p>
+                <p class="noindent">全能者的转求者。</p>
+                <p class="noindent"><span class="noindent-bc"><strong>启：</strong></span>诸宗徒之后。 <span class="noindent-bc1"><strong>应：</strong></span>为我们祈求。</p>
+                <p class="noindent">全人类之后。 （同上）</p>
+                <p class="noindent">天地之后。</p>
+                <p class="noindent">除免世罪的天主羔羊。 <span class="noindent-bc1"><strong>应：</strong></span>主赦我们。</p>
+                <p class="noindent">除免世罪的天主羔羊。 主允我们。</p>
+                <p class="noindent">除免世罪的天主羔羊。 主怜我们。</p>
+            </div>
+            <p>请众同祷：各色人种之后，万民至爱之母，我们恳求你保护我们，助我们行善避恶。吁！玛利亚！天主之母，请使尚未认识福音的民族，尽快获得救赎，求你铲除一切障碍，驱逐所有仇敌，预备个人的心灵，为你的耶稣召叫新的宗徒，好使天主的神国临淤你全体的子民，天下各地都同声赞美天主圣父，圣子及圣神。阿们。</p>
+
+            <h3>全民的母亲</h3>
+            <p>吁！童贞圣母，愿你精神的母道，覆盖于全民身上。</p>
+            <p>对于欧洲和美洲的人民，请你做善导的母亲，开启你子女的心灵，教导他们因爱德与人分享一切，不施暴力，而做温良的人。</p>
+            <p>对于亚洲的人民，请你做默观者的母亲，教导你子女正确的价值观，做个忍耐与和平的人，对于非洲的人民，请你做神贫者的母亲，教导你的子女活出人性的尊严，在兄弟之情中共融团结，将生命的质素日益改良。</p>
+            <p>对于拉丁美洲和大洋洲的人民，请你做被压迫者的母亲，将你的子女由各种奴役中拯救出来，使他们每一个人都受到尊重，并使当地的教会为穷人服务，而成为穷人的教会。</p>
+            <p>对于普世人类，母亲啊！请将真理和圣德灌输给我们。阿们。</p>
+
+            <h2>教宗的训导</h2>
+            <p>教宗若望保禄二世在他[救主的使命]通论里，讯示教会的每一个成员分担普世传教的使命。每个信友都应成为传教活动中的合作者。他说[传教合作]首先是个人和基督结合一起，有如葡萄枝连接于葡萄树，圣化自己的生活，才能帮助教会的传教活动结出果实。信友分担福传的责任有多种方式，教宗认为首要的是籍着祈祷，牺牲和基督徒生活的见证而作的精神之源。我们应以祈祷陪伴着传教士，使他们宣讲圣言时，因有天主的圣宠而生效。我们也应分担传教士的牺牲，就是以爱心接受人心的痛苦，籍着结合基督十字架上的祭献而拯救灵魂。另外，促进传教士的圣召，是[传教合作]的中心所在。宣讲福音需要宣讲者，庄稼需要工人，传教要有终身奉献给福传工作，并准备将救恩带至整个世界去的男女传教士来实行，因此，教宗热切期望为人父母者在他们的子女中培育传教士的圣召，也期望年轻人勇敢相应基督的召叫，带领众多的兄弟姊妹走向救恩的道路。[施比受更有福]教宗请求教会中较富有的子女，将他们由天主那里领受到的一切，大方地和传教区的穷人分享。他们籍着慷慨的牺牲和付出，分担传教区物质上的需要，这种爱的行为是另一种方式的传教合作。教会每年的普世传教节，就是提醒信友关怀传教区的缺乏并为它们筹款，在感恩祭中，大家把给予传教区的捐献当做祭品，献给天主。</p>
+
+            <div class="conclusion">
+                <p>吁，玛利亚无原罪之始胎，我等奔尔台前为我等祈。</p>
+                <p>我主耶稣，请宽赦我们的罪过，救我们于永火之中。求你把众人的灵魂，特别是那些需要你怜悯的灵魂，领到天国里去。</p>
+                <p>吁！耶稣。这是为爱你为使罪人悔改，又为赔补玛利亚无玷圣心所受的侮辱。</p>
+                <p>伏求圣神降临，求你籍你至爱净配玛利亚无玷圣心的大能转求，早日降到我们心中。</p>
+                <p>因圣母玛利亚无玷圣心，圣爱火焰之动力，使全人类淹沉在主的圣宠内，此时此刻及至死后。圣母救灵，万分火急，救灵至上，刻不容缓。耶稣我全是你的，圣母圣心我全是你的。圣母无玷圣心，求你为我们现在及临终时祈求主恩。</p>
+                <p>永恒天主圣父，我把你至爱之子，耶稣基督的至圣宝血连同今天全世界祭台上举行的感恩圣祭一起奉献给你，求救众炼灵，求救众罪人。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 字号面板 -->
+    <div class="font-panel-overlay" id="fontOverlay" onclick="closeFontPanel()"></div>
+    <div class="font-panel" id="fontPanel">
+        <div class="drag-handle" id="dragHandle"></div>
+        <div class="panel-header">
+            <span class="panel-title">调整文字大小</span>
+            <button class="panel-reset" onclick="resetFontSize()">恢复默认</button>
+        </div>
+        <div class="slider-row">
+            <span class="slider-label-small">A</span>
+            <input type="range" class="font-slider" id="fontSlider" min="12" max="28" step="1" value="16" oninput="onSliderChange(this.value)">
+            <span class="slider-label-large">A</span>
+        </div>
+        <div class="font-value" id="fontValue">当前字号：16px</div>
+    </div>
+
+    <script>
+        function goBack() {
+            if (window.history.length > 1) { window.history.back(); }
+            else { window.location.href = 'index.html'; }
+        }
+
+        const MIN_FONT = 12, MAX_FONT = 28, DEFAULT_FONT = 16;
+        const STORAGE_KEY = 'prayerFontSize';
+        const fontPanel = document.getElementById('fontPanel');
+        const fontOverlay = document.getElementById('fontOverlay');
+        const fontSlider = document.getElementById('fontSlider');
+        const fontValue = document.getElementById('fontValue');
+        const pageContent = document.getElementById('pageContent');
+
+        function openFontPanel() {
+            fontPanel.classList.add('show');
+            fontOverlay.classList.add('show');
+        }
+        function closeFontPanel() {
+            fontPanel.classList.remove('show');
+            fontOverlay.classList.remove('show');
+        }
+        function applyFontSize(size) {
+            pageContent.style.zoom = size / DEFAULT_FONT;
+        }
+        function onSliderChange(value) {
+            const size = parseInt(value, 10);
+            applyFontSize(size);
+            fontValue.textContent = '当前字号：' + size + 'px';
+            try { localStorage.setItem(STORAGE_KEY, size); } catch (e) {}
+        }
+        function resetFontSize() {
+            fontSlider.value = DEFAULT_FONT;
+            onSliderChange(DEFAULT_FONT);
+        }
+
+        (function init() {
+            let saved = DEFAULT_FONT;
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const num = parseInt(stored, 10);
+                    if (!isNaN(num) && num >= MIN_FONT && num <= MAX_FONT) saved = num;
+                }
+            } catch (e) {}
+            fontSlider.value = saved;
+            applyFontSize(saved);
+            fontValue.textContent = '当前字号：' + saved + 'px';
+        })();
+
+        (function setupDragClose() {
+            const handle = document.getElementById('dragHandle');
+            let startY = 0, currentY = 0, isDragging = false;
+            function onStart(e) {
+                isDragging = true;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                currentY = startY;
+                fontPanel.style.transition = 'none';
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', onEnd);
+            }
+            function onMove(e) {
+                if (!isDragging) return;
+                currentY = e.touches ? e.touches[0].clientY : e.clientY;
+                const delta = currentY - startY;
+                if (delta > 0) fontPanel.style.transform = 'translateY(' + delta + 'px)';
+                if (e.cancelable) e.preventDefault();
+            }
+            function onEnd() {
+                if (!isDragging) return;
+                isDragging = false;
+                fontPanel.style.transition = '';
+                const delta = currentY - startY;
+                if (delta > 80) closeFontPanel();
+                fontPanel.style.transform = '';
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('touchend', onEnd);
+            }
+            handle.addEventListener('mousedown', onStart);
+            handle.addEventListener('touchstart', onStart, { passive: false });
+        })();
+    </script>
+	<script>
+	document.addEventListener('plusready', function() {
+	    // 监听系统返回键
+	    plus.key.addEventListener('backbutton', function() {
+	        // 直接跳回首页
+	        window.location.href = 'index.html'; 
+	        // 注意：如果经文在子文件夹里，要改成 '../index.html'
+	    }, false);
+	});
+	</script>
+</body>
+</html>

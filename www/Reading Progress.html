@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>📖 读经记录 · 思高版</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #f5f3f0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .app {
+      max-width: 800px;
+      width: 100%;
+      background: #fefcf9;
+      border-radius: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      border: 1px solid #e9e2d8;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #2d3a2e;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.2rem;
+    }
+
+    h1 span { font-size: 1.6rem; }
+
+    .subhead {
+      color: #7f8c7c;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      padding-left: 0.6rem;
+      border-left: 3px solid #cbd8c2;
+      font-style: italic;
+    }
+
+    /* 四时段卡片网格 */
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .slot-card {
+      background: #ffffff;
+      border-radius: 1.2rem;
+      padding: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+      border: 1px solid #ede7df;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+    }
+
+    .slot-card:active { transform: scale(0.98); }
+    .slot-card:hover { box-shadow: 0 8px 20px -4px rgba(80, 70, 50, 0.1); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 0.6rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .morning .card-header { border-bottom: 2px solid #f5d7b3; }
+    .afternoon .card-header { border-bottom: 2px solid #bce4dc; }
+    .noon .card-header { border-bottom: 2px solid #e7dba8; }
+    .evening .card-header { border-bottom: 2px solid #c7b9d9; }
+
+    .time-label {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .morning .time-label { color: #b46f2e; }
+    .afternoon .time-label { color: #2e8b7a; }
+    .noon .time-label { color: #a08b3a; }
+    .evening .time-label { color: #6d5a8b; }
+
+    .time-icon { font-size: 1.3rem; }
+
+    .status-badge {
+      background: #f2efe9;
+      color: #6f7a6b;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 30px;
+      font-weight: 500;
+    }
+
+    .position-display {
+      background: #faf8f5;
+      border-radius: 0.8rem;
+      padding: 0.8rem 0.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 75px;
+      border: 1px dashed #ddd6cc;
+      transition: background 0.2s;
+    }
+    
+    .slot-card:hover .position-display { background: #f7f3ef; border-color: #d9d0c4; }
+
+    .position-text {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #2f3e2c;
+      line-height: 1.2;
+      word-break: break-word;
+      text-align: center;
+    }
+
+    .position-text.empty {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: #b7b0a6;
+      font-style: italic;
+    }
+
+    /* 弹窗 */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(3px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s;
+    }
+
+    .modal-overlay.show { opacity: 1; visibility: visible; }
+
+    .modal-box {
+      background: #fefcf9;
+      border-radius: 1.2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      max-width: 580px;
+      width: 95%;
+      height: 85vh;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #e9e2d8;
+      transform: scale(0.96);
+      transition: transform 0.2s ease;
+      overflow: hidden;
+    }
+
+    .modal-overlay.show .modal-box { transform: scale(1); }
+
+    .modal-header {
+      padding: 1rem 1.2rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .modal-header h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #2d3a2e;
+      width: 100%;
+      text-align: center;
+    }
+
+    .modal-close {
+      position: absolute;
+      right: 1rem;
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      color: #b7b0a6;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .testament-tabs {
+      display: flex;
+      padding: 0.6rem 1.2rem 0;
+      border-bottom: 1px solid #e9e2d8;
+      flex-shrink: 0;
+      gap: 1rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 0.5rem 0 0.6rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #8f877b;
+      cursor: pointer;
+      position: relative;
+      font-family: inherit;
+      transition: color 0.15s;
+    }
+
+    .tab-btn.active { color: #4a8e43; }
+    .tab-btn[data-tab="new"].active { color: #d1603d; }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: currentColor;
+      border-radius: 2px 2px 0 0;
+    }
+
+    .modal-body {
+      padding: 1rem;
+      overflow-y: auto;
+      flex: 1;
+      background: #fcfcfc;
+    }
+
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+    }
+
+    .book-card {
+      border-radius: 0.5rem;
+      padding: 0.6rem 0.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.1s, filter 0.1s;
+      color: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border: 2px solid transparent;
+    }
+
+    .book-card:hover { filter: brightness(1.05); }
+    .book-card:active { transform: scale(0.96); }
+    .book-card.selected { border-color: #2d3a2e; box-shadow: 0 0 0 2px #2d3a2e; }
+
+    .book-abbr {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      line-height: 1.1;
+      margin-bottom: 0.15rem;
+    }
+
+    .book-full {
+      font-size: 0.65rem;
+      opacity: 0.9;
+      text-align: center;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
+    .c-green  { background-color: #60b152; }
+    .c-blue   { background-color: #3b9cea; }
+    .c-purple { background-color: #9b3e9e; }
+    .c-yellow { background-color: #f1b93a; }
+    .c-orange { background-color: #f45b3b; }
+    .c-nt-red { background-color: #e54c4c; }
+
+    .chapter-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.8rem;
+      gap: 0.5rem;
+    }
+    
+    .back-to-books {
+      background: #f0ebe4;
+      border: none;
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.4rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: #4a4a4a;
+      font-weight: 500;
+    }
+
+    .chapter-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #2d3a2e;
+    }
+
+    .chapter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+      gap: 0.4rem;
+    }
+
+    .chapter-btn {
+      background: #ffffff;
+      border: 1px solid #e0d9d0;
+      border-radius: 0.4rem;
+      padding: 0.5rem 0;
+      font-size: 0.9rem;
+      font-family: inherit;
+      font-weight: 500;
+      color: #4a4a4a;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+
+    .chapter-btn:hover { background: #f5f1eb; }
+    
+    .btn-clear-inline {
+      margin-left: auto;
+      background: transparent;
+      color: #e54c4c;
+      border: 1px solid #f0dada;
+      padding: 0.3rem 0.8rem;
+      border-radius: 0.4rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-clear-inline:hover { background: #fdf5f5; }
+
+    @media (max-width: 750px) {
+      body { padding: 0.5rem; align-items: flex-start; }
+      .app { padding: 1rem; margin-top: 1rem; border-radius: 1.2rem; }
+      .slots-grid { grid-template-columns: 1fr; gap: 0.8rem; }
+      .position-display { min-height: 65px; padding: 0.6rem; }
+      .position-text { font-size: 1.15rem; }
+      
+      .modal-box { height: 90vh; width: 92%; }
+      .book-grid { grid-template-columns: repeat(4, 1fr); gap: 0.4rem; }
+      .book-abbr { font-size: 1rem; }
+      .book-full { font-size: 0.6rem; }
+    }
+
+    @media (max-width: 380px) {
+      .book-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1><span>📖</span> 读经记录</h1>
+    <div class="subhead">思高版圣经 · 单击记录，双击卡片进入阅读</div>
+
+    <div class="slots-grid">
+      <!-- 早晨 -->
+      <div class="slot-card morning" data-slot="morning">
+        <div class="card-header">
+          <div class="time-label"><span class="time-icon">🌅</span> 早晨</div>
+          <span class="status-badge">早</span>
+        </div>
+        <div class="position-display" id="morningDisplay">
+          <div class="position-text empty" id="morningText">尚未记录</div>
+        </div>
+      </div>
+
+      <!-- 中午 -->
+      <div class="slot-card noon" data-slot="noon">
+        <div class="card-header">
+          <div class="time-label"><span class="time-icon">☀️</span> 中午</div>
+          <span class="status-badge">中</span>
+        </div>
+        <div class="position-display" id="noonDisplay">
+          <div class="position-text empty" id="noonText">尚未记录</div>
+        </div>
+      </div>
+
+      <!-- 下午 -->
+      <div class="slot-card afternoon" data-slot="afternoon">
+        <div class="card-header">
+          <div class="time-label"><span class="time-icon">🌤️</span> 下午</div>
+          <span class="status-badge">下</span>
+        </div>
+        <div class="position-display" id="afternoonDisplay">
+          <div class="position-text empty" id="afternoonText">尚未记录</div>
+        </div>
+      </div>
+
+      <!-- 晚上 -->
+      <div class="slot-card evening" data-slot="evening">
+        <div class="card-header">
+          <div class="time-label"><span class="time-icon">🌙</span> 晚上</div>
+          <span class="status-badge">晚</span>
+        </div>
+        <div class="position-display" id="eveningDisplay">
+          <div class="position-text empty" id="eveningText">尚未记录</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 选卷选章弹窗 -->
+  <div class="modal-overlay" id="pickerModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>圣经目录</h2>
+        <button class="modal-close" id="modalCloseBtn">✕</button>
+      </div>
+      
+      <div class="testament-tabs" id="testamentTabs">
+        <button class="tab-btn active" data-tab="old">旧约 (46)</button>
+        <button class="tab-btn" data-tab="new">新约 (27)</button>
+      </div>
+
+      <div class="modal-body">
+        <div id="bookStep">
+          <div class="book-grid" id="bookGrid"></div>
+        </div>
+        <div id="chapterStep" style="display: none;">
+          <div class="chapter-header">
+            <button class="back-to-books" id="backToBooksBtn">← 返回目录</button>
+            <div class="chapter-title" id="chapterTitle">选择章</div>
+            <button class="btn-clear-inline" id="modalClearBtn" style="display: none;">清除记录</button>
+          </div>
+          <div class="chapter-grid" id="chapterGrid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const BIBLE_BOOKS = [
+        { abbr: '创', name: '创世纪', id: 'gen', chapters: 50, category: 'old', color: 'c-green' },
+        { abbr: '出', name: '出谷纪', id: 'exo', chapters: 40, category: 'old', color: 'c-green' },
+        { abbr: '肋', name: '肋未纪', id: 'lev', chapters: 27, category: 'old', color: 'c-green' },
+        { abbr: '户', name: '户籍纪', id: 'num', chapters: 36, category: 'old', color: 'c-green' },
+        { abbr: '申', name: '申命纪', id: 'deu', chapters: 34, category: 'old', color: 'c-green' },
+        { abbr: '苏', name: '若苏厄书', id: 'jos', chapters: 24, category: 'old', color: 'c-blue' },
+        { abbr: '民', name: '民长纪', id: 'jdg', chapters: 21, category: 'old', color: 'c-blue' },
+        { abbr: '卢', name: '卢德传', id: 'rut', chapters: 4, category: 'old', color: 'c-blue' },
+        { abbr: '撒上', name: '撒慕尔纪上', id: '1sa', chapters: 31, category: 'old', color: 'c-blue' },
+        { abbr: '撒下', name: '撒慕尔纪下', id: '2sa', chapters: 24, category: 'old', color: 'c-blue' },
+        { abbr: '列上', name: '列王纪上', id: '1ki', chapters: 22, category: 'old', color: 'c-blue' },
+        { abbr: '列下', name: '列王纪下', id: '2ki', chapters: 25, category: 'old', color: 'c-blue' },
+        { abbr: '编上', name: '编年纪上', id: '1ch', chapters: 29, category: 'old', color: 'c-blue' },
+        { abbr: '编下', name: '编年纪下', id: '2ch', chapters: 36, category: 'old', color: 'c-blue' },
+        { abbr: '厄上', name: '厄斯德拉上', id: 'ezr', chapters: 10, category: 'old', color: 'c-blue' },
+        { abbr: '厄下', name: '厄斯德拉下', id: 'neh', chapters: 13, category: 'old', color: 'c-blue' },
+        { abbr: '多', name: '多俾亚传', id: 'tob', chapters: 14, category: 'old', color: 'c-purple' },
+        { abbr: '友', name: '友弟德传', id: 'jdt', chapters: 16, category: 'old', color: 'c-purple' },
+        { abbr: '艾', name: '艾斯德尔传', id: 'est', chapters: 10, category: 'old', color: 'c-purple' },
+        { abbr: '加上', name: '玛加伯上', id: '1ma', chapters: 16, category: 'old', color: 'c-purple' },
+        { abbr: '加下', name: '玛加伯下', id: '2ma', chapters: 15, category: 'old', color: 'c-purple' },
+        { abbr: '约', name: '约伯传', id: 'job', chapters: 42, category: 'old', color: 'c-purple' },
+        { abbr: '咏', name: '圣咏集', id: 'psa', chapters: 150, category: 'old', color: 'c-purple' },
+        { abbr: '箴', name: '箴言', id: 'pro', chapters: 31, category: 'old', color: 'c-purple' },
+        { abbr: '训', name: '训道篇', id: 'ecc', chapters: 12, category: 'old', color: 'c-purple' },
+        { abbr: '歌', name: '雅歌', id: 'sng', chapters: 8, category: 'old', color: 'c-purple' },
+        { abbr: '智', name: '智慧篇', id: 'wis', chapters: 19, category: 'old', color: 'c-purple' },
+        { abbr: '德', name: '德训篇', id: 'sir', chapters: 51, category: 'old', color: 'c-purple' },
+        { abbr: '依', name: '依撒意亚', id: 'isa', chapters: 66, category: 'old', color: 'c-yellow' },
+        { abbr: '耶', name: '耶肋米亚', id: 'jer', chapters: 52, category: 'old', color: 'c-yellow' },
+        { abbr: '哀', name: '耶肋米亚哀歌', id: 'lam', chapters: 5, category: 'old', color: 'c-yellow' },
+        { abbr: '巴', name: '巴路克', id: 'bar', chapters: 6, category: 'old', color: 'c-yellow' },
+        { abbr: '则', name: '厄则克耳', id: 'ezk', chapters: 48, category: 'old', color: 'c-yellow' },
+        { abbr: '达', name: '达尼尔', id: 'dan', chapters: 14, category: 'old', color: 'c-yellow' },
+        { abbr: '欧', name: '欧瑟亚', id: 'hos', chapters: 14, category: 'old', color: 'c-orange' },
+        { abbr: '岳', name: '岳厄尔', id: 'jol', chapters: 4, category: 'old', color: 'c-orange' },
+        { abbr: '亚', name: '亚毛斯', id: 'amo', chapters: 9, category: 'old', color: 'c-orange' },
+        { abbr: '北', name: '亚北底亚', id: 'oba', chapters: 1, category: 'old', color: 'c-orange' },
+        { abbr: '纳', name: '约纳', id: 'jon', chapters: 4, category: 'old', color: 'c-orange' },
+        { abbr: '米', name: '米该亚', id: 'mic', chapters: 7, category: 'old', color: 'c-orange' },
+        { abbr: '鸿', name: '纳鸿', id: 'nam', chapters: 3, category: 'old', color: 'c-orange' },
+        { abbr: '哈', name: '哈巴谷', id: 'hab', chapters: 3, category: 'old', color: 'c-orange' },
+        { abbr: '索', name: '索福尼亚', id: 'zep', chapters: 3, category: 'old', color: 'c-orange' },
+        { abbr: '盖', name: '哈盖', id: 'hag', chapters: 2, category: 'old', color: 'c-orange' },
+        { abbr: '匝', name: '匝加利亚', id: 'zec', chapters: 14, category: 'old', color: 'c-orange' },
+        { abbr: '拉', name: '玛拉基亚', id: 'mal', chapters: 3, category: 'old', color: 'c-orange' },
+        { abbr: '玛', name: '玛窦福音', id: 'mat', chapters: 28, category: 'new', color: 'c-nt-red' },
+        { abbr: '谷', name: '玛尔谷福音', id: 'mrk', chapters: 16, category: 'new', color: 'c-nt-red' },
+        { abbr: '路', name: '路加福音', id: 'luk', chapters: 24, category: 'new', color: 'c-nt-red' },
+        { abbr: '若', name: '若望福音', id: 'jhn', chapters: 21, category: 'new', color: 'c-nt-red' },
+        { abbr: '宗', name: '宗徒大事录', id: 'act', chapters: 28, category: 'new', color: 'c-nt-red' },
+        { abbr: '罗', name: '罗马书', id: 'rom', chapters: 16, category: 'new', color: 'c-nt-red' },
+        { abbr: '格前', name: '格林多前书', id: '1co', chapters: 16, category: 'new', color: 'c-nt-red' },
+        { abbr: '格后', name: '格林多后书', id: '2co', chapters: 13, category: 'new', color: 'c-nt-red' },
+        { abbr: '迦', name: '迦拉达书', id: 'gal', chapters: 6, category: 'new', color: 'c-nt-red' },
+        { abbr: '厄', name: '厄弗所书', id: 'eph', chapters: 6, category: 'new', color: 'c-nt-red' },
+        { abbr: '斐', name: '斐理伯书', id: 'php', chapters: 4, category: 'new', color: 'c-nt-red' },
+        { abbr: '哥', name: '哥罗森书', id: 'col', chapters: 4, category: 'new', color: 'c-nt-red' },
+        { abbr: '得前', name: '得撒洛尼前书', id: '1th', chapters: 5, category: 'new', color: 'c-nt-red' },
+        { abbr: '得后', name: '得撒洛尼后书', id: '2th', chapters: 3, category: 'new', color: 'c-nt-red' },
+        { abbr: '弟前', name: '弟茂德前书', id: '1ti', chapters: 6, category: 'new', color: 'c-nt-red' },
+        { abbr: '弟后', name: '弟茂德后书', id: '2ti', chapters: 4, category: 'new', color: 'c-nt-red' },
+        { abbr: '铎', name: '弟铎书', id: 'tit', chapters: 3, category: 'new', color: 'c-nt-red' },
+        { abbr: '费', name: '费肋孟书', id: 'phm', chapters: 1, category: 'new', color: 'c-nt-red' },
+        { abbr: '希', name: '希伯来书', id: 'heb', chapters: 13, category: 'new', color: 'c-nt-red' },
+        { abbr: '雅', name: '雅各伯书', id: 'jas', chapters: 5, category: 'new', color: 'c-nt-red' },
+        { abbr: '伯前', name: '伯多禄前书', id: '1pe', chapters: 5, category: 'new', color: 'c-nt-red' },
+        { abbr: '伯后', name: '伯多禄后书', id: '2pe', chapters: 3, category: 'new', color: 'c-nt-red' },
+        { abbr: '若一', name: '若望一书', id: '1jn', chapters: 5, category: 'new', color: 'c-nt-red' },
+        { abbr: '若二', name: '若望二书', id: '2jn', chapters: 1, category: 'new', color: 'c-nt-red' },
+        { abbr: '若三', name: '若望三书', id: '3jn', chapters: 1, category: 'new', color: 'c-nt-red' },
+        { abbr: '犹', name: '犹达书', id: 'jud', chapters: 1, category: 'new', color: 'c-nt-red' },
+        { abbr: '默', name: '默示录', id: 'rev', chapters: 22, category: 'new', color: 'c-nt-red' }
+      ];
+
+      const STORAGE_KEY = 'bibleReadingLog_v7';
+      let state = { morning: null, noon: null, afternoon: null, evening: null };
+      
+      let currentSlot = null;
+      let currentTab = 'old';
+      let selectedBookData = null; 
+
+      const slots = ['morning', 'noon', 'afternoon', 'evening'];
+      const textEls = { 
+        morning: document.getElementById('morningText'), 
+        noon: document.getElementById('noonText'), 
+        afternoon: document.getElementById('afternoonText'), 
+        evening: document.getElementById('eveningText') 
+      };
+      const displayContainers = { 
+        morning: document.getElementById('morningDisplay'), 
+        noon: document.getElementById('noonDisplay'), 
+        afternoon: document.getElementById('afternoonDisplay'), 
+        evening: document.getElementById('eveningDisplay') 
+      };
+      const cardEls = {
+        morning: document.querySelector('.slot-card.morning'),
+        noon: document.querySelector('.slot-card.noon'),
+        afternoon: document.querySelector('.slot-card.afternoon'),
+        evening: document.querySelector('.slot-card.evening')
+      };
+
+      const modal = document.getElementById('pickerModal');
+      const modalCloseBtn = document.getElementById('modalCloseBtn');
+      const modalClearBtn = document.getElementById('modalClearBtn');
+      
+      const testamentTabs = document.getElementById('testamentTabs');
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      
+      const bookStep = document.getElementById('bookStep');
+      const chapterStep = document.getElementById('chapterStep');
+      const bookGrid = document.getElementById('bookGrid');
+      const chapterGrid = document.getElementById('chapterGrid');
+      const chapterTitle = document.getElementById('chapterTitle');
+      const backToBooksBtn = document.getElementById('backToBooksBtn');
+
+      function saveState() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+      }
+      
+      function loadState() {
+        try {
+          const stored = localStorage.getItem(STORAGE_KEY);
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            if (parsed && typeof parsed === 'object') {
+              state = { 
+                morning: parsed.morning || null, 
+                noon: parsed.noon || null, 
+                afternoon: parsed.afternoon || null, 
+                evening: parsed.evening || null 
+              };
+            }
+          }
+        } catch (e) {}
+      }
+
+      function updateSlotDisplay(slot) {
+        const record = state[slot];
+        const textEl = textEls[slot];
+        const container = displayContainers[slot];
+
+        if (!record) {
+          textEl.textContent = '尚未记录';
+          textEl.classList.add('empty');
+          container.style.borderStyle = 'dashed';
+        } else {
+          textEl.textContent = `${record.bookName} ${record.chapter}章`;
+          textEl.classList.remove('empty');
+          container.style.borderStyle = 'solid';
+        }
+      }
+
+      function openModal(slot) {
+        currentSlot = slot;
+        selectedBookData = null;
+        
+        const existing = state[slot];
+        if (existing) {
+          const bData = BIBLE_BOOKS.find(b => b.id === existing.bookId);
+          if (bData) {
+            selectedBookData = bData;
+            currentTab = bData.category;
+          }
+        }
+
+        showBookStep();
+        updateTabsUI();
+        modal.classList.add('show');
+      }
+
+      function closeModal() {
+        modal.classList.remove('show');
+        currentSlot = null;
+      }
+
+      // ============ 核心跳转：使用 localStorage 传参 ============
+      function goToReading(slot) {
+        const record = state[slot];
+        if (!record) return; 
+
+        localStorage.setItem('pending_bible_chapter', record.chapter);
+        const url = `bibleData/${record.category}/${record.bookId}.html`;
+        window.location.href = url;
+      }
+
+      function updateTabsUI() {
+        tabBtns.forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.tab === currentTab);
+        });
+        renderBookGrid();
+      }
+
+      function showBookStep() {
+        bookStep.style.display = 'block';
+        chapterStep.style.display = 'none';
+        testamentTabs.style.display = 'flex';
+        renderBookGrid();
+      }
+
+      function showChapterStep(bookData) {
+        bookStep.style.display = 'none';
+        chapterStep.style.display = 'block';
+        testamentTabs.style.display = 'none'; 
+        
+        if (currentSlot && state[currentSlot]) {
+          modalClearBtn.style.display = 'block';
+        } else {
+          modalClearBtn.style.display = 'none';
+        }
+
+        chapterTitle.textContent = `${bookData.name} · 选择章`;
+        renderChapterGrid(bookData);
+      }
+
+      function renderBookGrid() {
+        bookGrid.innerHTML = '';
+        const books = BIBLE_BOOKS.filter(b => b.category === currentTab);
+        
+        books.forEach(book => {
+          const div = document.createElement('div');
+          div.className = `book-card ${book.color}`;
+          if (selectedBookData && selectedBookData.id === book.id) {
+            div.classList.add('selected');
+          }
+          
+          div.innerHTML = `
+            <div class="book-abbr">${book.abbr}</div>
+            <div class="book-full">${book.name}</div>
+          `;
+          
+          div.addEventListener('click', () => {
+            selectedBookData = book;
+            showChapterStep(book);
+          });
+          
+          bookGrid.appendChild(div);
+        });
+      }
+
+      function renderChapterGrid(bookData) {
+        chapterGrid.innerHTML = '';
+        for (let i = 1; i <= bookData.chapters; i++) {
+          const btn = document.createElement('button');
+          btn.className = 'chapter-btn';
+          btn.textContent = i;
+          
+          btn.addEventListener('click', () => {
+            state[currentSlot] = {
+              bookId: bookData.id,
+              bookName: bookData.name,
+              chapter: i,
+              category: bookData.category
+            };
+            saveState();
+            updateSlotDisplay(currentSlot);
+            closeModal();
+          });
+          
+          chapterGrid.appendChild(btn);
+        }
+      }
+
+      function clearCurrentSlot() {
+        if (!currentSlot) return;
+        const slotNames = { morning: '早晨', noon: '中午', afternoon: '下午', evening: '晚上' };
+        if (!window.confirm(`确定要清除「${slotNames[currentSlot]}」的读经记录吗？`)) return;
+        state[currentSlot] = null;
+        saveState();
+        updateSlotDisplay(currentSlot);
+        closeModal();
+      }
+
+      // ============ 单击/双击逻辑处理 ============
+      function bindEvents() {
+        let clickTimer = null;
+
+        slots.forEach(slot => {
+          const card = cardEls[slot];
+          
+          card.addEventListener('click', () => {
+            // 如果已经有一个定时器在等待，说明这可能是双击的第一次点击
+            if (clickTimer) {
+              clearTimeout(clickTimer);
+              clickTimer = null;
+              return; // 什么都不做，等待 dblclick 事件
+            }
+
+            // 设置一个 250ms 的延时
+            clickTimer = setTimeout(() => {
+              // 250ms 内没有第二次点击，视为单击 -> 打开记录框
+              clickTimer = null;
+              openModal(slot);
+            }, 250);
+          });
+
+          card.addEventListener('dblclick', (e) => {
+            // 如果双击发生，清除单击的定时器，防止弹出记录框
+            if (clickTimer) {
+              clearTimeout(clickTimer);
+              clickTimer = null;
+            }
+            // 如果已经有记录，双击直接跳转阅读
+            if (state[slot]) {
+              goToReading(slot);
+            }
+          });
+        });
+
+        modalCloseBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        
+        backToBooksBtn.addEventListener('click', showBookStep);
+
+        tabBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            currentTab = btn.dataset.tab;
+            updateTabsUI();
+          });
+        });
+
+        modalClearBtn.addEventListener('click', clearCurrentSlot);
+        
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
+        });
+      }
+
+      function init() {
+        loadState();
+        slots.forEach(updateSlotDisplay);
+        bindEvents();
+      }
+
+      init();
+    })();
+  </script>
+  <script>
+  document.addEventListener('plusready', function() {
+      plus.key.addEventListener('backbutton', function() {
+          window.location.href = 'index.html'; 
+      }, false);
+  });
+  </script>
+</body>
+</html>

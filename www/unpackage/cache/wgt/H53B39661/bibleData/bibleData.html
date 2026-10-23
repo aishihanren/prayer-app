@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>圣经目录</title>
+<style>
+  :root{--bg:#f4f5f7;--text:#333;--border:#e0e0e0;--primary:#4CAF50;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;overflow:hidden;}
+  
+  /* --- 顶部栏：固定顶部 --- */
+  .header-grid {
+    position: fixed; /* 固定定位 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    height: 50px;
+    background-color: #fff;
+    border-bottom: 1px solid var(--border); /* 加一条极细底线，更有层次感 */
+  }
+
+  .header-left {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 10px;
+  }
+
+  .header-center {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .back-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* --- 页面主体 --- */
+  .page{
+    padding-top: 50px; /* 关键：只留出顶部栏高度 */
+    height: 100vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* --- Tab栏 --- */
+  .testament-tabs{
+    display:flex;
+    background:#fff;
+    border-bottom:1px solid var(--border);
+  }
+  .testament-tab{
+    flex:1;
+    text-align:center;
+    padding:12px 0;
+    font-size:16px;
+    font-weight:bold;
+    color:#666;
+    cursor:pointer;
+    background:#f9f9f9;
+  }
+  .testament-tab.active{
+    color:var(--primary);
+    background:#fff;
+    border-bottom:2px solid var(--primary);
+  }
+
+  /* --- 书目列表 --- */
+  .book-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    padding:12px;
+  }
+  .book-item{
+    border-radius:8px;
+    padding:12px 4px;
+    text-align:center;
+    cursor:pointer;
+    box-shadow:0 1px 3px rgba(0,0,0,.1);
+    /* 确保文字在方块内垂直居中 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .book-abbr{
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:4px;
+    color:#fff;
+  }
+  .book-name{
+    font-size:11px;
+    color:#fff;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    opacity: 0.9;
+  }
+  
+  /* 颜色类 */
+  .color-0{background:#4CAF50}.color-1{background:#2196F3}.color-2{background:#9C27B0}
+  .color-3{background:#FBC02D}.color-4{background:#F44336}.color-5{background:#FF9800}
+
+</style>
+</head>
+<body>
+
+  <!-- 顶部栏 -->
+  <div class="header-grid">
+    <div class="header-left">
+      <button class="back-btn" onclick="goBack()">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+    </div>
+    <div class="header-center">圣经目录</div>
+    <div class="header-right"></div> <!-- 右侧占位 -->
+  </div>
+
+  <!-- 主体滚动区 -->
+  <div class="page">
+    <div class="testament-tabs">
+      <div class="testament-tab active" data-testament="old">旧约 (46)</div>
+      <div class="testament-tab" data-testament="new">新约 (27)</div>
+    </div>
+    <div class="book-grid" id="book-grid"></div>
+  </div>
+
+<script>
+  /* ========== 返回首页 ========== */
+  function goBack() {
+      window.location.href = '../index.html';
+  }
+
+  const bibleData = {
+    old:[
+      {id:'gen',abbr:'创',name:'创世纪',color:0},{id:'exo',abbr:'出',name:'出谷纪',color:0},
+      {id:'lev',abbr:'肋',name:'肋未纪',color:0},{id:'num',abbr:'户',name:'户籍纪',color:0},
+      {id:'deu',abbr:'申',name:'申命纪',color:0},{id:'jos',abbr:'苏',name:'若苏厄书',color:1},
+      {id:'jdg',abbr:'民',name:'民长纪',color:1},{id:'rut',abbr:'卢',name:'卢德传',color:1},
+      {id:'1sa',abbr:'撒上',name:'撒慕尔纪上',color:1},{id:'2sa',abbr:'撒下',name:'撒慕尔纪下',color:1},
+      {id:'1ki',abbr:'列上',name:'列王纪上',color:1},{id:'2ki',abbr:'列下',name:'列王纪下',color:1},
+      {id:'1ch',abbr:'编上',name:'编年纪上',color:1},{id:'2ch',abbr:'编下',name:'编年纪下',color:1},
+      {id:'ezr',abbr:'厄上',name:'厄斯德拉上',color:1},{id:'neh',abbr:'厄下',name:'厄斯德拉下',color:1},
+      {id:'tob',abbr:'多',name:'多俾亚传',color:1},{id:'jdt',abbr:'友',name:'友弟德传',color:1},
+      {id:'est',abbr:'艾',name:'艾斯德尔传',color:1},{id:'1ma',abbr:'加上',name:'玛加伯上',color:1},
+      {id:'2ma',abbr:'加下',name:'玛加伯下',color:1},{id:'job',abbr:'约',name:'约伯传',color:2},
+      {id:'psa',abbr:'咏',name:'圣咏集',color:2},{id:'pro',abbr:'箴',name:'箴言',color:2},
+      {id:'ecc',abbr:'训',name:'训道篇',color:2},{id:'sng',abbr:'歌',name:'雅歌',color:2},
+      {id:'wis',abbr:'智',name:'智慧篇',color:2},{id:'sir',abbr:'德',name:'德训篇',color:2},
+      {id:'isa',abbr:'依',name:'依撒意亚',color:3},{id:'jer',abbr:'耶',name:'耶肋米亚',color:3},
+      {id:'lam',abbr:'哀',name:'耶肋米亚哀歌',color:3},{id:'bar',abbr:'巴',name:'巴路克',color:3},
+      {id:'ezk',abbr:'则',name:'厄则克耳',color:3},{id:'dan',abbr:'达',name:'达尼尔',color:3},
+      {id:'hos',abbr:'欧',name:'欧瑟亚',color:4},{id:'jol',abbr:'岳',name:'岳厄尔',color:4},
+      {id:'amo',abbr:'亚',name:'亚毛斯',color:4},{id:'oba',abbr:'北',name:'亚北底亚',color:4},
+      {id:'jon',abbr:'纳',name:'约纳',color:4},{id:'mic',abbr:'米',name:'米该亚',color:4},
+      {id:'nam',abbr:'鸿',name:'纳鸿',color:4},{id:'hab',abbr:'哈',name:'哈巴谷',color:4},
+      {id:'zep',abbr:'索',name:'索福尼亚',color:4},{id:'hag',abbr:'盖',name:'哈盖',color:4},
+      {id:'zec',abbr:'匝',name:'匝加利亚',color:4},{id:'mal',abbr:'拉',name:'玛拉基亚',color:4}
+    ],
+    new:[
+      {id:'mat',abbr:'玛',name:'玛窦福音',color:5},{id:'mrk',abbr:'谷',name:'玛尔谷福音',color:5},
+      {id:'luk',abbr:'路',name:'路加福音',color:5},{id:'jhn',abbr:'若',name:'若望福音',color:5},
+      {id:'act',abbr:'宗',name:'宗徒大事录',color:5},{id:'rom',abbr:'罗',name:'罗马书',color:5},
+      {id:'1co',abbr:'格前',name:'格林多前书',color:5},{id:'2co',abbr:'格后',name:'格林多后书',color:5},
+      {id:'gal',abbr:'迦',name:'迦拉达书',color:5},{id:'eph',abbr:'厄',name:'厄弗所书',color:5},
+      {id:'php',abbr:'斐',name:'斐理伯书',color:5},{id:'col',abbr:'哥',name:'哥罗森书',color:5},
+      {id:'1th',abbr:'得前',name:'得撒洛尼前书',color:5},{id:'2th',abbr:'得后',name:'得撒洛尼后书',color:5},
+      {id:'1ti',abbr:'弟前',name:'弟茂德前书',color:5},{id:'2ti',abbr:'弟后',name:'弟茂德后书',color:5},
+      {id:'tit',abbr:'铎',name:'弟铎书',color:5},{id:'phm',abbr:'费',name:'费肋孟书',color:5},
+      {id:'heb',abbr:'希',name:'希伯来书',color:5},{id:'jas',abbr:'雅',name:'雅各伯书',color:5},
+      {id:'1pe',abbr:'伯前',name:'伯多禄前书',color:5},{id:'2pe',abbr:'伯后',name:'伯多禄后书',color:5},
+      {id:'1jn',abbr:'若一',name:'若望一书',color:5},{id:'2jn',abbr:'若二',name:'若望二书',color:5},
+      {id:'3jn',abbr:'若三',name:'若望三书',color:5},{id:'jud',abbr:'犹',name:'犹达书',color:5},
+      {id:'rev',abbr:'默',name:'默示录',color:5}
+    ]
+  };
+  
+  let cur='old';
+  const grid=document.getElementById('book-grid');
+  
+  function render(t){
+    grid.innerHTML='';
+    bibleData[t].forEach(b=>{
+      const d=document.createElement('div');
+      d.className='book-item color-'+b.color;
+      d.innerHTML=`<div class="book-abbr">${b.abbr}</div><div class="book-name">${b.name}</div>`;
+      d.onclick=()=>location.href=`${t}/${b.id}.html`;
+      grid.appendChild(d);
+    });
+  }
+  
+  document.querySelectorAll('.testament-tab').forEach(tab=>{
+    tab.onclick=()=>{
+      document.querySelectorAll('.testament-tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      cur=tab.dataset.testament;
+      render(cur);
+    };
+  });
+  
+  render(cur);
+</script>
+
+<script>
+  document.addEventListener('plusready', function() {
+      // 监听系统返回键
+      plus.key.addEventListener('backbutton', function() {
+          // 直接跳回首页
+          window.location.href = '../index.html'; 
+      }, false);
+  });
+</script>
+</body>
+</html>

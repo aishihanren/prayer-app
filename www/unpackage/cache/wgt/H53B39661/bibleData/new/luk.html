@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>路加福音</title>
+<style>
+:root{--bg:#f4f5f7;--text:#333;--primary:#4CAF50;--font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--font-size:18px;}
+body.theme-gray{--bg:#f4f5f7;}
+body.theme-green{--bg:#e8f5e9;}
+body.theme-yellow{--bg:#fff9e6;}
+body.theme-blue{--bg:#e3f2fd;}
+body.font-kai{--font-family:"KaiTi","楷体",STKaiti,serif;}
+body.font-song{--font-family:"SimSun","宋体",STSong,serif;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-family);font-size:var(--font-size);line-height:1.8;overflow:hidden;}
+.header{position:fixed;top:0;left:0;right:0;height:56px;background:#fff;border-bottom:1px solid #e0e0e0;display:flex;align-items:center;justify-content:space-between;padding:0 12px;z-index:100;}
+.header-title{font-size:18px;font-weight:bold;flex:1;text-align:center;}
+.icon-btn{width:40px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#555;font-size:18px;}
+.footer{position:fixed;bottom:0;left:0;right:0;height:56px;background:#fff;border-top:1px solid #e0e0e0;display:flex;z-index:100;transition:transform .3s;}
+.footer.hidden{transform:translateY(100%);}
+.tab-btn{flex:1;display:flex;align-items:center;justify-content:center;font-size:16px;color:#666;cursor:pointer;}
+.page{position:fixed;top:0;left:0;width:100%;height:100%;transition:transform .3s;background:var(--bg);}
+#list{padding-top:56px;padding-bottom:56px;overflow-y:auto;z-index:10;}
+#reader{transform:translateX(100%);z-index:20;overflow-y:auto;padding-top:56px;padding-bottom:120px;}
+#reader.active{transform:translateX(0);}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:16px;}
+.item{background:#fff;border-radius:8px;padding:16px 0;text-align:center;font-size:16px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.05);}
+.item:active{background:#e0e0e0;}
+.item.intro{background:#e8f5e9;color:#2e7d32;font-weight:bold;}
+.content{padding:0 20px;}
+.content h2{font-size:22px;margin:10px 0 20px;text-align:center;color:var(--primary);}
+.content .subtitle{font-size:18px;font-weight:bold;margin:25px 0 15px;color:#444;text-align:center;}
+.content p{margin-bottom:.8em;text-align:justify;text-indent:2em;position:relative;}
+.content p.note{font-size:.85em;color:#777;text-indent:0;margin-top:15px;padding-top:10px;border-top:1px dashed #ddd;}
+
+.fn {
+  display: inline-block !important; 
+  width: 1.25em !important;
+  height: 1.25em !important;
+  border-radius: 50% !important;
+  background: #e8f5e9 !important;
+  border: 1px solid #a5d6a7 !important;
+  vertical-align: super !important;
+  margin: 0 4px !important;
+  cursor: pointer;
+  user-select: none;
+  position: relative !important;
+  text-indent: 0 !important;
+  line-height: normal !important; 
+}
+
+.fn::before {
+  content: attr(data-fn) !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  font-size: 0.7em !important;
+  color: #2e7d32 !important;
+  font-family: Arial, sans-serif !important;
+  font-weight: bold !important;
+  line-height: 1 !important;
+  transition: color .15s;
+}
+
+.fn.active {
+  background: #4CAF50 !important;
+  border-color: #2e7d32 !important;
+  box-shadow: 0 0 0 2px rgba(76,175,80,.25) !important;
+}
+.fn.active::before {
+  color: #fff !important;
+}
+
+.footnote-bar{
+  position:fixed;bottom:56px;left:0;right:0;
+  background:#fff;border-top:1px solid #ddd;
+  box-shadow:0 -4px 12px rgba(0,0,0,.08);
+  padding:14px 18px 10px;font-size:15px;color:#444;
+  display:none;z-index:150;max-height:36vh;overflow-y:auto;
+  border-radius:12px 12px 0 0;
+}
+.footnote-bar.show{display:block;}
+.footnote-bar .fn-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee;}
+.footnote-bar .fn-title{font-size:13px;color:#888;font-weight:600;letter-spacing:.5px;}
+.footnote-bar .fn-close{font-size:20px;color:#999;cursor:pointer;padding:0 6px;line-height:1;transition:color .15s;}
+.footnote-bar .fn-close:hover{color:#333;}
+.footnote-bar .fn-list{display:flex;flex-direction:column;gap:8px;}
+.footnote-bar .fn-item{display:flex;gap:8px;line-height:1.6;text-indent:0;}
+.footnote-bar .fn-item .fn-num{flex-shrink:0;color:var(--primary);font-weight:bold;font-size:14px;min-width:1.6em;}
+.footnote-bar .fn-item .fn-text{flex:1;}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;}
+.overlay.show{display:block;}
+.panel{position:fixed;left:0;right:0;bottom:0;background:#fff;z-index:250;border-radius:16px 16px 0 0;padding:20px;transform:translateY(100%);transition:transform .3s;}
+.panel.show{transform:translateY(0);}
+.group{margin-bottom:20px;}
+.group-title{font-size:14px;color:#888;margin-bottom:10px;}
+.row{display:flex;gap:10px;flex-wrap:wrap;}
+.btn{padding:8px 16px;border:1px solid #ddd;border-radius:8px;background:#f9f9f9;font-size:16px;cursor:pointer;color:#333;}
+.btn.active{border-color:var(--primary);color:var(--primary);background:#e8f5e9;}
+.fs-row{display:flex;align-items:center;justify-content:space-between;background:#f5f5f5;border-radius:8px;padding:8px 16px;}
+.fs-row button{width:40px;height:36px;font-size:20px;border:1px solid #ccc;border-radius:4px;background:#fff;cursor:pointer;}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:#fff;padding:8px 16px;border-radius:20px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:300;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body class="theme-gray font-default">
+
+<div class="header">
+  <div class="icon-btn" onclick="goBack()" title="返回">返回</div>
+  <div class="header-title" id="title">路加福音</div>
+  <div class="icon-btn"></div>
+</div>
+
+<div class="page" id="list">
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="page" id="reader">
+  <div class="content" id="content"></div>
+</div>
+
+<!-- 底部脚注栏 -->
+<div class="footnote-bar" id="footnoteBar">
+  <div class="fn-header">
+    <span class="fn-title">脚注</span>
+    <span class="fn-close" id="fnClose">✕</span>
+  </div>
+  <div class="fn-list" id="fnList"></div>
+</div>
+
+<div class="footer hidden" id="footer">
+  <div class="tab-btn" id="btn-dir">目录</div>
+  <div class="tab-btn" id="btn-set">设置</div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="panel" id="panel">
+  <div class="group">
+    <div class="group-title">字号</div>
+    <div class="fs-row">
+      <button id="fs-minus">A-</button>
+      <span id="fs-val">18px</span>
+      <button id="fs-plus">A+</button>
+    </div>
+  </div>
+  <div class="group">
+    <div class="group-title">背景</div>
+    <div class="row">
+      <button class="btn active" data-theme="theme-gray">浅灰</button>
+      <button class="btn" data-theme="theme-green">浅绿</button>
+      <button class="btn" data-theme="theme-yellow">浅黄</button>
+      <button class="btn" data-theme="theme-blue">浅蓝</button>
+    </div>
+  </div>
+  <div class="group">
+    <div class="group-title">字体</div>
+    <div class="row">
+      <button class="btn active" data-font="font-default">默认</button>
+      <button class="btn" data-font="font-kai">楷体</button>
+      <button class="btn" data-font="font-song">宋体</button>
+    </div>
+  </div>
+  <button class="btn" id="btn-close" style="width:100%;background:var(--primary);color:#fff;border:none;">完成</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- 经文数据（外置 JS 文件，包含经文/脚注/引言/章节占位全部数据） -->
+<script src="./luk_data.js"></script>
+
+<script>
+function goBack() { window.location.href = '../bibleData.html'; }
+document.addEventListener('plusready', function() {
+    plus.key.addEventListener('backbutton', function() { window.location.href = '../bibleData.html'; }, false);
+});
+</script>
+
+<script>
+// ========== 从外置数据文件读取全部数据 ==========
+var _bookData = window.BIBLE_BOOK_DATA && window.BIBLE_BOOK_DATA['luk'];
+if (!_bookData) {
+  console.error('无法加载 luk_data.js，请检查路径');
+  _bookData = { bookName: '路加福音', totalChapters: 24, hasIntro: true, data: {}, footnotes: {} };
+}
+var data = _bookData.data;
+var hasIntro = _bookData.hasIntro;
+var footnotes = _bookData.footnotes;
+
+var bookName = "路加福音";
+var totalChapters = 24;
+
+var readerPage = document.getElementById('reader');
+var grid = document.getElementById('grid');
+var content = document.getElementById('content');
+var titleEl = document.getElementById('title');
+var footer = document.getElementById('footer');
+var overlay = document.getElementById('overlay');
+var panel = document.getElementById('panel');
+var footnoteBar = document.getElementById('footnoteBar');
+var fnList = document.getElementById('fnList');
+var fnClose = document.getElementById('fnClose');
+var current = hasIntro ? 'intro' : 1;
+
+var activeRefs = new Set();
+var currentFootnotes = {};
+
+// 生成目录
+if (hasIntro) {
+  var introItem = document.createElement('div');
+  introItem.className = 'item intro';
+  introItem.textContent = '引';
+  introItem.title = '引言';
+  introItem.addEventListener('click', function(){ openChapter('intro'); });
+  grid.appendChild(introItem);
+}
+for (var i = 1; i <= totalChapters; i++) {
+  (function(ch){
+    var d = document.createElement('div');
+    d.className = 'item';
+    d.textContent = ch;
+    d.addEventListener('click', function(){ openChapter(ch); });
+    grid.appendChild(d);
+  })(i);
+}
+
+// 打开章节
+function openChapter(ch){
+  current = ch;
+  content.innerHTML = data[ch] || '<p>内容暂缺</p>';
+  readerPage.classList.add('active');
+  readerPage.scrollTop = 0;
+  footer.classList.remove('hidden');
+  if (ch === 'intro') {
+    titleEl.textContent = bookName + ' 引言';
+  } else {
+    titleEl.textContent = bookName + ' ' + ch + '/' + totalChapters;
+  }
+  currentFootnotes = footnotes[ch] || {};
+  clearAllFootnotes();
+}
+
+// 清除状态
+function clearAllFootnotes(){
+  footnoteBar.classList.remove('show');
+  fnList.innerHTML = '';
+  activeRefs.clear();
+  content.querySelectorAll('.fn.active').forEach(function(el){ el.classList.remove('active'); });
+}
+
+// 隐藏脚注栏
+function hideFootnoteBar(){
+  footnoteBar.classList.remove('show');
+  fnList.innerHTML = '';
+  activeRefs.forEach(function(ref){ ref.classList.remove('active'); });
+  activeRefs.clear();
+}
+
+// 重建脚注栏
+function rebuildFootnoteBar(){
+  if (activeRefs.size === 0) {
+    footnoteBar.classList.remove('show');
+    fnList.innerHTML = '';
+    return;
+  }
+  var refs = Array.from(activeRefs).sort(function(a, b){
+    var pos = a.compareDocumentPosition(b);
+    if (pos & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
+    if (pos & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+    return 0;
+  });
+  fnList.innerHTML = '';
+  refs.forEach(function(ref){
+    var fnIndex = ref.dataset.fn;
+    var noteObj = currentFootnotes[fnIndex - 1];
+    var noteText = (noteObj && noteObj.note) ? noteObj.note : '（脚注内容缺失）';
+    var num = fnIndex;
+
+    var item = document.createElement('div');
+    item.className = 'fn-item';
+    var numEl = document.createElement('span');
+    numEl.className = 'fn-num';
+    numEl.textContent = num;
+    var textEl = document.createElement('span');
+    textEl.className = 'fn-text';
+    textEl.textContent = noteText;
+    item.appendChild(numEl);
+    item.appendChild(textEl);
+    fnList.appendChild(item);
+  });
+  footnoteBar.classList.add('show');
+}
+
+// 点击事件委托
+content.addEventListener('click', function(e){
+  if (e.target.classList.contains('fn')) {
+    e.stopPropagation();
+    var ref = e.target;
+    if (activeRefs.has(ref)) {
+      activeRefs.delete(ref);
+      ref.classList.remove('active');
+    } else {
+      activeRefs.add(ref);
+      ref.classList.add('active');
+    }
+    rebuildFootnoteBar();
+    return;
+  }
+});
+
+fnClose.addEventListener('click', function(){ hideFootnoteBar(); });
+
+document.addEventListener('click', function(e){
+  if (footnoteBar.classList.contains('show')) {
+    if (e.target.closest('#footnoteBar') || e.target.classList.contains('fn')) return;
+    hideFootnoteBar();
+  }
+});
+
+function closeReader(){
+  readerPage.classList.remove('active');
+  footer.classList.add('hidden');
+  titleEl.textContent = bookName;
+  clearAllFootnotes();
+}
+
+function changeChapter(dir){
+  var curIndex = (current === 'intro') ? 0 : current;
+  var maxIndex = totalChapters;
+  var minIndex = hasIntro ? 0 : 1;
+  var nextIndex = curIndex + dir;
+  if (nextIndex < minIndex) { toast(hasIntro ? '已经是引言' : '已经是第一章'); return; }
+  if (nextIndex > maxIndex) { toast('已经是最后一章'); return; }
+  var next = (nextIndex === 0) ? 'intro' : nextIndex;
+  openChapter(next);
+  toast(next === 'intro' ? '切换到引言' : '切换到第 ' + next + ' 章');
+}
+
+// UI 交互
+document.getElementById('btn-dir').addEventListener('click', closeReader);
+document.getElementById('btn-set').addEventListener('click', function(){
+  overlay.classList.add('show'); panel.classList.add('show');
+});
+document.getElementById('btn-close').addEventListener('click', closeSettings);
+overlay.addEventListener('click', closeSettings);
+function closeSettings(){ overlay.classList.remove('show'); panel.classList.remove('show'); }
+
+var fs = 18;
+document.getElementById('fs-plus').addEventListener('click', function(){
+  if (fs < 30) { fs += 2; document.documentElement.style.setProperty('--font-size', fs+'px'); document.getElementById('fs-val').textContent = fs+'px'; }
+});
+document.getElementById('fs-minus').addEventListener('click', function(){
+  if (fs > 12) { fs -= 2; document.documentElement.style.setProperty('--font-size', fs+'px'); document.getElementById('fs-val').textContent = fs+'px'; }
+});
+
+var themeBtns = document.querySelectorAll('[data-theme]');
+themeBtns.forEach(function(b){
+  b.addEventListener('click', function(){
+    themeBtns.forEach(function(x){ x.classList.remove('active'); });
+    b.classList.add('active');
+    var font = getClass('font-') || 'font-default';
+    document.body.className = b.dataset.theme + ' ' + font;
+  });
+});
+var fontBtns = document.querySelectorAll('[data-font]');
+fontBtns.forEach(function(b){
+  b.addEventListener('click', function(){
+    fontBtns.forEach(function(x){ x.classList.remove('active'); });
+    b.classList.add('active');
+    var theme = getClass('theme-') || 'theme-gray';
+    document.body.className = theme + ' ' + b.dataset.font;
+  });
+});
+function getClass(prefix){
+  var arr = document.body.className.split(' ');
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i].indexOf(prefix) === 0) return arr[i];
+  }
+  return null;
+}
+
+var sx = 0, sy = 0;
+readerPage.addEventListener('touchstart', function(e){
+  sx = e.changedTouches[0].screenX; sy = e.changedTouches[0].screenY;
+}, {passive: true});
+readerPage.addEventListener('touchend', function(e){
+  var dx = e.changedTouches[0].screenX - sx;
+  var dy = e.changedTouches[0].screenY - sy;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
+    if (dx > 0) { if (sx < 50) closeReader(); else changeChapter(-1); }
+    else { changeChapter(1); }
+  }
+}, {passive: true});
+
+var lastTop = 0;
+readerPage.addEventListener('scroll', function(){
+  var t = readerPage.scrollTop;
+  if (t - lastTop > 5 && t > 40) footer.classList.add('hidden');
+  else if (t - lastTop < -5) footer.classList.remove('hidden');
+  lastTop = t <= 0 ? 0 : t;
+});
+
+function toast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2000);
+}
+
+// ==========================================
+// 终极完美版：通过缓存读取章数并自动跳转
+// ==========================================
+(function() {
+    function autoOpen() {
+        // 1. 从本地缓存读取主页面传过来的章数
+        var pendingChapter = localStorage.getItem('pending_bible_chapter');
+        
+        if (pendingChapter) {
+            // 2. 读取成功后，立刻清除缓存，防止下次进错章
+            localStorage.removeItem('pending_bible_chapter');
+            
+            // 3. 直接调用页面里自带的 openChapter 函数
+            if (typeof openChapter === 'function') {
+                var ch = parseInt(pendingChapter, 10);
+                if (!isNaN(ch) && ch >= 1 && ch <= totalChapters) {
+                    openChapter(ch);
+                } else if (pendingChapter === 'intro' && hasIntro) {
+                    openChapter('intro');
+                }
+            } else {
+                // 万一函数没准备好，延迟一下重试
+                setTimeout(autoOpen, 50);
+            }
+        }
+    }
+
+    // 当页面加载完成后执行
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(autoOpen, 50);
+    } else {
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(autoOpen, 50);
+        });
+    }
+})();
+</script>
+</body>
+</html>
