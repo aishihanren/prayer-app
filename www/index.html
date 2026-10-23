@@ -112,7 +112,6 @@
             font-size: 0.85rem;
         }
 
-        /* ===== 圣经大卡片入口 ===== */
         .bible-entry {
             margin: 0 0 14px 0;
         }
@@ -155,7 +154,6 @@
             letter-spacing: 1px;
         }
 
-        /* ===== 读经进度卡片 ===== */
         .reading-entry {
             margin: 0 0 30px 0;
         }
@@ -290,7 +288,6 @@
         <h1>祈祷经文导航 · 总目录</h1>
         <p class="subtitle">按类别整理 · 方便查阅</p>
 
-        <!-- ===== 圣经大卡片入口 ===== -->
         <div class="bible-entry">
             <a href="bibleData/bibleData.html">
                 <span class="bible-icon">📖</span>
@@ -299,7 +296,6 @@
             </a>
         </div>
 
-        <!-- ===== 读经进度卡片 ===== -->
         <div class="reading-entry">
             <a href="Reading Progress.html">
                 <span class="reading-icon">🕘</span>
@@ -308,7 +304,6 @@
             </a>
         </div>
 
-        <!-- ========== 祈祷流程 ========== -->
         <div class="group">
             <h2>🕒 祈祷流程</h2>
             <ul class="link-list">
@@ -316,7 +311,6 @@
             </ul>
         </div>
 
-        <!-- ========== 每日玫瑰经 · 耶稣接待的心 ========== -->
         <div class="group">
             <h2>📖 耶稣接待的心 · 玫瑰经（每日奥迹）</h2>
             <ul class="link-list">
@@ -330,7 +324,6 @@
             </ul>
         </div>
 
-        <!-- ========== 晚餐厅集祷争战玫瑰经 ========== -->
         <div class="group">
             <h2>⚔️ 晚餐厅集祷争战玫瑰经</h2>
             <ul class="link-list">
@@ -341,7 +334,6 @@
             </ul>
         </div>
 
-        <!-- ========== 耶稣基督的宝血串经（五部分） ========== -->
         <div class="group">
             <h2>🩸 耶稣基督的宝血串经 · 五部分</h2>
             <ul class="link-list">
@@ -353,7 +345,6 @@
             </ul>
         </div>
 
-        <!-- ========== 专项玫瑰经与经文 ========== -->
         <div class="group">
             <h2>📜 专项玫瑰经与经文</h2>
             <ul class="link-list">
@@ -368,25 +359,21 @@
             </ul>
         </div>
 
-        <!-- ========== 隐藏的 PDF 栏目 ========== -->
         <div class="group" id="pdf-section" style="display: none !important;" hidden>
             <h2>📚 祈祷用书</h2>
             <ul class="link-list">
-
                 <li><a href="smgxaszdh.html">圣母给心爱神子的话</a></li>
                 <li><a href="fxywdsxdqd.html">奉献于无玷圣心的祈祷</a></li>
                 <li><a href="33tmxcxdry.html">33天迈向晨曦的荣耀</a></li>
             </ul>
         </div>
 
-        <!-- ★ 隐蔽入口：连续点击此处 5 次触发密码框 -->
         <div id="secretDoor" style="text-align: center; margin: 30px 0; color: #8a7a68; font-size: 0.95rem; cursor: default;">
             愿一切荣耀归于天主 · 阿们
         </div>
 
     </div>
 
-    <!-- 密码弹窗（默认隐藏） -->
     <div id="pwdModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center;">
         <div style="background: #fff; padding: 24px; border-radius: 10px; width: 80%; max-width: 300px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
             <h3 style="margin-top: 0; color: #3b2f24; font-size: 18px;">请输入密码</h3>
@@ -398,120 +385,119 @@
         </div>
     </div>
 
-    <!-- ================= 密码与隐蔽入口逻辑 ================= -->
     <script>
-        // "amen" 的 ASCII 码数字总和
-        const SECRET_NUMBER = 417;
+        (function () {
+            // 密码以「偏移后的字符码」保存，运行时还原，源码中无明文、无直接 ASCII 值
+            var MASK = 0x5A; // 掩码
+            var _c = [0x3B, 0x37, 0x3F, 0x34];// 各字符码与 MASK 异或后的结果
 
-        let secretClickCount = 0;
-        let secretClickTimer = null;
+            function reveal(arr) {
+                var out = '';
+                for (var i = 0; i < arr.length; i++) {
+                    out += String.fromCharCode(arr[i] ^ MASK);
+                }
+                return out;
+            }
 
-        // 隐蔽入口：连续快速点击 5 次
-        function registerSecretClick() {
-            secretClickCount++;
+            var targetPwd = reveal(_c);
+            var targetSum = 0;
+            for (var i = 0; i < targetPwd.length; i++) {
+                targetSum += targetPwd.charCodeAt(i);
+            }
 
-            if (secretClickCount >= 5) {
-                secretClickCount = 0;
+            var secretClickCount = 0;
+            var secretClickTimer = null;
+
+            window.registerSecretClick = function () {
+                secretClickCount++;
+                if (secretClickCount >= 5) {
+                    secretClickCount = 0;
+                    clearTimeout(secretClickTimer);
+                    document.getElementById('pwdModal').style.display = 'flex';
+                    document.getElementById('pwdInput').value = '';
+                    return;
+                }
                 clearTimeout(secretClickTimer);
-                document.getElementById('pwdModal').style.display = 'flex';
-                document.getElementById('pwdInput').value = '';
-                return;
-            }
+                secretClickTimer = setTimeout(function () {
+                    secretClickCount = 0;
+                }, 800);
+            };
 
-            clearTimeout(secretClickTimer);
-            secretClickTimer = setTimeout(() => {
-                secretClickCount = 0;
-            }, 800);
-        }
+            window.closeModal = function () {
+                document.getElementById('pwdModal').style.display = 'none';
+            };
 
-        // 页面加载时执行
-        document.addEventListener("DOMContentLoaded", function() {
-            const pdfSection = document.getElementById('pdf-section');
+            window.checkPwd = function () {
+                var pwd = document.getElementById('pwdInput').value;
+                if (!pwd) return;
 
-            // 获取当前已经解锁的次数（如果没有记录过，默认是 0）
-            let unlockCount = parseInt(localStorage.getItem('pdf_unlock_count') || '0');
+                var total = 0;
+                for (var i = 0; i < pwd.length; i++) {
+                    total += pwd.charCodeAt(i);
+                }
 
-            // 如果已经累计满 7 次，直接显示
-            if (unlockCount >= 7) {
-                pdfSection.style.removeProperty('display');
-                pdfSection.removeAttribute('hidden');
-                pdfSection.style.display = 'block';
-            } else {
-                // 没满 7 次，强制隐藏
-                pdfSection.style.setProperty('display', 'none', 'important');
-                pdfSection.setAttribute('hidden', 'true');
-            }
+                if (total === targetSum && pwd === targetPwd) {
+                    var pdfSection = document.getElementById('pdf-section');
+                    pdfSection.style.removeProperty('display');
+                    pdfSection.removeAttribute('hidden');
+                    pdfSection.style.display = 'block';
 
-            // 绑定到底部文字上
-            const secretDoor = document.getElementById('secretDoor');
-            if (secretDoor) {
-                secretDoor.addEventListener("click", registerSecretClick);
-            }
-        });
+                    var unlockCount = parseInt(localStorage.getItem('pdf_unlock_count') || '0', 10);
+                    unlockCount++;
+                    localStorage.setItem('pdf_unlock_count', unlockCount);
 
-        // 关闭弹窗
-        function closeModal() {
-            document.getElementById('pwdModal').style.display = 'none';
-        }
+                    window.closeModal();
 
-        // 验证密码
-        function checkPwd() {
-            var pwd = document.getElementById('pwdInput').value;
-
-            if (!pwd) return;
-
-            var total = 0;
-            for (var i = 0; i < pwd.length; i++) {
-                total += pwd.charCodeAt(i);
-            }
-
-            // 只要加起来等于 417，且完全等于 amen
-            if (total === 417 && pwd === "amen") {
-                const pdfSection = document.getElementById('pdf-section');
-                pdfSection.style.removeProperty('display');
-                pdfSection.removeAttribute('hidden');
-                pdfSection.style.display = 'block';
-
-                // 增加解锁次数
-                let unlockCount = parseInt(localStorage.getItem('pdf_unlock_count') || '0');
-                unlockCount++;
-                localStorage.setItem('pdf_unlock_count', unlockCount);
-
-                closeModal();
-
-                if (window.plus) {
-                    if (unlockCount >= 7) {
-                        plus.nativeUI.toast("✅ 解锁成功！该栏目已永久显示。");
+                    if (window.plus) {
+                        if (unlockCount >= 7) {
+                            plus.nativeUI.toast('✅ 解锁成功！该栏目已永久显示。');
+                        } else {
+                            plus.nativeUI.toast('✅ 解锁成功');
+                        }
+                    }
+                } else {
+                    if (window.plus) {
+                        plus.nativeUI.toast('❌ 密码错误');
                     } else {
-                        plus.nativeUI.toast("✅ 解锁成功");
+                        alert('❌ 密码错误');
                     }
                 }
-            } else {
-                if (window.plus) {
-                    plus.nativeUI.toast("❌ 密码错误");
-                } else {
-                    alert("❌ 密码错误 (您输入的是: " + pwd + ")");
-                }
-            }
-        }
+            };
 
-        // 防审查：禁用右键和长按
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.addEventListener('touchstart', function(e) {
-            if (e.touches.length > 1) e.preventDefault();
-        }, { passive: false });
+            document.addEventListener('DOMContentLoaded', function () {
+                var pdfSection = document.getElementById('pdf-section');
+                var unlockCount = parseInt(localStorage.getItem('pdf_unlock_count') || '0', 10);
+
+                if (unlockCount >= 7) {
+                    pdfSection.style.removeProperty('display');
+                    pdfSection.removeAttribute('hidden');
+                    pdfSection.style.display = 'block';
+                } else {
+                    pdfSection.style.setProperty('display', 'none', 'important');
+                    pdfSection.setAttribute('hidden', 'true');
+                }
+
+                var secretDoor = document.getElementById('secretDoor');
+                if (secretDoor) {
+                    secretDoor.addEventListener('click', window.registerSecretClick);
+                }
+            });
+
+            document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+            document.addEventListener('touchstart', function (e) {
+                if (e.touches.length > 1) e.preventDefault();
+            }, { passive: false });
+        })();
     </script>
 
-    <!-- ================= 系统功能逻辑（返回与打开PDF） ================= -->
     <script>
-        // 首页物理返回键双击退出
-        document.addEventListener('plusready', function() {
+        document.addEventListener('plusready', function () {
             var first = null;
-            plus.key.addEventListener('backbutton', function() {
+            plus.key.addEventListener('backbutton', function () {
                 if (!first) {
                     first = new Date().getTime();
                     plus.nativeUI.toast('再按一次退出应用', { duration: 'short' });
-                    setTimeout(function() { first = null; }, 1000);
+                    setTimeout(function () { first = null; }, 1000);
                 } else {
                     if (new Date().getTime() - first < 1000) {
                         plus.runtime.quit();
@@ -520,21 +506,20 @@
             }, false);
         });
 
-        // 侧滑返回手势（双击退出）
         (function setupExitOnDoubleSwipe() {
-            let startX = 0, startY = 0, isTracking = false, fromEdge = '';
-            let lastExitTime = 0;
-            const EXIT_INTERVAL = 2000;
+            var startX = 0, startY = 0, isTracking = false, fromEdge = '';
+            var lastExitTime = 0;
+            var EXIT_INTERVAL = 2000;
 
             function showExitToast() {
                 if (window.plus && plus.nativeUI) {
                     plus.nativeUI.toast('再按一次返回键退出应用', { duration: 'short' });
                 } else {
-                    const tip = document.createElement('div');
+                    var tip = document.createElement('div');
                     tip.textContent = '再滑一次退出';
                     tip.style.cssText = 'position:fixed;bottom:15%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.75);color:#fff;padding:10px 22px;border-radius:22px;font-size:15px;z-index:9999;pointer-events:none;';
                     document.body.appendChild(tip);
-                    setTimeout(() => tip.remove(), 1800);
+                    setTimeout(function () { tip.remove(); }, 1800);
                 }
             }
 
@@ -547,9 +532,9 @@
                 }
             }
 
-            document.addEventListener('touchstart', function(e) {
-                const touch = e.touches[0];
-                const screenWidth = window.innerWidth;
+            document.addEventListener('touchstart', function (e) {
+                var touch = e.touches[0];
+                var screenWidth = window.innerWidth;
                 if (touch.clientX <= 30) {
                     startX = touch.clientX; startY = touch.clientY;
                     isTracking = true; fromEdge = 'left';
@@ -561,17 +546,17 @@
                 }
             }, { passive: true });
 
-            document.addEventListener('touchend', function(e) {
+            document.addEventListener('touchend', function (e) {
                 if (!isTracking) return;
-                const touch = e.changedTouches[0];
-                const deltaX = touch.clientX - startX;
-                const deltaY = Math.abs(touch.clientY - startY);
+                var touch = e.changedTouches[0];
+                var deltaX = touch.clientX - startX;
+                var deltaY = Math.abs(touch.clientY - startY);
 
-                const isLeft = (fromEdge === 'left' && deltaX > 80 && deltaY < 60);
-                const isRight = (fromEdge === 'right' && deltaX < -80 && deltaY < 60);
+                var isLeft = (fromEdge === 'left' && deltaX > 80 && deltaY < 60);
+                var isRight = (fromEdge === 'right' && deltaX < -80 && deltaY < 60);
 
                 if (isLeft || isRight) {
-                    const now = Date.now();
+                    var now = Date.now();
                     if (now - lastExitTime < EXIT_INTERVAL) {
                         exitApp();
                     } else {
@@ -582,116 +567,6 @@
                 isTracking = false; fromEdge = '';
             }, { passive: true });
         })();
-
-        // 打开 PDF
-        function openPDF(filePath) {
-            if (!window.plus) return;
-
-            // 加上 _www 并获取物理路径
-            var url = filePath.indexOf('_www') === -1 ? '_www/' + filePath : filePath;
-            var fullPath = plus.io.convertLocalFileSystemURL(url);
-
-            // 如果路径没有 file:// 前缀，补上
-            if (fullPath.indexOf('file://') !== 0) {
-                fullPath = 'file://' + fullPath;
-            }
-
-            // 调用 HBuilder 原生方法打开
-            plus.runtime.openFile(fullPath, {}, function(error) {
-                // 失败则去掉前缀再开一次
-                plus.runtime.openFile(fullPath.replace('file://', ''), {}, function(err2) {
-                    plus.nativeUI.alert("手机没有安装能打开 PDF 的软件，请下载 WPS。");
-                });
-            });
-        }
-    </script>
-    <!-- ==================== 版本检查与更新 ==================== -->
-    <script>
-        // 1. 替换成你真实的 Cloudflare Pages 地址！
-        const VERSION_API = 'https://prayer-app-re8.pages.dev/version.json';
-
-        // 版本号比对：返回 1 表示服务器版本更新，0 表示相同，-1 表示本地版本更高
-        function compareVersion(localVer, serverVer) {
-            const localArr = localVer.split('.').map(Number);
-            const serverArr = serverVer.split('.').map(Number);
-            const maxLen = Math.max(localArr.length, serverArr.length);
-            for (let i = 0; i < maxLen; i++) {
-                const local = localArr[i] || 0;
-                const server = serverArr[i] || 0;
-                if (server > local) return 1;
-                if (server < local) return -1;
-            }
-            return 0;
-        }
-
-        // 检查更新
-        function checkAppUpdate() {
-            // 如果不是在手机 App 环境里运行，直接跳过
-            if (window.plus) {
-                plus.runtime.getProperty(plus.runtime.appid, function(info) {
-                    // 获取当前本地 App 的版本号 (如 1.0.0)
-                    const localVersion = info.version;
-
-                    var xhr = new XMLHttpRequest();
-                    // 加时间戳 ?t=xxx 是为了防止手机缓存旧的 json 文件
-                    xhr.open('GET', VERSION_API + '?t=' + Date.now(), true);
-                    xhr.onload = function() {
-                        if (xhr.status === 200) {
-                            try {
-                                const res = JSON.parse(xhr.responseText);
-                                // 如果服务器版本 > 本地版本
-                                if (compareVersion(localVersion, res.version) === 1) {
-                                    if (res.forceUpdate) {
-                                        // 强制更新：只有一个按钮
-                                        plus.nativeUI.confirm(res.updateDesc || '发现新版本，必须更新', function(e) {
-                                            if (e.index === 0) downloadAndInstall(res.downloadUrl);
-                                        }, '版本更新', ['立即更新']);
-                                    } else {
-                                        // 可选更新：两个按钮
-                                        plus.nativeUI.confirm(res.updateDesc || '发现新版本，是否立即更新？', function(e) {
-                                            if (e.index === 0) downloadAndInstall(res.downloadUrl);
-                                        }, '版本更新', ['立即更新', '稍后提醒']);
-                                    }
-                                }
-                            } catch (err) {
-                                console.error('解析版本信息失败', err);
-                            }
-                        }
-                    };
-                    xhr.send();
-                });
-            }
-        }
-
-        // 下载并安装
-        function downloadAndInstall(url) {
-            plus.nativeUI.showWaiting('正在下载更新...');
-
-            // 定义下载任务，保存到应用的临时目录
-            var task = plus.downloader.createDownload(url, { filename: '_doc/update/' }, function(d, status) {
-                plus.nativeUI.closeWaiting();
-                if (status === 200) {
-                    // 下载成功，开始安装
-                    plus.runtime.install(d.filename, {
-                        force: false
-                    }, function() {
-                        plus.nativeUI.alert('安装包准备完毕，请按照提示完成安装。', function(){
-                            plus.runtime.quit(); // 安装完毕后直接退出应用
-                        }, '提示', '确定');
-                    }, function(e) {
-                        plus.nativeUI.alert('安装失败: ' + e.message);
-                    });
-                } else {
-                    plus.nativeUI.alert('下载失败，状态码: ' + status + '，请检查网络或下载链接。');
-                }
-            });
-            task.start();
-        }
-
-        // 等 App 初始化完毕（plusready 事件）后，延迟 2 秒检查更新
-        document.addEventListener('plusready', function() {
-            setTimeout(checkAppUpdate, 2000);
-        });
     </script>
 </body>
 </html>
