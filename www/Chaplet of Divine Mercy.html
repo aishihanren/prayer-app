@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>慈悲串经 · 神圣慈悲敬礼</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #f9f6f0;
+            font-family: 'Georgia', 'Times New Roman', '宋体', 'SimSun', 'Noto Serif SC', serif;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #2e241b;
+        }
+        .chaplet-container {
+            max-width: 780px;
+            width: 100%;
+            background: #fffdf9;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(90, 60, 30, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04);
+            padding: 2.5rem 2.2rem;
+            border: 1px solid #e8ddd0;
+            position: relative;
+        }
+        /* 装饰性红线 */
+        .chaplet-container::before {
+            content: '';
+            position: absolute;
+            top: 1.8rem;
+            left: 2.2rem;
+            right: 2.2rem;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #b0523c, #b0523c, transparent);
+            opacity: 0.5;
+        }
+        h1 {
+            font-size: 2.1rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-align: center;
+            margin-top: 0.8rem;
+            margin-bottom: 0.25rem;
+            color: #4d2e1b;
+            font-family: 'Georgia', 'Noto Serif SC', serif;
+            border-bottom: 1px dashed #d9c8b8;
+            padding-bottom: 0.5rem;
+        }
+        .subhead {
+            text-align: center;
+            font-size: 0.95rem;
+            color: #8b6f58;
+            margin-bottom: 2rem;
+            font-style: italic;
+            letter-spacing: 0.03em;
+        }
+        .section {
+            margin-bottom: 2rem;
+        }
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #7b4a2e;
+            margin-bottom: 1rem;
+            letter-spacing: 0.04em;
+            border-left: 5px solid #b0523c;
+            padding-left: 1rem;
+        }
+        .section-title span {
+            font-size: 1.4rem;
+            line-height: 1;
+        }
+        .prayer-block {
+            background: #fcf8f2;
+            border-radius: 16px;
+            padding: 1.4rem 1.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #efe3d7;
+            box-shadow: inset 0 1px 3px rgba(255,255,255,0.8), 0 2px 6px rgba(0,0,0,0.02);
+        }
+        .prayer-block p {
+            font-size: 1.08rem;
+            line-height: 1.8;
+            margin-bottom: 0.65rem;
+            color: #32281f;
+        }
+        .prayer-block p:last-child {
+            margin-bottom: 0;
+        }
+        .prayer-block .label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #9a7b65;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            display: block;
+        }
+        .bead-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
+        }
+        .bead-card {
+            flex: 1 1 220px;
+            background: #fffaf3;
+            border-radius: 18px;
+            padding: 1.4rem 1.4rem 1.6rem;
+            border: 1px solid #e2d2c0;
+            box-shadow: 0 2px 8px rgba(120, 80, 50, 0.04);
+            transition: all 0.15s ease;
+        }
+        .bead-card:hover {
+            border-color: #c8aa8e;
+            background: #fffcf7;
+        }
+        .bead-card h3 {
+            font-size: 1.1rem;
+            color: #703f28;
+            font-weight: 500;
+            margin-bottom: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border-bottom: 1px dotted #ddcbb9;
+            padding-bottom: 0.6rem;
+        }
+        .bead-card h3 i {
+            font-style: normal;
+            font-size: 1.2rem;
+        }
+        .bead-card p {
+            font-size: 1.02rem;
+            line-height: 1.7;
+            color: #3b2e24;
+        }
+        .bead-card .times {
+            display: inline-block;
+            background: #e7d9cb;
+            border-radius: 30px;
+            padding: 0.2rem 0.9rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: #4a3322;
+            margin-bottom: 0.8rem;
+        }
+        .closing {
+            background: #f4ede5;
+            border-radius: 20px;
+            padding: 1.6rem 1.8rem;
+            margin-top: 0.5rem;
+            border: 1px solid #dfcebc;
+            text-align: center;
+        }
+        .closing p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #3a2c20;
+        }
+        .closing .highlight {
+            font-weight: 600;
+            color: #944f31;
+        }
+        .closing .repetition {
+            font-size: 0.85rem;
+            color: #8e725c;
+            display: block;
+            margin-top: 0.5rem;
+            letter-spacing: 0.06em;
+        }
+        .footnote {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e4d6c8;
+            font-size: 0.88rem;
+            color: #7a6652;
+            line-height: 1.7;
+            background: #fdfaf7;
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+        }
+        .footnote strong {
+            color: #7b4a2e;
+            font-weight: 600;
+        }
+        .cross-icon {
+            display: inline-block;
+            font-size: 1.6rem;
+            margin-right: 0.25rem;
+            vertical-align: middle;
+            color: #b0523c;
+        }
+        /* 小屏适配 */
+        @media (max-width: 580px) {
+            .chaplet-container {
+                padding: 1.8rem 1.2rem;
+            }
+            .chaplet-container::before {
+                top: 1.2rem;
+                left: 1.2rem;
+                right: 1.2rem;
+            }
+            h1 {
+                font-size: 1.7rem;
+            }
+            .bead-card {
+                flex: 1 1 100%;
+            }
+            .prayer-block {
+                padding: 1rem 1.2rem;
+            }
+            .section-title {
+                font-size: 1.1rem;
+                padding-left: 0.7rem;
+            }
+            .closing p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chaplet-container">
+        <h1>慈悲串经</h1>
+        <div class="subhead">Divine Mercy Chaplet · 神圣慈悲敬礼</div>
+
+        <!-- 开端 -->
+        <div class="section">
+            <div class="section-title">
+                <span>✝</span> 开端
+            </div>
+            <div class="prayer-block">
+                <span class="label">预备</span>
+                <p>开始时，先念一遍天主经、圣母经和信经。</p>
+                <p style="font-size:0.98rem; color:#5d4b3a; margin-top:0.5rem;"><em>（这经文是用以平息天主的义怒，以普通的玫瑰念珠诵念。）</em></p>
+            </div>
+        </div>
+
+        <!-- 大珠部分 -->
+        <div class="section">
+            <div class="section-title">
+                <span>◉</span> 在每粒大珠上念
+            </div>
+            <div class="bead-group">
+                <div class="bead-card">
+                    <h3><i>🔴</i> 大珠 · 一次</h3>
+                    <p>永生之父，我把祢至爱之子，我们的主耶稣基督的圣体、圣血、灵魂及天主性奉献给祢，以赔补我们及普世的罪过。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 小珠部分 -->
+        <div class="section">
+            <div class="section-title">
+                <span>◍</span> 在每粒小珠上念
+            </div>
+            <div class="bead-group">
+                <div class="bead-card">
+                    <h3><i>⚪</i> 小珠 · 十次</h3>
+                    <p>
+						<span class="highlight">因祂的至悲惨苦难，</span>
+						&npar;求祢垂怜我们及普世。
+					</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结尾 -->
+        <div class="section">
+            <div class="section-title">
+                <span>✧</span> 结尾时
+            </div>
+            <div class="closing">
+                <p>
+                    <span class="highlight">至圣天主，至圣强有力者，至圣常存者，</span><br>
+                    求祢垂怜我们及普世。
+                </p>
+                <span class="repetition">（念三次）</span>
+                <p style="margin-top:1.2rem; font-size:1.3rem; font-weight:600; color:#8b3f2b; letter-spacing:0.02em;">
+                    主，耶稣，我们信赖祢！
+                </p>
+                <span class="repetition" style="margin-top:0.3rem;">（结尾三遍后念此短诵）</span>
+            </div>
+        </div>
+
+        <!-- 注解说明 -->
+        <div class="footnote">
+            <strong>✝ 使用说明与背景</strong><br><br>
+            • 慈悲串经源于20世纪波兰修女圣傅天娜·科瓦尔斯卡（St. Faustina Kowalska）的神视经历，后由教宗若望保禄二世推广。<br>
+            • 结构：开端（天主经、圣母经、信经各一遍）→ 大珠（每端开始处）奉献耶稣圣体圣血 → 小珠（每端十粒）求垂怜 → 结尾三遍“至圣天主……”＋“主，耶稣，我们信赖祢！”<br>
+            • 使用普通玫瑰念珠即可，不须特别祝圣。此为私人敬礼，不属于弥撒或日课等礼仪祈祷，天主教徒可自由选择是否诵念。<br>
+            • 神学背景：“平息天主义怒”的表述属于特定灵修传统中的语言，强调基督苦难的补赎价值，而非字面意义上“天主需要被安抚”。现代神学更倾向于从慈悲与救赎的角度理解。
+        </div>
+    </div>
+</body>
+</html>
