@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>慈悲串经 · 神圣慈悲敬礼</title>
     <style>
         * {
@@ -13,11 +13,54 @@
         body {
             background: #f9f6f0;
             font-family: 'Georgia', 'Times New Roman', '宋体', 'SimSun', 'Noto Serif SC', serif;
-            padding: 2rem 1rem;
+            padding-top: 56px;
+            padding-bottom: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
             color: #2e241b;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ===== 顶部固定栏 ===== */
+        .top-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 56px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e6e0d8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            z-index: 1000;
+        }
+        .back-btn, .font-btn {
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; border-radius: 50%;
+            transition: background-color 0.2s; color: #4a3729;
+            font-family: inherit; flex-shrink: 0;
+        }
+        .back-btn { font-size: 1rem; }
+        .font-btn { font-size: 1.15rem; font-weight: 700; font-family: Georgia, serif; }
+        .back-btn:hover, .font-btn:hover { background-color: #f5efe8; }
+        .back-btn:active, .font-btn:active { background-color: #e6ddd2; }
+        .top-title {
+            flex: 1; text-align: center; font-size: 1.05rem; font-weight: 600;
+            color: #2c241b; letter-spacing: 2px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            padding: 0 8px;
+        }
+
+        /* ===== 页面主体 ===== */
+        .page-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 36px 28px 0;
+            width: 100%;
         }
         .chaplet-container {
             max-width: 780px;
@@ -28,6 +71,7 @@
             padding: 2.5rem 2.2rem;
             border: 1px solid #e8ddd0;
             position: relative;
+            transform-origin: top center;
         }
         /* 装饰性红线 */
         .chaplet-container::before {
@@ -194,114 +238,299 @@
             color: #7b4a2e;
             font-weight: 600;
         }
-        .cross-icon {
-            display: inline-block;
-            font-size: 1.6rem;
-            margin-right: 0.25rem;
-            vertical-align: middle;
-            color: #b0523c;
+
+        /* ===== 字号面板 ===== */
+        .font-panel-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.35);
+            z-index: 1998; opacity: 0; visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
         }
+        .font-panel-overlay.show { opacity: 1; visibility: visible; }
+        .font-panel {
+            position: fixed; left: 0; right: 0; bottom: 0;
+            background-color: #ffffff;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+            z-index: 1999; padding: 8px 24px 32px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+            max-width: 860px; margin: 0 auto;
+        }
+        .font-panel.show { transform: translateY(0); }
+        .drag-handle {
+            width: 40px; height: 4px; background-color: #d9cfc2;
+            border-radius: 2px; margin: 0 auto 18px;
+            cursor: grab; touch-action: none;
+        }
+        .drag-handle:active { cursor: grabbing; }
+        .panel-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .panel-title { font-size: 1rem; font-weight: 600; color: #2c241b; letter-spacing: 1px; }
+        .panel-reset {
+            background: none; border: 1px solid #d9cfc2; color: #4a3729;
+            font-size: 0.85rem; padding: 5px 14px; border-radius: 20px;
+            cursor: pointer; font-family: inherit; transition: background-color 0.2s;
+        }
+        .panel-reset:hover { background-color: #f5efe8; }
+        .slider-row { display: flex; align-items: center; gap: 14px; }
+        .slider-label-small {
+            font-size: 0.85rem; color: #8a7a68; font-weight: 600;
+            flex-shrink: 0; width: 20px; text-align: center;
+        }
+        .slider-label-large {
+            font-size: 1.35rem; color: #8a7a68; font-weight: 700;
+            flex-shrink: 0; width: 24px; text-align: center;
+            font-family: Georgia, serif;
+        }
+        .font-slider {
+            -webkit-appearance: none; appearance: none; flex: 1; height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px; outline: none; cursor: pointer;
+        }
+        .font-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: border-color 0.2s, transform 0.1s;
+        }
+        .font-slider::-webkit-slider-thumb:hover { border-color: #a52a2a; }
+        .font-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+        .font-slider::-moz-range-thumb {
+            width: 28px; height: 28px; background-color: #ffffff;
+            border: 3px solid #b7a48b; border-radius: 50%;
+            cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .font-slider::-moz-range-track {
+            height: 6px;
+            background: linear-gradient(to right, #e6ddd2 0%, #b7a48b 50%, #a52a2a 100%);
+            border-radius: 3px;
+        }
+        .font-value {
+            text-align: center; margin-top: 14px;
+            font-size: 0.85rem; color: #8a7a68; letter-spacing: 1px;
+        }
+
         /* 小屏适配 */
-        @media (max-width: 580px) {
-            .chaplet-container {
-                padding: 1.8rem 1.2rem;
-            }
-            .chaplet-container::before {
-                top: 1.2rem;
-                left: 1.2rem;
-                right: 1.2rem;
-            }
-            h1 {
-                font-size: 1.7rem;
-            }
-            .bead-card {
-                flex: 1 1 100%;
-            }
-            .prayer-block {
-                padding: 1rem 1.2rem;
-            }
-            .section-title {
-                font-size: 1.1rem;
-                padding-left: 0.7rem;
-            }
-            .closing p {
-                font-size: 1rem;
-            }
+        @media (max-width: 700px) {
+            .page-wrapper { padding: 24px 14px 0; }
+            .chaplet-container { padding: 1.8rem 1.2rem; }
+            .chaplet-container::before { top: 1.2rem; left: 1.2rem; right: 1.2rem; }
+            h1 { font-size: 1.7rem; }
+            .bead-card { flex: 1 1 100%; }
+            .prayer-block { padding: 1rem 1.2rem; }
+            .section-title { font-size: 1.1rem; padding-left: 0.7rem; }
+            .closing p { font-size: 1rem; }
+            .top-title { font-size: 0.98rem; letter-spacing: 1px; }
+        }
+        @media (max-width: 480px) {
+            .chaplet-container { padding: 1.4rem 0.9rem; }
+            h1 { font-size: 1.5rem; }
+            .bead-card { padding: 1rem; }
+            .footnote { padding: 1rem 1rem; }
+        }
+
+        @media print {
+            body { padding-top: 0; }
+            .top-bar, .font-panel-overlay, .font-panel { display: none !important; }
+            .page-wrapper { padding: 0; }
+            .chaplet-container { box-shadow: none; border: none; }
         }
     </style>
 </head>
 <body>
-    <div class="chaplet-container">
-        <h1>慈悲串经</h1>
-        <div class="subhead">Divine Mercy Chaplet · 神圣慈悲敬礼</div>
 
-        <!-- 开端 -->
-        <div class="section">
-            <div class="section-title">
-                <span>✝</span> 开端
-            </div>
-            <div class="prayer-block">
-                <span class="label">预备</span>
-                <p>开始时，先念一遍天主经、圣母经和信经。</p>
-                <p style="font-size:0.98rem; color:#5d4b3a; margin-top:0.5rem;"><em>（这经文是用以平息天主的义怒，以普通的玫瑰念珠诵念。）</em></p>
-            </div>
-        </div>
+    <div class="top-bar">
+        <button class="back-btn" onclick="goBack()" title="返回">返回</button>
+        <div class="top-title">慈悲串经</div>
+        <button class="font-btn" onclick="openFontPanel()" title="调整字号">Aa</button>
+    </div>
 
-        <!-- 大珠部分 -->
-        <div class="section">
-            <div class="section-title">
-                <span>◉</span> 在每粒大珠上念
-            </div>
-            <div class="bead-group">
-                <div class="bead-card">
-                    <h3><i>🔴</i> 大珠 · 一次</h3>
-                    <p>永生之父，我把祢至爱之子，我们的主耶稣基督的圣体、圣血、灵魂及天主性奉献给祢，以赔补我们及普世的罪过。</p>
+    <div class="page-wrapper">
+        <div class="chaplet-container" id="pageContent">
+            <h1>慈悲串经</h1>
+            <div class="subhead">Divine Mercy Chaplet · 神圣慈悲敬礼</div>
+
+            <!-- 开端 -->
+            <div class="section">
+                <div class="section-title">
+                    <span>✝</span> 开端
+                </div>
+                <div class="prayer-block">
+                    <span class="label">预备</span>
+                    <p>开始时，先念一遍天主经、圣母经和信经。</p>
+                    <p style="font-size:0.98rem; color:#5d4b3a; margin-top:0.5rem;"><em>（这经文是用以平息天主的义怒，以普通的玫瑰念珠诵念。）</em></p>
                 </div>
             </div>
-        </div>
 
-        <!-- 小珠部分 -->
-        <div class="section">
-            <div class="section-title">
-                <span>◍</span> 在每粒小珠上念
+            <!-- 大珠部分 -->
+            <div class="section">
+                <div class="section-title">
+                    <span>◉</span> 在每粒大珠上念
+                </div>
+                <div class="bead-group">
+                    <div class="bead-card">
+                        <h3><i>🔴</i> 大珠 · 一次</h3>
+                        <p>永生之父，我把祢至爱之子，我们的主耶稣基督的圣体、圣血、灵魂及天主性奉献给祢，以赔补我们及普世的罪过。</p>
+                    </div>
+                </div>
             </div>
-            <div class="bead-group">
-                <div class="bead-card">
-                    <h3><i>⚪</i> 小珠 · 十次</h3>
+
+            <!-- 小珠部分 -->
+            <div class="section">
+                <div class="section-title">
+                    <span>◍</span> 在每粒小珠上念
+                </div>
+                <div class="bead-group">
+                    <div class="bead-card">
+                        <h3><i>⚪</i> 小珠 · 十次</h3>
+                        <p>因祂的至悲惨苦难，求祢垂怜我们及普世。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 结尾 -->
+            <div class="section">
+                <div class="section-title">
+                    <span>✧</span> 结尾时
+                </div>
+                <div class="closing">
                     <p>
-						<span class="highlight">因祂的至悲惨苦难，</span>
-						&npar;求祢垂怜我们及普世。
-					</p>
+                        <span class="highlight">至圣天主，至圣强有力者，至圣常存者，</span><br>
+                        求祢垂怜我们及普世。
+                    </p>
+                    <span class="repetition">（念三次）</span>
+                    <p style="margin-top:1.2rem; font-size:1.3rem; font-weight:600; color:#8b3f2b; letter-spacing:0.02em;">
+                        主，耶稣，我们信赖祢！
+                    </p>
+                    <span class="repetition" style="margin-top:0.3rem;">（结尾三遍后念此短诵）</span>
                 </div>
             </div>
-        </div>
 
-        <!-- 结尾 -->
-        <div class="section">
-            <div class="section-title">
-                <span>✧</span> 结尾时
+            <!-- 注解说明 -->
+            <div class="footnote">
+                <strong>✝ 使用说明与背景</strong><br><br>
+                • 慈悲串经源于20世纪波兰修女圣傅天娜·科瓦尔斯卡（St. Faustina Kowalska）的神视经历，后由教宗若望保禄二世推广。<br>
+                • 结构：开端（天主经、圣母经、信经各一遍）→ 大珠（每端开始处）奉献耶稣圣体圣血 → 小珠（每端十粒）求垂怜 → 结尾三遍“至圣天主……”＋“主，耶稣，我们信赖祢！”<br>
+                • 使用普通玫瑰念珠即可，不须特别祝圣。此为私人敬礼，不属于弥撒或日课等礼仪祈祷，天主教徒可自由选择是否诵念。<br>
+                • 神学背景：“平息天主义怒”的表述属于特定灵修传统中的语言，强调基督苦难的补赎价值，而非字面意义上“天主需要被安抚”。现代神学更倾向于从慈悲与救赎的角度理解。
             </div>
-            <div class="closing">
-                <p>
-                    <span class="highlight">至圣天主，至圣强有力者，至圣常存者，</span><br>
-                    求祢垂怜我们及普世。
-                </p>
-                <span class="repetition">（念三次）</span>
-                <p style="margin-top:1.2rem; font-size:1.3rem; font-weight:600; color:#8b3f2b; letter-spacing:0.02em;">
-                    主，耶稣，我们信赖祢！
-                </p>
-                <span class="repetition" style="margin-top:0.3rem;">（结尾三遍后念此短诵）</span>
-            </div>
-        </div>
-
-        <!-- 注解说明 -->
-        <div class="footnote">
-            <strong>✝ 使用说明与背景</strong><br><br>
-            • 慈悲串经源于20世纪波兰修女圣傅天娜·科瓦尔斯卡（St. Faustina Kowalska）的神视经历，后由教宗若望保禄二世推广。<br>
-            • 结构：开端（天主经、圣母经、信经各一遍）→ 大珠（每端开始处）奉献耶稣圣体圣血 → 小珠（每端十粒）求垂怜 → 结尾三遍“至圣天主……”＋“主，耶稣，我们信赖祢！”<br>
-            • 使用普通玫瑰念珠即可，不须特别祝圣。此为私人敬礼，不属于弥撒或日课等礼仪祈祷，天主教徒可自由选择是否诵念。<br>
-            • 神学背景：“平息天主义怒”的表述属于特定灵修传统中的语言，强调基督苦难的补赎价值，而非字面意义上“天主需要被安抚”。现代神学更倾向于从慈悲与救赎的角度理解。
         </div>
     </div>
+
+    <!-- 字号面板 -->
+    <div class="font-panel-overlay" id="fontOverlay" onclick="closeFontPanel()"></div>
+    <div class="font-panel" id="fontPanel">
+        <div class="drag-handle" id="dragHandle"></div>
+        <div class="panel-header">
+            <span class="panel-title">调整文字大小</span>
+            <button class="panel-reset" onclick="resetFontSize()">恢复默认</button>
+        </div>
+        <div class="slider-row">
+            <span class="slider-label-small">A</span>
+            <input type="range" class="font-slider" id="fontSlider" min="12" max="28" step="1" value="16" oninput="onSliderChange(this.value)">
+            <span class="slider-label-large">A</span>
+        </div>
+        <div class="font-value" id="fontValue">当前字号：16px</div>
+    </div>
+
+    <script>
+        /* ========== 返回首页 ========== */
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        /* ========== 字号设置 ========== */
+        const MIN_FONT = 12, MAX_FONT = 28, DEFAULT_FONT = 16;
+        const STORAGE_KEY = 'prayerFontSize_chaplet';
+        const fontPanel = document.getElementById('fontPanel');
+        const fontOverlay = document.getElementById('fontOverlay');
+        const fontSlider = document.getElementById('fontSlider');
+        const fontValue = document.getElementById('fontValue');
+        const pageContent = document.getElementById('pageContent');
+
+        function openFontPanel() {
+            fontPanel.classList.add('show');
+            fontOverlay.classList.add('show');
+        }
+        function closeFontPanel() {
+            fontPanel.classList.remove('show');
+            fontOverlay.classList.remove('show');
+        }
+        function applyFontSize(size) {
+            // 使用 zoom 缩放整个内容容器，保持布局稳定
+            pageContent.style.zoom = size / DEFAULT_FONT;
+        }
+        function onSliderChange(value) {
+            const size = parseInt(value, 10);
+            applyFontSize(size);
+            fontValue.textContent = '当前字号：' + size + 'px';
+            try { localStorage.setItem(STORAGE_KEY, size); } catch (e) {}
+        }
+        function resetFontSize() {
+            fontSlider.value = DEFAULT_FONT;
+            onSliderChange(DEFAULT_FONT);
+        }
+
+        (function initFont() {
+            let saved = DEFAULT_FONT;
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const num = parseInt(stored, 10);
+                    if (!isNaN(num) && num >= MIN_FONT && num <= MAX_FONT) saved = num;
+                }
+            } catch (e) {}
+            fontSlider.value = saved;
+            applyFontSize(saved);
+            fontValue.textContent = '当前字号：' + saved + 'px';
+        })();
+
+        (function setupDragClose() {
+            const handle = document.getElementById('dragHandle');
+            let startY = 0, currentY = 0, isDragging = false;
+            function onStart(e) {
+                isDragging = true;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                currentY = startY;
+                fontPanel.style.transition = 'none';
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', onEnd);
+            }
+            function onMove(e) {
+                if (!isDragging) return;
+                currentY = e.touches ? e.touches[0].clientY : e.clientY;
+                const delta = currentY - startY;
+                if (delta > 0) fontPanel.style.transform = 'translateY(' + delta + 'px)';
+                if (e.cancelable) e.preventDefault();
+            }
+            function onEnd() {
+                if (!isDragging) return;
+                isDragging = false;
+                fontPanel.style.transition = '';
+                const delta = currentY - startY;
+                if (delta > 80) closeFontPanel();
+                fontPanel.style.transform = '';
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('touchend', onEnd);
+            }
+            handle.addEventListener('mousedown', onStart);
+            handle.addEventListener('touchstart', onStart, { passive: false });
+        })();
+    </script>
+    <script>
+    document.addEventListener('plusready', function() {
+        plus.key.addEventListener('backbutton', function() {
+            window.location.href = 'index.html';
+        }, false);
+    });
+    </script>
 </body>
 </html>
